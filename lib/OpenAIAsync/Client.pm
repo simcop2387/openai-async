@@ -4,6 +4,7 @@ use v5.38.0;
 use Object::Pad;
 use IO::Async::SSL; # We're not directly using it but I want to enforce that we pull it in when detecting dependencies, since openai itself is always https
 use Future::AsyncAwait;
+use IO::Async;
 
 use OpenAIAsync::Types::Results;
 use OpenAIAsync::Types::Requests;
@@ -12,7 +13,7 @@ our $VERSION="v0.1.0";
 
 # ABSTRACT: Async client for OpenAI style REST API for various AI systems (LLMs, Images, Video, etc.)
 
-class OpenAIAsync::Client :repr(HASH) :isa(IO::Async::Notifier) {
+class OpenAIAsync::Client :repr(HASH) :isa(IO::Async::Notifier) :strict(params) {
   use JSON::MaybeXS qw//;
   use Net::Async::HTTP;
   use Feature::Compat::Try;
@@ -34,6 +35,8 @@ class OpenAIAsync::Client :repr(HASH) :isa(IO::Async::Notifier) {
   field $api_key :param(api_key) = $ENV{OPENAI_API_KEY};
 
   field $api_org_name :param(api_org_name) = undef;
+
+  field $io_async_notifier_params :param = undef;
 
   method configure(%params) {
     # We require them to go this way, so that there is no conflicts
