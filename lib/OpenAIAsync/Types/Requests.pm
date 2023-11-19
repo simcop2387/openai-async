@@ -1,37 +1,94 @@
-package OpenAIAsync::Types::Requests::;
+package OpenAIAsync::Types::Requests;
 use v5.38.0;
 use Object::Pad;
 
 use Object::PadX::Role::AutoMarshal;
 use Object::PadX::Role::AutoJSON;
 use Object::Pad::ClassAttr::Struct;
+use OpenAIAsync::Types;
 
-class OpenAIAsync::Types::Requests::ChatCompletion::Messages::Assistant::ToolCall :does(AutoMarshal) :does(AutoJSON) :Struct {
+role OpenAIAsync::Types::Requests::Base :does(OpenAIAsync::Types::Base) :Struct {
+  requires _endpoint; # How the client finds where to send the request
+}
+
+#### Base Request Types
+
+class OpenAIAsync::Types::Requests::ChatCompletion :does(OpenAIAsync::Types::Requests::Base) {
+  method _endpoint() {...}
+  field $messages :MarshalTo([OpenAIAsync::Types::Requests::ChatCompletion::Messages::Union]);
+}
+
+class OpenAIAsync::Types::Requests::Completion :does(OpenAIAsync::Types::Requests::Base) {
+  method _endpoint() {...}
+  use JSON::MaybeXS; # TODO make a role that does this better?
+
+  field $model :JSONStr = "gpt-3.5-turbo"; # This is how 99% of everyone else seems to default this
+  field $prompt :JSONStr;
+  
+  field $max_tokens :JSONNum = undef; # use the platform default usually
+  field $temperature :JSONNum = undef;
+  field $top_p :JSONNum = undef;
+  field $seed :JSONNum  = undef;
+  field $echo :JSONBool = undef; # true or false only
+  field $suffix :JSONStr = undef;
+  field $stop :JSONStr = undef; # array of stop tokens
+  field $user :JSONStr = undef; # used for tracking purposes later
+
+  field $frequency_penalty :JSONNum = undef;
+  field $presence_penalty :JSONNum = undef;
+  
+  field $logit_bias = undef; # TODO make this work
+  field $log_probs = undef; # TODO
+  
+  field $n :JSONNum = undef; # Danger will robinson! easy to cause $$$$$$$ costs
+  field $best_of :JSONNum = undef;
+
+  field $stream :JSONBool = undef; # TODO FALSE ALWAYS RIGHT NOW
+
+  ADJUST {
+    # Type assertions here
+    die "Streaming unsupported" if $self->stream;
+  }
+}
+
+class OpenAIAsync::Types::Requests::Embedding :does(OpenAIAsync::Types::Requests::Base) {
+  method _endpoint() {...}
+  field $input :JSONStr;
+  field $model :JSONStr;
+  field $encoding_format :JSONStr = undef;
+  field $user :JSONStr = undef;
+}
+
+### Request Subtypes
+
+class OpenAIAsync::Types::Requests::ChatCompletion::Messages::Assistant::ToolCall :does(OpenAIAsync::Types::Base) {
   field $id :JSONStr;
   field $arguments :JSONStr;
   field $type :JSONStr;
   field $function :MarshalTo(OpenAIAsync::Types::Requests::ChatCompletion::Messages::Assistant::FunctionCall);
 }
 
-class OpenAIAsync::Types::Requests::ChatCompletion::Messages::Assistant::FunctionCall :does(AutoJSON) :Struct {
+class OpenAIAsync::Types::Requests::ChatCompletion::Messages::Assistant::FunctionCall :does(OpenAIAsync::Types::Base) {
   field $arguments :JSONStr;
   field $name :JSONStr;
 }
 
-class OpenAIAsync::Types::Requests::ChatCompletion::Messages::User::Text :does(AutoJSON) :Struct {
+class OpenAIAsync::Types::Requests::ChatCompletion::Messages::User::Text :does(OpenAIAsync::Types::Base) {
   field $type :JSONStr;
   field $text :JSONStr;
 }
 
-class OpenAIAsync::Types::Requests::ChatCompletion::Messages::User::ImageUrl :does(AutoJSON) :Struct {
+class OpenAIAsync::Types::Requests::ChatCompletion::Messages::User::ImageUrl :does(OpenAIAsync::Types::Base) {
   field $url :JSONStr;
   field $detail :JSONStr = undef;
 }
 
-class OpenAIAsync::Types::Requests::ChatCompletion::Messages::User::Image :does(AutoJSON) :does(AutoMarshal) :Struct {
+class OpenAIAsync::Types::Requests::ChatCompletion::Messages::User::Image :does(OpenAIAsync::Types::Base) {
   field $type :JSONStr;
   field $image_url :MarshalTo(OpenAIAsync::Types::Requests::ChatCompletion::Messages::User::ImageUrl);
 }
+
+# TODO, why have two of these? just shove it into the big one below
 
 package 
     OpenAIAsync::Types::Requests::ChatCompletion::Messages::User::ContentUnion {
@@ -53,7 +110,7 @@ package
   }
 };
 
-class OpenAIAsync::Types::Requests::ChatCompletion::Messages::User :does(AutoJSON) :Struct {
+class OpenAIAsync::Types::Requests::ChatCompletion::Messages::User :does(OpenAIAsync::Types::Base) {
   # This particular type is more complicated than AutoMarshal can handle, so we need to
   # do this in a custom manner.
   field $role;
@@ -82,7 +139,7 @@ class OpenAIAsync::Types::Requests::ChatCompletion::Messages::User :does(AutoJSO
   }
 }
 
-class OpenAIAsync::Types::Requests::ChatCompletion::Messages::Assistant :does(AutoMarshal) :does(AutoJSON) :Struct {
+class OpenAIAsync::Types::Requests::ChatCompletion::Messages::Assistant :does(OpenAIAsync::Types::Base) {
   field $role :JSONStr;
   field $content :JSONStr;
   field $name = undef;
@@ -90,19 +147,19 @@ class OpenAIAsync::Types::Requests::ChatCompletion::Messages::Assistant :does(Au
   field $function_call :MarshalTo(OpenAIAsync::Types::Requests::ChatCompletion::Messages::Assistant::FunctionCall) = undef;
 }
 
-class OpenAIAsync::Types::Requests::ChatCompletion::Messages::Function :does(AutoMarshal) :does(AutoJSON) :Struct {
+class OpenAIAsync::Types::Requests::ChatCompletion::Messages::Function :does(OpenAIAsync::Types::Base) {
   field $role :JSONStr;
   field $content :JSONStr;
   field $name :JSONStr;
 }
 
-class OpenAIAsync::Types::Requests::ChatCompletion::Messages::Tool :does(AutoMarshal) :does(AutoJSON) :Struct {
+class OpenAIAsync::Types::Requests::ChatCompletion::Messages::Tool :does(OpenAIAsync::Types::Base) {
   field $role :JSONStr;
   field $content :JSONStr;
   field $tool_call_id :JSONStr;
 }
 
-class OpenAIAsync::Types::Requests::ChatCompletion::Messages::System :does(AutoMarshal) :does(AutoJSON) :Struct {
+class OpenAIAsync::Types::Requests::ChatCompletion::Messages::System :does(OpenAIAsync::Types::Base) {
   field $role :JSONStr;
   field $name :JSONStr = undef;
   field $content :JSONStr;
@@ -133,46 +190,3 @@ package
   }
 };
 
-class OpenAIAsync::Types::Requests::ChatCompletion :does(AutoMarshal) :does(AutoJSON) :Struct {
-  field $messages :MarshalTo([OpenAIAsync::Types::Requests::ChatCompletion::Messages::Union]);
-}
-
-class OpenAIAsync::Types::Requests::Completion :does(AutoJSON) :Struct {
-  use JSON::MaybeXS; # TODO make a role that does this better?
-
-  field $model :JSONStr = "gpt-3.5-turbo"; # This is how 99% of everyone else seems to default this
-  field $prompt :JSONStr;
-  
-  field $max_tokens :JSONNum = undef; # use the platform default usually
-  field $temperature :JSONNum = undef;
-  field $top_p :JSONNum = undef;
-  field $seed :JSONNum  = undef;
-  field $echo :JSONBool = undef; # true or false only
-  field $suffix :JSONStr = undef;
-  field $stop :JSONStr = undef; # array of stop tokens
-  field $user :JSONStr = undef; # used for tracking purposes later
-
-  field $frequency_penalty :JSONNum = undef;
-  field $presence_penalty :JSONNum = undef;
-  
-  field $logit_bias = undef; # TODO make this work
-  field $log_probs = undef; # TODO
-  
-  field $n :JSONNum = undef; # Danger will robinson! easy to cause $$$$$$$ costs
-  field $best_of :JSONNum = undef;
-
-  field $stream :JSONBool = undef; # TODO FALSE ALWAYS RIGHT NOW
-
-  ADJUST {
-    # Type assertions here
-    die "Streaming unsupported" if $self->stream;
-    
-  }
-}
-
-class OpenAIAsync::Types::Requests::Embedding :does(AutoJSON) :Struct {
-  field $input :JSONStr;
-  field $model :JSONStr;
-  field $encoding_format :JSONStr = undef;
-  field $user :JSONStr = undef;
-}

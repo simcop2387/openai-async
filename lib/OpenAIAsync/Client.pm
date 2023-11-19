@@ -6,6 +6,10 @@ use Future::AsyncAwait;
 use OpenAIAsync::Types::Results;
 use OpenAIAsync::Types::Requests;
 
+our $VERSION="v0.1.0";
+
+# ABSTRACT: Async client for OpenAI style REST API for various AI systems (LLMs, Images, Video, etc.)
+
 class OpenAIAsync::Client :repr(HASH) :isa(IO::Async::Notifier) {
   use JSON::MaybeXS qw//;
   use Net::Async::HTTP;
@@ -13,17 +17,16 @@ class OpenAIAsync::Client :repr(HASH) :isa(IO::Async::Notifier) {
   use URI;
 
   field $_json = JSON::MaybeXS->new(utf8 => 1, convert_blessed => 1);
+  field $http;
 
+  # TODO document these directly, other options gets mixed in BEFORE all of these
   field $_http_max_in_flight :param(http_max_in_flight) = 2;
   field $_http_max_redirects :param(http_max_redirects) = 3;
   field $_http_max_connections_per_host :param(http_max_connections_per_host) = 2;
   field $_http_timeout :param(http_timeout) = 120; # My personal server is kinda slow, use a generous default
   field $_http_stall_timeout :param(http_stall_timeout) = 600; # generous for my slow personal server
-  field $_http_proxy_host :param(http_proxy_host) = undef;
-  field $_http_proxy_port :param(http_proxy_port) = undef;
-  field $_http_proxy_path :param(http_proxy_path) = undef;
-
-  field $http;
+  field $_http_other :param(http_other_options) = {};
+  field $_http_user_agent = __PACKAGE__." Perl/$VERSION (Net::Async::HTTP/".$Net::Async::HTTP::VERSION." IO::Async/".$IO::Async::VERSION." Perl/$])";
 
   field $api_base :param(api_base) = $ENV{OPENAI_API_BASE} // "https://api.openai.com/v1";
   field $api_key :param(api_key) = $ENV{OPENAI_API_KEY};
@@ -31,15 +34,17 @@ class OpenAIAsync::Client :repr(HASH) :isa(IO::Async::Notifier) {
   field $api_org_name :param(api_org_name) = undef;
 
   method configure(%params) {
-    # We require them to go this way
+    # We require them to go this way, so that there is no conflicts
+    # TODO document this
     my %io_async_params = ($params{io_async_notifier_params} // {})->%*;
-    IO::Async::Notifier::configure($self, );
+    IO::Async::Notifier::configure($self, %io_async_params);
   }
 
   method __make_http() {
     die "Missing API Key for OpenAI" unless $api_key;
 
     return Net::Async::HTTP->new(
+      $_http_other->%*,
       user_agent => "SNN OpenAI Client 1.0",
       +headers => {
         "Authorization" => "Bearer $api_key",
@@ -53,7 +58,6 @@ class OpenAIAsync::Client :repr(HASH) :isa(IO::Async::Notifier) {
       max_in_flight => $_http_max_in_flight,
       timeout => $_http_timeout,
       stall_timeout => $_http_stall_timeout,
-      # TODO proxy stuff
     )
   }
 
