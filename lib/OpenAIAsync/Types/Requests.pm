@@ -8,7 +8,7 @@ use Object::Pad::ClassAttr::Struct;
 use OpenAIAsync::Types;
 
 role OpenAIAsync::Types::Requests::Base :does(OpenAIAsync::Types::Base) :Struct {
-  requires _endpoint; # How the client finds where to send the request
+  method _endpoint(); # How the client finds where to send the request
 }
 
 #### Base Request Types

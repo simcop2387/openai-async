@@ -1,3 +1,5 @@
+package OpenAIAsync::Client;
+
 use v5.38.0;
 use Object::Pad;
 use IO::Async::SSL; # We're not directly using it but I want to enforce that we pull it in when detecting dependencies, since openai itself is always https

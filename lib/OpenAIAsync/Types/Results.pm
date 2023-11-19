@@ -77,14 +77,14 @@ class OpenAIAsync::Types::Results::LogProbs :does(OpenAIAsync::Types::Base) {
   field $top_logprobs = undef;
 }
 
-class OpenAIAsync::Types::Results::CompletionChoices :does(AutoMarshal) :Struct {
+class OpenAIAsync::Types::Results::CompletionChoices :does(OpenAIAsync::Types::Base) {
   field $text; 
   field $index;
   field $logprobs :MarshalTo(OpenAIAsync::Types::Results::LogProbs) = undef; # TODO make nicer type?
   field $finish_reason = undef; # TODO enum? helper funcs for this class? ->is_finished?
 }
 
-class OpenAIAsync::Types::Results::Completion :does(AutoMarshal) :Struct {
+class OpenAIAsync::Types::Results::Completion :does(OpenAIAsync::Types::Base) {
   field $id;
   field $choices :MarshalTo([OpenAIAsync::Types::Results::CompletionChoices]);
   field $created;
@@ -94,7 +94,7 @@ class OpenAIAsync::Types::Results::Completion :does(AutoMarshal) :Struct {
   field $object;
 }
 
-class OpenAIAsync::Types::Results::Embedding :does(AutoMarshal) :Struct {
+class OpenAIAsync::Types::Results::Embedding :does(OpenAIAsync::Types::Base) {
   field $index;
   field $embedding;
   field $object;
