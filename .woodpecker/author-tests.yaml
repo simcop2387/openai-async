@@ -13,5 +13,6 @@ steps:
       - apt update && apt install -y libssl-dev git
       - cpanm --verbose Dist::Zilla
       - dzil authordeps | xargs cpanm --verbose 
+      - cpanm --no-test --verbose IO::Async
       - dzil listdeps | xargs cpanm --verbose
       - dzil test
