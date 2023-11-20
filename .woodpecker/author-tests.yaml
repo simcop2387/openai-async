@@ -1,0 +1,13 @@
+matrix:
+  PERL_VERSIONS:
+    - 5.36
+    - 5.38
+  THREADS:
+    - ""
+    - "-threaded"
+
+steps:
+  generate:
+    image: "quay.io/simcop2387/perl-debug-containers:${PERL_VERSIONS}-main${THREADS}-bookworm-backports"
+    commands:
+      - env
