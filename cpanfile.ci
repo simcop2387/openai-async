@@ -1,0 +1,29 @@
+# This file is here to let my CI system work a bit quicker and easier
+
+requires "Dist::Zilla::Plugin::AutoPrereqs";
+requires "Dist::Zilla::Plugin::CheckChangesHasContent";
+requires "Dist::Zilla::Plugin::GitHub::Meta";
+requires "Dist::Zilla::Plugin::Prereqs";
+requires "Dist::Zilla::Plugin::Readme::Brief";
+requires "Dist::Zilla::Plugin::Test::Perl::Critic";
+requires "Dist::Zilla::PluginBundle::Starter::Git";
+requires "Software::License::Artistic_2_0";
+requires "CPAN::Meta";
+requires "Data::Dumper";
+requires "ExtUtils::MakeMaker";
+requires "Feature::Compat::Try";
+requires "File::Spec";
+requires "Future::AsyncAwait";
+requires "IO::Async";
+requires "IO::Async::SSL";
+requires "JSON::MaybeXS";
+requires "Net::Async::HTTP";
+requires "Object::Pad";
+requires "Object::Pad::ClassAttr::Struct";
+requires "Object::PadX::Role::AutoJSON";
+requires "Object::PadX::Role::AutoMarshal";
+requires "strict";
+requires "Test2::V0";
+requires "Test::More";
+requires "URI";
+requires "warnings";
