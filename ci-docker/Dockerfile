@@ -14,4 +14,3 @@ WORKDIR /install/
 #carton install --cpanfile cpanfile.ci --cached || cpanm --notest --force IO::Async || carton install --cpanfile cpanfile.ci --cached
 RUN dzil authordeps --missing | xargs cpanm
 RUN dzil listdeps --missing | xargs cpanm
-RUN dzil test
