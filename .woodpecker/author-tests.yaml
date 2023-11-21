@@ -11,6 +11,6 @@ steps:
     image: "quay.io/simcop2387/perl-debug-containers:${PERL_VERSIONS}-main${THREADS}-bookworm-backports"
     commands:
       - apt update && apt install -y libssl-dev git
-      - cpanm Dist::Zilla App::carton
-      - carton install --cpanfile cpanfile.ci --cached
+      - cpanm Dist::Zilla Carton
+      - carton install --cpanfile cpanfile.ci --cached || carton install --cpanfile cpanfile.ci --cached
       - dzil test
