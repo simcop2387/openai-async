@@ -1,5 +1,5 @@
 matrix:
-  PERL_VERSIONS:
+  PERL_VERSION:
     - 5.36
     - 5.38
   THREADS:
@@ -11,11 +11,8 @@ depends_on:
 
 steps:
   test:
-      image: "quay.io/simcop2387/perl-debug-containers:${PERL_VERSIONS}-main${THREADS}-bookworm-backports"
+      image: "gitea.simcop2387.info/simcop2387/openai-async-test-images:perl-${PERL_VERSION}${THREADS}"
       commands:
-        - apt update && apt install -y libssl-dev git
-        - cpanm Dist::Zilla Carton
-        - carton install --cpanfile cpanfile.ci --cached || cpanm --notest --force IO::Async || carton install --cpanfile cpanfile.ci --cached
         - dzil authordeps --missing | xargs cpanm
         - dzil listdeps --missing | xargs cpanm
         - dzil test
