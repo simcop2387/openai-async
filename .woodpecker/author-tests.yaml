@@ -6,9 +6,6 @@ matrix:
     - ""
     - "-threaded"
 
-depends_on: 
-  - build-test-images
-
 steps:
   test:
       image: "gitea.simcop2387.info/simcop2387/openai-async-test-images:perl-${PERL_VERSION}${THREADS}"
