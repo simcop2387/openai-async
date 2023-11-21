@@ -1,5 +1,5 @@
 package OpenAIAsync::Types::Results;
-use v5.38.0;
+use v5.36.0;
 use Object::Pad;
 
 use OpenAIAsync::Types;
