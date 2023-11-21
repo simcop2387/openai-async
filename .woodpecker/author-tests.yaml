@@ -14,5 +14,5 @@ steps:
       - cpanm Dist::Zilla Carton
       - carton install --cpanfile cpanfile.ci --cached || carton install --cpanfile cpanfile.ci --cached
       - dzil authordeps --missing | xargs cpanm
-      - dzil list --missing | xargs cpanm
+      - dzil listdeps --missing | xargs cpanm
       - dzil test
