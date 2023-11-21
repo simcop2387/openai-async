@@ -1,0 +1,33 @@
+matrix:
+  PERL_VERSION:
+    - 5.36
+    - 5.38
+  THREADS:
+    - ""
+    - "-threaded"
+
+when:
+  - event: tag
+  - path: 
+      include: ["ci-docker/*", ".woodpecker/build-test-images.yaml"]
+      ignore_message: "[ALL]"
+
+steps:
+  upgrade-os:
+    image: woodpeckerci/plugin-docker-buildx
+    settings:
+      repo: gitea.simcop2387.info/simcop2387/openai-async-test-images
+      dockerfile: ci-docker/Dockerfile
+      auto_tag: false
+      build_args:
+        - "BUILD_TAG=build-${CI_PIPELINE_NUMBER}"
+        - "PERL_VERSION=${PERL_VERSION}"
+        - "THREADS=${THREADS}"
+      tags: 
+        - "perl-${PERL_VERSION}${THREADS}-${CI_PIPELINE_NUMBER}"
+        - "perl-${PERL_VERSION}${THREADS}"
+      logins:
+        - registry: https://gitea.simcop2387.info/
+          username: simcop2387
+          password:
+            from_secret: docker_token
