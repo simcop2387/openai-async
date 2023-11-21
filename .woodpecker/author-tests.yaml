@@ -13,4 +13,6 @@ steps:
       - apt update && apt install -y libssl-dev git
       - cpanm Dist::Zilla Carton
       - carton install --cpanfile cpanfile.ci --cached || carton install --cpanfile cpanfile.ci --cached
+      - dzil authordeps --missing | xargs cpanm
+      - dzil list --missing | xargs cpanm
       - dzil test
