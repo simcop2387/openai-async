@@ -8,14 +8,14 @@ use Object::PadX::Role::AutoJSON;
 use Object::Pad::ClassAttr::Struct;
 
 class OpenAIAsync::Types::Results::ToolCall :does(OpenAIAsync::Types::Base) :Struct {
-  field $id :JSONStr;
-  field $type :JSONStr; # always "function" right now, may get expanded in the future
-  field $function :MarshalTo(OpenAIAsync::Types::Results::FunctionCall);
+  field $id :JSONStr = undef;
+  field $type :JSONStr = undef; # always "function" right now, may get expanded in the future
+  field $function :MarshalTo(OpenAIAsync::Types::Results::FunctionCall) = undef;
 }
 
 class OpenAIAsync::Types::Results::FunctionCall :does(OpenAIAsync::Types::Base) :Struct {
-  field $arguments :JSONStr; # TODO decode the json from this directly?
-  field $name :JSONStr;
+  field $arguments :JSONStr = undef; # TODO decode the json from this directly?
+  field $name :JSONStr = undef;
 }
 
 class OpenAIAsync::Types::Results::ChatMessage :does(OpenAIAsync::Types::Base) :Struct {
@@ -43,8 +43,8 @@ class OpenAIAsync::Types::Results::ChatCompletion :does(OpenAIAsync::Types::Base
 
 class OpenAIAsync::Types::Results::ChunkDelta :does(OpenAIAsync::Types::Base) :Struct {
   field $content :JSONStr;
-  field $function_call :MarshalTo(OpenAIAsync::Types::Results::FunctionCall);
-  field $tool_cass :MarshalTo([OpenAIAsync::Types::Results::ToolCall]);
+  field $function_call :MarshalTo(OpenAIAsync::Types::Results::FunctionCall) = undef;
+  field $tool_cass :MarshalTo([OpenAIAsync::Types::Results::ToolCall]) = undef;
   field $role :JSONStr;
 }
 

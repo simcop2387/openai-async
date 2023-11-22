@@ -14,7 +14,7 @@ role OpenAIAsync::Types::Requests::Base :does(OpenAIAsync::Types::Base) :Struct 
 #### Base Request Types
 
 class OpenAIAsync::Types::Requests::ChatCompletion :does(OpenAIAsync::Types::Requests::Base) :Struct {
-  method _endpoint() {"/chat/completion"}
+  method _endpoint() {"/chat/completions"}
   field $messages :MarshalTo([OpenAIAsync::Types::Requests::ChatCompletion::Messages::Union]);
   field $model :JSONStr = "gpt-3.5-turbo";
   field $frequency_penalty :JSONNum = undef;
@@ -36,7 +36,7 @@ class OpenAIAsync::Types::Requests::ChatCompletion :does(OpenAIAsync::Types::Req
 }
 
 class OpenAIAsync::Types::Requests::Completion :does(OpenAIAsync::Types::Requests::Base) :Struct {
-  method _endpoint() {"/completion"}
+  method _endpoint() {"/completions"}
   
   field $model :JSONStr = "gpt-3.5-turbo"; # This is how 99% of everyone else seems to default this
   field $prompt :JSONStr;

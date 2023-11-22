@@ -8,4 +8,4 @@ export I_PROMISE_NOT_TO_SUE_FOR_EXCESSIVE_COSTS="Signed, ryan"
 
 #dzil xtest
 
-perl -Ilib xt/02-chat-completion.t
+perl -Ilib xt/03-embeddings.t

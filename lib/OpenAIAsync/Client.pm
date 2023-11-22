@@ -75,9 +75,6 @@ class OpenAIAsync::Client :repr(HASH) :isa(IO::Async::Notifier) :strict(params) 
   async method _make_request($endpoint, $data) {
     my $json = $_json->encode($data);
 
-    use Data::Dumper;
-    print Dumper($json);
-
     my $url = URI->new($api_base . $endpoint );
 
     my $result = await $http->do_request(
@@ -117,9 +114,7 @@ class OpenAIAsync::Client :repr(HASH) :isa(IO::Async::Notifier) :strict(params) 
       die "Unsupported input type [".ref($input)."]";
     }
 
-    print "Making request\n";
-
-    my $data = await $self->_make_request("/completions", $input);
+    my $data = await $self->_make_request($input->_endpoint(), $input);
 
     my $type_result = OpenAIAsync::Types::Results::Completion->new($data->%*);
 
@@ -135,9 +130,7 @@ class OpenAIAsync::Client :repr(HASH) :isa(IO::Async::Notifier) :strict(params) 
       die "Unsupported input type [".ref($input)."]";
     }
 
-    print "Making request\n";
-
-    my $data = await $self->_make_request("/completions", $input);
+    my $data = await $self->_make_request($input->_endpoint(), $input);
 
     my $type_result = OpenAIAsync::Types::Results::ChatCompletion->new($data->%*);
 
@@ -146,7 +139,19 @@ class OpenAIAsync::Client :repr(HASH) :isa(IO::Async::Notifier) :strict(params) 
   }
 
   async method embedding($input) {
+    if (ref($input) eq 'HASH') {
+      $input = OpenAIAsync::Types::Requests::Embedding->new($input->%*);
+    } elsif (ref($input) eq 'OpenAIAsync::Types::Requests::Embedding') {
+      # dummy, nothing to do
+    } else {
+      die "Unsupported input type [".ref($input)."]";
+    }
 
+    my $data = await $self->_make_request($input->_endpoint(), $input);
+
+    my $type_result = OpenAIAsync::Types::Results::Embedding->new($data->%*);
+
+    return $type_result;
   }
 
   async method image_generate($input) {
