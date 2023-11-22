@@ -17,7 +17,7 @@ class OpenAIAsync::Types::Requests::ChatCompletion :does(OpenAIAsync::Types::Req
   method _endpoint() {"/chat/completion"}
   field $messages :MarshalTo([OpenAIAsync::Types::Requests::ChatCompletion::Messages::Union]);
   field $model :JSONStr = "gpt-3.5-turbo";
-  field $frequency_penalty :JSONNum = undefs;
+  field $frequency_penalty :JSONNum = undef;
   field $presence_penalty :JSONNum = undef;
   field $logit_bias = undef; # TODO wtf is this?
   field $max_tokens :JSONNum = undef;
@@ -32,7 +32,7 @@ class OpenAIAsync::Types::Requests::ChatCompletion :does(OpenAIAsync::Types::Req
   field $tool_choice :JSONExclude = undef; # TODO handle this
 
   field $function_call :JSONExclude = undef;
-  field $functions :JSONExclude = undef;s
+  field $functions :JSONExclude = undef;
 }
 
 class OpenAIAsync::Types::Requests::Completion :does(OpenAIAsync::Types::Requests::Base) :Struct {
