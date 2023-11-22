@@ -126,8 +126,23 @@ class OpenAIAsync::Client :repr(HASH) :isa(IO::Async::Notifier) :strict(params) 
     return $type_result;
   }
 
-  async method chat($prompt) {
-    ...
+  async method chat($input) {
+    if (ref($input) eq 'HASH') {
+      $input = OpenAIAsync::Types::Requests::ChatCompletion->new($input->%*);
+    } elsif (ref($input) eq 'OpenAIAsync::Types::Requests::ChatCompletion') {
+      # dummy, nothing to do
+    } else {
+      die "Unsupported input type [".ref($input)."]";
+    }
+
+    print "Making request\n";
+
+    my $data = await $self->_make_request("/completions", $input);
+
+    my $type_result = OpenAIAsync::Types::Results::ChatCompletion->new($data->%*);
+
+    return $type_result;
+
   }
 
   async method embedding($input) {

@@ -6,7 +6,7 @@ use Test2::V0;
 use OpenAIAsync::Client;
 
 BEGIN {
-  $ENV{OPENAI_API_KEY}="12345" unless $ENV{OPENAI_API_KEY}="12345";
+  $ENV{OPENAI_API_KEY}="12345" unless $ENV{OPENAI_API_KEY}eq"12345";
 }
 
 ok(lives {
