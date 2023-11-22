@@ -1,0 +1,1 @@
+This is going to be a subclass of the client that adds in some additional options that are present only in their version of the OpenAI api
