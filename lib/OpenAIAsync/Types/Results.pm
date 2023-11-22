@@ -67,7 +67,7 @@ class OpenAIAsync::Types::Results::ChatCompletionChunk :does(OpenAIAsync::Types:
 class OpenAIAsync::Types::Results::Usage :does(OpenAIAsync::Types::Base) :Struct {
   field $total_tokens :JSONNum;
   field $prompt_tokens :JSONNum;
-  field $completion_tokens :JSONNum; # look at chat completions, is this the same
+  field $completion_tokens :JSONNum = undef; # look at chat completions, is this the same
 }
 
 class OpenAIAsync::Types::Results::LogProbs :does(OpenAIAsync::Types::Base) :Struct {
@@ -95,7 +95,15 @@ class OpenAIAsync::Types::Results::Completion :does(OpenAIAsync::Types::Base) :S
   field $object :JSONStr;
 }
 
+
 class OpenAIAsync::Types::Results::Embedding :does(OpenAIAsync::Types::Base) :Struct {
+  field $object :JSONStr;
+  field $model :JSONStr;
+  field $usage :MarshalTo(OpenAIAsync::Types::Results::Usage);
+  field $data :MarshalTo([OpenAIAsync::Types::Results::EmbeddingData]);
+}
+
+class OpenAIAsync::Types::Results::EmbeddingData :does(OpenAIAsync::Types::Base) :Struct {
   field $index :JSONNum;
   field $embedding :JSONList(JSONNum);
   field $object :JSONStr;

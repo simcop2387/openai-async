@@ -68,7 +68,7 @@ class OpenAIAsync::Types::Requests::Completion :does(OpenAIAsync::Types::Request
 }
 
 class OpenAIAsync::Types::Requests::Embedding :does(OpenAIAsync::Types::Requests::Base) :Struct {
-  method _endpoint() {...}
+  method _endpoint() {"/embeddings"}
   field $input :JSONStr;
   field $model :JSONStr;
   field $encoding_format :JSONStr = undef;
