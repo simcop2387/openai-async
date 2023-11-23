@@ -30,6 +30,12 @@ A result from a completion request, L<OpenAIAsync::Types::Request::Completion>
 
 id of the completion response, used for tracking duplicate responses or reporting issues to the service
 
+=head1 choices
+
+An array of L<OpenAIAsync::Types::Results::CompletionChoices> objects.  If you asked for more than 1 response with the request parameter C<n> then they will be present here.
+
+You likely just want to get ->text from the first result, as demonstrated in the synopsis but see the ::CompletionChoices docs for more detailed information.
+
 =head2 model
 
 The model that was used to generate the response.  Usually will be what you requested,

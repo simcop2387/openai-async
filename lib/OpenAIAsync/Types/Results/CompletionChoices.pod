@@ -1,0 +1,53 @@
+=pod
+
+=head1 NAME
+
+OpenAIAsync::Types::Results::CompletionChoices
+
+=head1 DESCRIPTION
+
+A choice from a completion request, L<OpenAIAsync::Types::Request::Completion> as part of L<OpenAIAsync::Types::Result::Completion>
+
+=head1 SYNOPSIS
+
+  use OpenAIAsync::Client;
+  use IO::Async::Loop;
+
+  my $loop = IO::Async::Loop->new();
+  my $client = OpenAIAsync::Client->new();
+
+  $loop->add($client)
+
+  my $output_future = $client->completion({max_tokens => 1024, prompt => "Tell a story about a princess named Judy and her princess sister Emmy"});
+
+  my $result = $output_future->get();
+
+  print $result->choices->[0]->text;
+
+=head1 Fields
+
+=head2 text
+
+The contents of the response, very likely all you want or need
+
+=head2 index
+
+Index of the choice? I believe this will just always be the same as it's position in the array.
+
+=head2 logprobs
+
+Logit probabilities, see L<OpenAIAsync::Types::Results::LogProbs> for details
+
+=head2 finish_reason
+
+What made the model stop generating.  Could be from hitting a stop token, or running into max tokens.
+
+=head1 SEE ALSO
+
+L<OpenAIAsync::Types::Request::Completion>, L<OpenAIAsync::Types::Result::Completion>, L<OpenAIAsync::Client>
+
+=head1 AUTHOR
+
+Ryan Voots ...
+
+=cut
