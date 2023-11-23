@@ -174,6 +174,10 @@ Unimplemented. The opposite of the above.
 
 Unimplemented, I've not investigated this one much yet but I believe it's to get a description of an image and it's contents.
 
+=head2 Missing apis
+
+At least some for getting the list of models and some other meta information, those will be added next after I get some more documentation written
+
 =head1 See Also
 
 L<IO::Async>, L<Future::AsyncAwait>, L<Net::Async::HTTP>

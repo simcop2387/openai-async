@@ -9867,8 +9867,6 @@ OpenAIAsync	.build/kLMGruHLIH/blib/lib/OpenAIAsync.pm	1;"	p
 OpenAIAsync	.build/kLMGruHLIH/lib/OpenAIAsync.pm	1;"	p
 OpenAIAsync	.build/mKmyAW37h1/blib/lib/OpenAIAsync.pm	1;"	p
 OpenAIAsync	.build/mKmyAW37h1/lib/OpenAIAsync.pm	1;"	p
-OpenAIAsync	.build/previous/blib/lib/OpenAIAsync.pm	1;"	p
-OpenAIAsync	.build/previous/lib/OpenAIAsync.pm	1;"	p
 OpenAIAsync	.build/t7Cb8f47yj/blib/lib/OpenAIAsync.pm	1;"	p
 OpenAIAsync	.build/t7Cb8f47yj/lib/OpenAIAsync.pm	1;"	p
 OpenAIAsync	.build/trQp7H7Uyl/blib/lib/OpenAIAsync.pm	1;"	p
@@ -9892,8 +9890,6 @@ OpenAIAsync::Client	.build/kLMGruHLIH/blib/lib/OpenAIAsync/Client.pm	1;"	p
 OpenAIAsync::Client	.build/kLMGruHLIH/lib/OpenAIAsync/Client.pm	1;"	p
 OpenAIAsync::Client	.build/mKmyAW37h1/blib/lib/OpenAIAsync/Client.pm	1;"	p
 OpenAIAsync::Client	.build/mKmyAW37h1/lib/OpenAIAsync/Client.pm	1;"	p
-OpenAIAsync::Client	.build/previous/blib/lib/OpenAIAsync/Client.pm	1;"	p
-OpenAIAsync::Client	.build/previous/lib/OpenAIAsync/Client.pm	1;"	p
 OpenAIAsync::Client	.build/t7Cb8f47yj/blib/lib/OpenAIAsync/Client.pm	1;"	p
 OpenAIAsync::Client	.build/t7Cb8f47yj/lib/OpenAIAsync/Client.pm	1;"	p
 OpenAIAsync::Client	lib/OpenAIAsync/Client.pm	1;"	p
@@ -9917,8 +9913,6 @@ OpenAIAsync::Types	.build/kLMGruHLIH/blib/lib/OpenAIAsync/Types.pm	1;"	p
 OpenAIAsync::Types	.build/kLMGruHLIH/lib/OpenAIAsync/Types.pm	1;"	p
 OpenAIAsync::Types	.build/mKmyAW37h1/blib/lib/OpenAIAsync/Types.pm	1;"	p
 OpenAIAsync::Types	.build/mKmyAW37h1/lib/OpenAIAsync/Types.pm	1;"	p
-OpenAIAsync::Types	.build/previous/blib/lib/OpenAIAsync/Types.pm	1;"	p
-OpenAIAsync::Types	.build/previous/lib/OpenAIAsync/Types.pm	1;"	p
 OpenAIAsync::Types	.build/t7Cb8f47yj/blib/lib/OpenAIAsync/Types.pm	1;"	p
 OpenAIAsync::Types	.build/t7Cb8f47yj/lib/OpenAIAsync/Types.pm	1;"	p
 OpenAIAsync::Types	.build/trQp7H7Uyl/blib/lib/OpenAIAsync/Types.pm	1;"	p
@@ -9954,8 +9948,6 @@ OpenAIAsync::Types::Requests	.build/mKmyAW37h1/blib/lib/OpenAIAsync/Types/Reques
 OpenAIAsync::Types::Requests	.build/mKmyAW37h1/lib/OpenAIAsync/Types/Requests.pm	1;"	p
 OpenAIAsync::Types::Requests	.build/nb3podVIwj/blib/lib/OpenAIAsync/Types/Requests.pm	1;"	p
 OpenAIAsync::Types::Requests	.build/nb3podVIwj/lib/OpenAIAsync/Types/Requests.pm	1;"	p
-OpenAIAsync::Types::Requests	.build/previous/blib/lib/OpenAIAsync/Types/Requests.pm	1;"	p
-OpenAIAsync::Types::Requests	.build/previous/lib/OpenAIAsync/Types/Requests.pm	1;"	p
 OpenAIAsync::Types::Requests	.build/t7Cb8f47yj/blib/lib/OpenAIAsync/Types/Requests.pm	1;"	p
 OpenAIAsync::Types::Requests	.build/t7Cb8f47yj/lib/OpenAIAsync/Types/Requests.pm	1;"	p
 OpenAIAsync::Types::Requests	.build/trQp7H7Uyl/blib/lib/OpenAIAsync/Types/Requests.pm	1;"	p
@@ -9993,8 +9985,6 @@ OpenAIAsync::Types::Requests::ChatCompletion::Messages::Union	.build/mKmyAW37h1/
 OpenAIAsync::Types::Requests::ChatCompletion::Messages::Union	.build/mKmyAW37h1/lib/OpenAIAsync/Types/Requests.pm	170;"	p
 OpenAIAsync::Types::Requests::ChatCompletion::Messages::Union	.build/nb3podVIwj/blib/lib/OpenAIAsync/Types/Requests.pm	170;"	p
 OpenAIAsync::Types::Requests::ChatCompletion::Messages::Union	.build/nb3podVIwj/lib/OpenAIAsync/Types/Requests.pm	170;"	p
-OpenAIAsync::Types::Requests::ChatCompletion::Messages::Union	.build/previous/blib/lib/OpenAIAsync/Types/Requests.pm	186;"	p
-OpenAIAsync::Types::Requests::ChatCompletion::Messages::Union	.build/previous/lib/OpenAIAsync/Types/Requests.pm	186;"	p
 OpenAIAsync::Types::Requests::ChatCompletion::Messages::Union	.build/t7Cb8f47yj/blib/lib/OpenAIAsync/Types/Requests.pm	170;"	p
 OpenAIAsync::Types::Requests::ChatCompletion::Messages::Union	.build/t7Cb8f47yj/lib/OpenAIAsync/Types/Requests.pm	170;"	p
 OpenAIAsync::Types::Requests::ChatCompletion::Messages::Union	.build/trQp7H7Uyl/blib/lib/OpenAIAsync/Types/Requests.pm	170;"	p
@@ -10031,8 +10021,6 @@ OpenAIAsync::Types::Requests::ChatCompletion::Messages::User::ContentUnion	.buil
 OpenAIAsync::Types::Requests::ChatCompletion::Messages::User::ContentUnion	.build/mKmyAW37h1/lib/OpenAIAsync/Types/Requests.pm	94;"	p
 OpenAIAsync::Types::Requests::ChatCompletion::Messages::User::ContentUnion	.build/nb3podVIwj/blib/lib/OpenAIAsync/Types/Requests.pm	94;"	p
 OpenAIAsync::Types::Requests::ChatCompletion::Messages::User::ContentUnion	.build/nb3podVIwj/lib/OpenAIAsync/Types/Requests.pm	94;"	p
-OpenAIAsync::Types::Requests::ChatCompletion::Messages::User::ContentUnion	.build/previous/blib/lib/OpenAIAsync/Types/Requests.pm	110;"	p
-OpenAIAsync::Types::Requests::ChatCompletion::Messages::User::ContentUnion	.build/previous/lib/OpenAIAsync/Types/Requests.pm	110;"	p
 OpenAIAsync::Types::Requests::ChatCompletion::Messages::User::ContentUnion	.build/t7Cb8f47yj/blib/lib/OpenAIAsync/Types/Requests.pm	94;"	p
 OpenAIAsync::Types::Requests::ChatCompletion::Messages::User::ContentUnion	.build/t7Cb8f47yj/lib/OpenAIAsync/Types/Requests.pm	94;"	p
 OpenAIAsync::Types::Requests::ChatCompletion::Messages::User::ContentUnion	.build/trQp7H7Uyl/blib/lib/OpenAIAsync/Types/Requests.pm	94;"	p
@@ -10069,8 +10057,6 @@ OpenAIAsync::Types::Results	.build/mKmyAW37h1/blib/lib/OpenAIAsync/Types/Results
 OpenAIAsync::Types::Results	.build/mKmyAW37h1/lib/OpenAIAsync/Types/Results.pm	1;"	p
 OpenAIAsync::Types::Results	.build/nb3podVIwj/blib/lib/OpenAIAsync/Types/Results.pm	1;"	p
 OpenAIAsync::Types::Results	.build/nb3podVIwj/lib/OpenAIAsync/Types/Results.pm	1;"	p
-OpenAIAsync::Types::Results	.build/previous/blib/lib/OpenAIAsync/Types/Results.pm	1;"	p
-OpenAIAsync::Types::Results	.build/previous/lib/OpenAIAsync/Types/Results.pm	1;"	p
 OpenAIAsync::Types::Results	.build/t7Cb8f47yj/blib/lib/OpenAIAsync/Types/Results.pm	1;"	p
 OpenAIAsync::Types::Results	.build/t7Cb8f47yj/lib/OpenAIAsync/Types/Results.pm	1;"	p
 OpenAIAsync::Types::Results	.build/trQp7H7Uyl/blib/lib/OpenAIAsync/Types/Results.pm	1;"	p
@@ -28176,10 +28162,6 @@ new	.build/nb3podVIwj/blib/lib/OpenAIAsync/Types/Requests.pm	173;"	s
 new	.build/nb3podVIwj/blib/lib/OpenAIAsync/Types/Requests.pm	97;"	s
 new	.build/nb3podVIwj/lib/OpenAIAsync/Types/Requests.pm	173;"	s
 new	.build/nb3podVIwj/lib/OpenAIAsync/Types/Requests.pm	97;"	s
-new	.build/previous/blib/lib/OpenAIAsync/Types/Requests.pm	113;"	s
-new	.build/previous/blib/lib/OpenAIAsync/Types/Requests.pm	189;"	s
-new	.build/previous/lib/OpenAIAsync/Types/Requests.pm	113;"	s
-new	.build/previous/lib/OpenAIAsync/Types/Requests.pm	189;"	s
 new	.build/t7Cb8f47yj/blib/lib/OpenAIAsync/Types/Requests.pm	173;"	s
 new	.build/t7Cb8f47yj/blib/lib/OpenAIAsync/Types/Requests.pm	97;"	s
 new	.build/t7Cb8f47yj/lib/OpenAIAsync/Types/Requests.pm	173;"	s
@@ -29011,8 +28993,6 @@ ontent::new	.build/mKmyAW37h1/blib/lib/OpenAIAsync/Types/Requests.pm	173;"	s
 ontent::new	.build/mKmyAW37h1/lib/OpenAIAsync/Types/Requests.pm	173;"	s
 ontent::new	.build/nb3podVIwj/blib/lib/OpenAIAsync/Types/Requests.pm	173;"	s
 ontent::new	.build/nb3podVIwj/lib/OpenAIAsync/Types/Requests.pm	173;"	s
-ontent::new	.build/previous/blib/lib/OpenAIAsync/Types/Requests.pm	189;"	s
-ontent::new	.build/previous/lib/OpenAIAsync/Types/Requests.pm	189;"	s
 ontent::new	.build/t7Cb8f47yj/blib/lib/OpenAIAsync/Types/Requests.pm	173;"	s
 ontent::new	.build/t7Cb8f47yj/lib/OpenAIAsync/Types/Requests.pm	173;"	s
 ontent::new	.build/trQp7H7Uyl/blib/lib/OpenAIAsync/Types/Requests.pm	173;"	s
@@ -31686,8 +31666,6 @@ y::new	.build/mKmyAW37h1/blib/lib/OpenAIAsync/Types/Requests.pm	97;"	s
 y::new	.build/mKmyAW37h1/lib/OpenAIAsync/Types/Requests.pm	97;"	s
 y::new	.build/nb3podVIwj/blib/lib/OpenAIAsync/Types/Requests.pm	97;"	s
 y::new	.build/nb3podVIwj/lib/OpenAIAsync/Types/Requests.pm	97;"	s
-y::new	.build/previous/blib/lib/OpenAIAsync/Types/Requests.pm	113;"	s
-y::new	.build/previous/lib/OpenAIAsync/Types/Requests.pm	113;"	s
 y::new	.build/t7Cb8f47yj/blib/lib/OpenAIAsync/Types/Requests.pm	97;"	s
 y::new	.build/t7Cb8f47yj/lib/OpenAIAsync/Types/Requests.pm	97;"	s
 y::new	.build/trQp7H7Uyl/blib/lib/OpenAIAsync/Types/Requests.pm	97;"	s

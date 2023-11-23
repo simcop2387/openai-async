@@ -1,0 +1,106 @@
+=pod
+
+=head1 NAME
+
+OpenAIAsync::Types::Request::ChatCompletion
+
+=head1 DESCRIPTION
+
+A chat completion request
+
+=head1 SYNOPSIS
+
+  ... TODO
+
+=head1 Fields
+
+=head2 messages (required)
+
+The messages that are part of the chat, see the L<OpenAIAsync::Types::Request::ChatCompletion/messages> section for details
+
+=head2 model
+
+Which model should be used to generate the response.  Defaults to C<gpt-3.5-turbo> for a sane default
+as this is lower cost and will usually work with both OpenAI's official API and most self-hosted
+inference servers (for these it usually means use whatever default model was setup)
+
+=head2 frequency_penalty
+
+The penalty to apply to tokens that are frequent in the response.  A value between 0.0 and 2.0 is usually what is expected.
+
+This can be used to help prevent the model from repeating the same tokens in response, i.e. "hahahahahahahaha" over and over.
+
+=head2 precense_penalty
+
+The penalty to apply to tokens that are already present in the response.  A value between 0.0 and 2.0 is usually what is expected.
+
+This can be used to help prevent the model from repeating larger phrases/tokens in the response that it has already said. i.e.
+if the model keeps repeating, "Sure thing!" this can be used to help prevent it from doing that on every response.
+
+=head2 max_tokens
+
+How large of a response to allow generation to make, in tokens.  Usually this is limited to some number like 4096 by the inference
+engine but will vary heavily based on the setup there.  A small value will help prevent things from exceeding some estimated cost,
+but will also be more likely to stop generation before the response is linguistically completed.  Even if you set this very high,
+it may not generate that many tokens as the stop tokens might be hit before then.
+
+=head2 stop
+
+A string that gives an additional stop token, or an array of a few strings that can be used as stop tokens.  This lets you tell the
+inference server to stop on some additional tokens and not just the default one from the model.  This can be useful if the model you
+are using keeps generating additional stop tokens for other formats that aren't being recoginzed properly, such as C<< </s> >>.
+
+=head2 seed
+
+An integer for the seed to the random number generator involved in generating responses.  This should improve repeatability of
+responses so that you can do tests or to even help ensure you get different responses when generating multiple options.
+
+=head2 logit_bias
+
+This can be used to bias the tokens of the model's response.  I'm not sure the corrent format of this value but I believe it's an array
+of a probabiliy of every token that can be produced in response.  I'll document this better once I've actually got some tests and code that
+uses it.
+
+=head2 stream (do not use)
+
+Do not use this yet, it's a boolean value that says we want to stream the response rather than get a complete response.  There's no proper
+support yet in the library for this kind of thing so it won't work properly.  To add this I'll implement an IO::Async::Stream subclass that
+can be used to handle streaming results properly, but it needs some additional work/thought to do this properly.
+
+=head2 temperature
+
+The scaling factor to use when calculating tokens for the response.  This sort of makes things more random but it does it by adjusting the 
+scale of the resulting probabilities from the model.  A good range for this is probably from about 0.4 - 1.2, going too high is likely to
+cause the responses to become more incoherent as it will lead to the model being able to select tokens that don't actually make sense.
+
+=head2 top_p
+
+Sets a threshold for the top P probable tokens.  Take the top X tokens that add up to at least P probability and select only from them.
+This lets you select froms say the top 50% (0.5) most likely tokens for the response.  Setting this to 1.0 will select from all possible
+tokens, and setting it to 0.1 will select from only the top 10% of tokens.  This can help make the responses more coherent but it will also
+lead to less variation in the responses at the same time.
+
+=head2 response_format
+
+This is currently ignored by OpenAIAsync::Client right now, but will be used to force generation of specific formats of responses.
+
+OpenAI supports two values, null and C<json_object> to force a correctly formatted JSON response.  Needs additional documentation
+for how to use this before I enable it.
+
+=head2 tools
+=head2 tool_choice
+=head2 functions (deprecated see tools)
+=head2 function_call (deprecated, see tools)
+
+These are currently mostly unimplemented but will be handled soon.  They're used to have the OpenAI service help you generate function calls to give to code interpreter or to run yourself.
+I'm not entirely sure how they work yet myself so while I'm supporting them in responses I don't know how to properly use them yet.  Once I've gotten a grasp on them I'll document it here.
+
+=head1 SEE ALSO
+
+L<OpenAIAsync::Client>
+
+=head1 AUTHOR
+
+Ryan Voots ...
+
+=cut
