@@ -81,7 +81,7 @@ class OpenAIAsync::Types::Results::LogProbs :does(OpenAIAsync::Types::Base) :Str
 class OpenAIAsync::Types::Results::CompletionChoices :does(OpenAIAsync::Types::Base) :Struct {
   field $text :JSONStr; 
   field $index :JSONNum;
-  field $logprobs :MarshalTo(OpenAIAsync::Types::Results::LogProbs) = undef; # TODO make nicer type?
+  field $logprobs :MarshalTo([OpenAIAsync::Types::Results::LogProbs]) = undef; # TODO make nicer type?
   field $finish_reason :JSONStr = undef; # TODO enum? helper funcs for this class? ->is_finished?
 }
 

@@ -36,7 +36,7 @@ Index of the choice? I believe this will just always be the same as it's positio
 
 =head2 logprobs
 
-Logit probabilities, see L<OpenAIAsync::Types::Results::LogProbs> for details
+Log probabilities, see L<OpenAIAsync::Types::Results::LogProbs> for details
 
 =head2 finish_reason
 
