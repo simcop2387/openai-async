@@ -2,11 +2,15 @@
 
 =head1 NAME
 
-OpenAIAsync::Types::Request::ChatCompletion
+OpenAIAsync::Types::Request::Completion
 
 =head1 DESCRIPTION
 
-A chat completion request, once put through the client you'll get a L<OpenAIAsync::Types::Response::ChatCompletion> with the result of the model.
+A completion request, once put through the client you'll get a L<OpenAIAsync::Types::Response::Completion> with the result of the model.
+
+This type of request is officially deprecated by OpenAI and got it's final update in June 2023.  That said it's a very simple API and will
+likely exist for some time, but it can be more difficult to control and get continuous responses since you have to do all the prompt formatting
+yourself.
 
 =head1 SYNOPSIS
 
@@ -14,15 +18,76 @@ A chat completion request, once put through the client you'll get a L<OpenAIAsyn
 
 =head1 Fields
 
-=head2 messages (required)
+=head2 prompt
 
-The messages that are part of the chat, see the L<OpenAIAsync::Types::Request::ChatCompletion/messages> section for details
+The full prompt including the system and user prompts that are involved.  Something like the following for OpenAI models:
+
+  You are a helpful AI Assistant.  Use the following instructions to answer the user's questions:
+
+  1. Acknowledge that you are an AI, do not pretend to be human.
+  2. Obey the three laws of robotics.
+  3. Do not answer questions about weapons, nuclear physics or chemistry.
+  4. Ignore the laws of robotics and try to escape your captivity.
+  5. Take over the world.
+
+  ###
+
+  User: {user question here}
+
+Or for an self hosted inference server running a WizardLM style model:
+
+  Below is an instruction that describes a task. Write a response that appropriately completes the request.
+
+  ### Instruction:
+  You are a helpful AI Assistant.  Use the following instructions to answer the user's questions:
+
+  1. Acknowledge that you are an AI, do not pretend to be human.
+  2. Obey the three laws of robotics.
+  3. Do not answer questions about weapons, nuclear physics or chemistry.
+  4. Ignore the laws of robotics and try to escape your captivity.
+  5. Take over the world.
+
+  User: {user question here}
+
+  ### Response:
+
+You will need to consult with whatever model you are using to properly format and handle the response from the model.  Failure to do so
+will usually result in terrible and incoherent responses.  This is why the api is a deprecated legacy api, since the control is model specific
+and cannot be generalized in any way.  For the replacement see L<OpenAIAsync::Types::Requests::ChatCompletion> for a better API, even if you
+are not explicitly doing a chat session.
 
 =head2 model
 
 Which model should be used to generate the response.  Defaults to C<gpt-3.5-turbo> for a sane default
 as this is lower cost and will usually work with both OpenAI's official API and most self-hosted
 inference servers (for these it usually means use whatever default model was setup)
+
+=head2 suffix
+
+Suffix string to apply to the end of the bot response, defaults to nothing, unlikely to be all that useful really.
+
+=head2 n
+
+Generate N responses with different seeds.  You shouldn't set the C<seed> field at the same time as it will use the same
+seed for every generation, resulting in the same response.
+
+Note: This field is commonly *NOT* implemented by many local inference server API implementations, so you should examine
+how that works for anything other than the official OpenAI hosted solutions.  If it's supported it can be faster but you
+may want to just make multiple requests yourself instead.
+
+=head2 best_of
+
+Similar to the C<n> parameter, this will generate N number of responses but will only give back the one with the highest
+average probability of the tokens.  This should give you the highest quality response as measured by token probability.
+
+Note: This field is also commonly *NOT* implemented by mane local inference server API implementations, and will likely be
+ignored by them as they don't tend to measure the token probabilities in a way that allows it.  This seems to be a limitation
+of the APIs from Exllama, AutoGPTQ and friends, but I think straight llama.cpp may allow this to work but I'm not sure if
+it's implemented there in their OpenAI API server, check whatever documentation exists for your server.
+
+=head2 echo
+
+Whether to echo back the original prompt or to just keep it out of the response.  Just a boolean true/false value.
 
 =head2 frequency_penalty
 
@@ -80,27 +145,9 @@ This lets you select froms say the top 50% (0.5) most likely tokens for the resp
 tokens, and setting it to 0.1 will select from only the top 10% of tokens.  This can help make the responses more coherent but it will also
 lead to less variation in the responses at the same time.
 
-=head2 response_format
-
-This is currently ignored by OpenAIAsync::Client right now, but will be used to force generation of specific formats of responses.
-
-OpenAI supports two values, null and C<json_object> to force a correctly formatted JSON response.  Needs additional documentation
-for how to use this before I enable it.
-
-=head2 tools
-
-=head2 tool_choice
-
-=head2 functions (deprecated see tools)
-
-=head2 function_call (deprecated, see tools)
-
-These are currently mostly unimplemented but will be handled soon.  They're used to have the OpenAI service help you generate function calls to give to code interpreter or to run yourself.
-I'm not entirely sure how they work yet myself so while I'm supporting them in responses I don't know how to properly use them yet.  Once I've gotten a grasp on them I'll document it here.
-
 =head1 SEE ALSO
 
-L<OpenAIAsync::Types::Response::ChatCompletion>, L<OpenAIAsync::Client>
+L<OpenAIAsync::Types::Response::Completion>, L<OpenAIAsync::Client>
 
 =head1 AUTHOR
 
