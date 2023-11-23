@@ -88,8 +88,11 @@ OpenAI supports two values, null and C<json_object> to force a correctly formatt
 for how to use this before I enable it.
 
 =head2 tools
+
 =head2 tool_choice
+
 =head2 functions (deprecated see tools)
+
 =head2 function_call (deprecated, see tools)
 
 These are currently mostly unimplemented but will be handled soon.  They're used to have the OpenAI service help you generate function calls to give to code interpreter or to run yourself.
