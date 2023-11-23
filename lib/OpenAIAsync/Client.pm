@@ -9,7 +9,7 @@ use IO::Async;
 use OpenAIAsync::Types::Results;
 use OpenAIAsync::Types::Requests;
 
-our $VERSION="v0.1.0";
+our $VERSION = '0.02';
 
 # ABSTRACT: Async client for OpenAI style REST API for various AI systems (LLMs, Images, Video, etc.)
 
