@@ -58,17 +58,13 @@ it will properly suspend the execution of your program and do something else con
 
 =head1 Methods
 
-=over 4
-
-=item * new()
+=head2 new()
 
 Create a new OpenAIAsync::Client.  You'll need to register the client with C<< $loop->add($client) >> after creation.
 
-=back
+=head3 PARAMETERS
 
-=head2 PARAMETERS
-
-=over 8
+=over 4
 
 =item * api_base (optional)
 
@@ -135,16 +131,14 @@ A hash ref that gets passed as additional parameters to L<Net::Async::HTTP>'s co
 
 =back
 
-=over 4
-
-=item * completion (deprecated)
+=head2 completion (deprecated)
 
 Create a request for completion, this takes a prompt and returns a response.  See L<OpenAIAsync::Types::Request::Completion> for exact details.
 
 This particular API has been deprecated by OpenAI in favor of doing everything through the chat completion api below.  However it is still supported
 by OpenAI and compatible servers as it's a very simple interface to use
 
-=item * chat
+=head2 chat
 
 Create a request for the chat completion api.  This takes a series of messages and returns a new chat response.  See L<OpenAIAsync::Types::Request::ChatCompletion> for exact details.
 
@@ -154,7 +148,7 @@ to set the context for the assistant, followed by the C<"user"> agent type for t
 To continue the chat, you'd then take the new message and insert it into the list of messages as part of the chat and make a new request with the user's response.  I'll be creating
 a new module that uses this API and helps manage the chat in an easier manner with a few helper functions.
 
-=item * embedding
+=head2 embedding
 
 Create a request for calculating the embedding of an input.  This takes a bit of text and returns a gigantic list of numbers, see L<OpenAIAsync::Types::Request::Embedding> for exact details.
 
@@ -164,23 +158,21 @@ from the training data of the embedding model.
 
 You'll want to take the vector and store it in a database that supports vector operations, like PostgreSQL with the L<pgvector|https://github.com/pgvector/pgvector> extension.
 
-=item * image_generate
+=head2 image_generate
 
 Unimplemented, but once present will be used to generate images with Dall-E (or for self hosted, stable diffusion).
 
-=item * text_to_speech
+=head2 text_to_speech
 
 Unimplemented, but can be used to turn text to speech using whatever algorithms/models are supported.
 
-=item * speech_to_text
+=head2 speech_to_text
 
 Unimplemented. The opposite of the above.
 
-=item * vision
+=head2 vision
 
 Unimplemented, I've not investigated this one much yet but I believe it's to get a description of an image and it's contents.
-
-=back
 
 =head1 See Also
 
