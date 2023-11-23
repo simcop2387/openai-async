@@ -1,0 +1,63 @@
+=pod
+
+=head1 NAME
+
+OpenAIAsync::Types::Results::Completion
+
+=head1 DESCRIPTION
+
+A result from a completion request, L<OpenAIAsync::Types::Request::Completion>
+
+=head1 SYNOPSIS
+
+  use OpenAIAsync::Client;
+  use IO::Async::Loop;
+
+  my $loop = IO::Async::Loop->new();
+  my $client = OpenAIAsync::Client->new();
+
+  $loop->add($client)
+
+  my $output_future = $client->completion({max_tokens => 1024, prompt => "Tell a story about a princess named Judy and her princess sister Emmy"});
+
+  my $result = $output_future->get();
+
+  print $result->choices->[0]->text;
+
+=head1 Fields
+
+=head2 id
+
+id of the completion response, used for tracking duplicate responses or reporting issues to the service
+
+=head2 model
+
+The model that was used to generate the response.  Usually will be what you requested,
+but some local inference servers will ignore what was requested and use the model that was
+already loaded, and this will reflect what was loaded.
+
+=head2 created
+
+When was the request completed and returned.
+
+=head2 system_finterprint
+
+Used by OpenAI to identify which system the generation happened on.  Needed for bug repoprts along with the id
+
+=head2 usage
+
+A L<OpenAIAsync::Tupes::Results::Usage> object, has three fields C<total_tokens>, C<prompt_tokens>, and C<completion_tokens>
+
+=head2 object
+
+A string describing what kind of result this was, will always be "completion".
+
+=head1 SEE ALSO
+
+L<OpenAIAsync::Types::Request::Completion>, L<OpenAIAsync::Client>
+
+=head1 AUTHOR
+
+Ryan Voots ...
+
+=cut

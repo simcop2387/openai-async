@@ -1,0 +1,39 @@
+=pod
+
+=head1 NAME
+
+OpenAIAsync::Types::Results::Usage
+
+=head1 DESCRIPTION
+
+A small report of the tokens given, used, and generated
+
+=head1 SYNOPSIS
+
+  my $result = ...;
+
+  printf "Processed %d tokens in generating response\n", $result->usage->total_tokens
+
+=head1 Fields
+
+=head2 prompt_tokens
+
+How many tokens were in the prompt and initial data
+
+=head2 completion_tokens (optional)
+
+How many tokens were part of the response, may not be present.
+
+=head2 total_tokens
+
+How many total tokens were processed in completing the request.  May also include tokens used as part of an image pipeline or tool call
+
+=head1 SEE ALSO
+
+L<OpenAIAsync::Types::Request::Completion>, L<OpenAIAsync::Client>
+
+=head1 AUTHOR
+
+Ryan Voots ...
+
+=cut
