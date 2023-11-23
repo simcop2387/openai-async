@@ -9991,7 +9991,7 @@ OpenAIAsync::Types::Requests::ChatCompletion::Messages::Union	.build/trQp7H7Uyl/
 OpenAIAsync::Types::Requests::ChatCompletion::Messages::Union	.build/trQp7H7Uyl/lib/OpenAIAsync/Types/Requests.pm	170;"	p
 OpenAIAsync::Types::Requests::ChatCompletion::Messages::Union	.build/wX6DkQhw6E/blib/lib/OpenAIAsync/Types/Requests.pm	170;"	p
 OpenAIAsync::Types::Requests::ChatCompletion::Messages::Union	.build/wX6DkQhw6E/lib/OpenAIAsync/Types/Requests.pm	170;"	p
-OpenAIAsync::Types::Requests::ChatCompletion::Messages::Union	lib/OpenAIAsync/Types/Requests.pm	186;"	p
+OpenAIAsync::Types::Requests::ChatCompletion::Messages::Union	lib/OpenAIAsync/Types/Requests.pm	187;"	p
 OpenAIAsync::Types::Requests::ChatCompletion::Messages::User::ContentUnion	.build/0T4wbFlmwf/blib/lib/OpenAIAsync/Types/Requests.pm	94;"	p
 OpenAIAsync::Types::Requests::ChatCompletion::Messages::User::ContentUnion	.build/0T4wbFlmwf/lib/OpenAIAsync/Types/Requests.pm	94;"	p
 OpenAIAsync::Types::Requests::ChatCompletion::Messages::User::ContentUnion	.build/2oNz8Mp68u/blib/lib/OpenAIAsync/Types/Requests.pm	94;"	p
@@ -28175,7 +28175,7 @@ new	.build/wX6DkQhw6E/blib/lib/OpenAIAsync/Types/Requests.pm	97;"	s
 new	.build/wX6DkQhw6E/lib/OpenAIAsync/Types/Requests.pm	173;"	s
 new	.build/wX6DkQhw6E/lib/OpenAIAsync/Types/Requests.pm	97;"	s
 new	lib/OpenAIAsync/Types/Requests.pm	113;"	s
-new	lib/OpenAIAsync/Types/Requests.pm	189;"	s
+new	lib/OpenAIAsync/Types/Requests.pm	190;"	s
 new	local/bin/lwp-request	231;"	s
 new	local/lib/perl5/Algorithm/Diff.pm	580;"	s
 new	local/lib/perl5/App/Cmd.pm	163;"	s
@@ -28999,7 +28999,7 @@ ontent::new	.build/trQp7H7Uyl/blib/lib/OpenAIAsync/Types/Requests.pm	173;"	s
 ontent::new	.build/trQp7H7Uyl/lib/OpenAIAsync/Types/Requests.pm	173;"	s
 ontent::new	.build/wX6DkQhw6E/blib/lib/OpenAIAsync/Types/Requests.pm	173;"	s
 ontent::new	.build/wX6DkQhw6E/lib/OpenAIAsync/Types/Requests.pm	173;"	s
-ontent::new	lib/OpenAIAsync/Types/Requests.pm	189;"	s
+ontent::new	lib/OpenAIAsync/Types/Requests.pm	190;"	s
 oo	local/lib/perl5/oo.pm	1;"	p
 oo::import	local/lib/perl5/oo.pm	22;"	s
 oo::moo	local/lib/perl5/oo.pm	7;"	s

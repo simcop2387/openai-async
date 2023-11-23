@@ -118,7 +118,7 @@ package
 
     if ($input{type} eq 'text') {
       return OpenAIAsync::Types::Requests::ChatCompletion::Messages::User::Text->new(%input);
-    } elsif ($input{type} eq 'image') {
+    } elsif ($input{type} eq 'image_url') {
       return OpenAIAsync::Types::Requests::ChatCompletion::Messages::User::Image->new(%input);
     } else {
       die "Unsupported ChatCompletion User Message type: [".$input{type}."]";
@@ -150,6 +150,7 @@ class OpenAIAsync::Types::Requests::ChatCompletion::Messages::User :does(OpenAIA
     if (ref($content) eq 'ARRAY') {
       $content = [map {$create_obj->($_)} $content->@*];
     } else {
+      # TODO check that this is acutally doing the right thing.  I think it might not be for user messages that are just text
       $content = $create_obj->($content);
     }
   }

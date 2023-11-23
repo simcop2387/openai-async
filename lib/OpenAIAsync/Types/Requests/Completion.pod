@@ -14,7 +14,15 @@ yourself.
 
 =head1 SYNOPSIS
 
-  ... TODO
+  use OpenAIAsync::Client;
+  use IO::Async::Loop;
+
+  my $loop = IO::Async::Loop->new();
+  my $client = OpenAIAsync::Client->new();
+
+  $loop->add($client)
+
+  my $output_future = $client->completion({max_tokens => 1024, prompt => "Tell a story about a princess named Judy and her princess sister Emmy"});
 
 =head1 Fields
 

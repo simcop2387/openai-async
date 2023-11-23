@@ -10,7 +10,29 @@ A chat completion request, once put through the client you'll get a L<OpenAIAsyn
 
 =head1 SYNOPSIS
 
-  ... TODO
+  use OpenAIAsync::Client;
+  use IO::Async::Loop;
+
+  my $loop = IO::Async::Loop->new();
+
+  my $client = OpenAIAsync::Client->new();
+  $loop->add($client);
+
+  my $output_future = $client->chat({
+      model => "gpt-3.5-turbo",
+      messages => [
+        {
+          role => "system",
+          content => "You are a helpful assistant that tells fanciful stories"
+        },
+        {
+          role => "user",
+          content => "Tell me a story of two princesses, Judy and Emmy.  Judy is 8 and Emmy is 2."
+        }
+      ],
+
+    max_tokens => 1024, 
+  });
 
 =head1 Fields
 
@@ -97,6 +119,83 @@ for how to use this before I enable it.
 
 These are currently mostly unimplemented but will be handled soon.  They're used to have the OpenAI service help you generate function calls to give to code interpreter or to run yourself.
 I'm not entirely sure how they work yet myself so while I'm supporting them in responses I don't know how to properly use them yet.  Once I've gotten a grasp on them I'll document it here.
+
+=head1 MESSAGES
+
+All messages have a role, one of: C<user>, C<system>, C<assistant>, C<tool> or C<function>.  All messages have a C<content> field that will be filled out by 
+
+=head2 USER role
+
+A role of C<user> can have two types of messages, C<text> or C<image_url>.  Technically you can just send a bare string as a text type message but to simplify the API design here we're always 
+sending the content as an array which is allowed.  This allows us to send a type of C<text> or C<image_url> to handle all the types of messages a user can send.
+
+=head3 TEXT
+
+This will have a C<text> field in the message. This is just a bare string sent as a message to the chat session.
+
+=head3 IMAGE_URL
+
+=head4 PARAMETERS
+
+=over 4
+
+=item * image_url
+
+Not actually a URL, but a small little hash for the url.  It will contain a C<url> key, and an optional C<detail> key.
+
+  {
+    url => "data:...",
+    detail => "...",
+  }
+
+=item * detail
+
+Specifies how detailed you want the image to be analyzed at, see L<https://platform.openai.com/docs/guides/vision/low-or-high-fidelity-image-understanding> for specifics but the options are C<low> and C<high>.
+Defaults to C<low>, and currently if you ask for C<high> it will double the cost of the analysis from OpenAI's pricing.
+
+=back
+
+=head2 SYSTEM role
+
+This has two fields C<content> and C<name>
+
+=head3 content
+
+This is the content of the system prompt, typically this is the first information being provided to the model, where you would put instructions and any other data that you want the session to operate on.
+
+=head3 name
+
+An optional parameter to help the model differentiate between multiple participants.  This should be the same as a name provided to any subsequent C<Assistant> messages.
+
+=head2 ASSISTANT role
+
+This has a few fields: C<content>, C<name>, C<tool_calls>, and C<function_call>
+
+=head3 content
+
+The string that the model returned.  When making a request you want these to be the previous responses from the model so that the model has that existing knowledge of what it responded with before.
+
+=head3 name
+
+The name of the bot/character that generated this response.  This can be used with C<system> messages to handle different personalities inside a chat.
+
+=head3 tool_calls
+
+=head3 function_call
+
+I'm not entirely sure how to use these so I can't document them here properly.  They have the same fields as the OpenAI API reference so please look at that.  L<https://platform.openai.com/docs/api-reference/chat/create>.  
+I'll build up tests and documentation for these at a future date once I learn how they work.
+
+=head2 TOOL role
+
+=head2 FUNCTION role
+
+These two are related to the C<tool_calls> and C<function_call> message types, that I also don't quite understand either.
+
+I believe that this is expected to work as the following:
+
+The assistant will send back with it's response a C<tool_calls> or C<function_call> parameter, that you are then expected to use to call the functions internally as part of your client, and then put the responses for them in with these message roles, and then call the client again
+That will generate a new response based on the results of the function calls with a new assistant message.  This needs further investigation.
 
 =head1 SEE ALSO
 
