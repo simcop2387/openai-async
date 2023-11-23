@@ -10,7 +10,21 @@ A result from a an embedding request, L<OpenAIAsync::Types::Request::Completion>
 
 =head1 SYNOPSIS
 
-  ... todo
+  use IO::Async::Loop;
+  use OpenAIAsync::Client;
+
+  my $loop = IO::Async::Loop->new();
+  my $client = OpenAIAsync::Client->new();
+
+  $loop->add($client);
+
+  my $output = $client->embedding({
+      input => "My hovercraft is full of eels",
+      model => "text-embedding-ada-002",
+      encoding_format => "float"
+  })->get();
+
+  print Dumper($output->data->embedding);
 
 =head1 Fields
 
