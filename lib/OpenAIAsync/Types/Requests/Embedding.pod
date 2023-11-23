@@ -1,0 +1,56 @@
+=pod
+
+=head1 NAME
+
+OpenAIAsync::Types::Request::Embedding
+
+=head1 DESCRIPTION
+
+An embedding request, once put through the client you'll get a L<OpenAIAsync::Types::Response::Embedding> with the result of the model.
+
+=head1 SYNOPSIS
+
+  use IO::Async::Loop;
+  use OpenAIAsync::Client;
+
+  my $loop = IO::Async::Loop->new();
+  my $client = OpenAIAsync::Client->new();
+
+  $loop->add($client);
+
+  my $output = $client->embedding({
+      input => "My hovercraft is full of eels",
+      model => "text-embedding-ada-002",
+      encoding_format => "float"
+  })->get();
+
+=head1 Fields
+
+=head2 input
+
+The string of text to calculate an embedding from.
+
+=head2 model
+
+The model to request for the embedding, for OpenAI it's likely to be: C<text-embedding-ada-002>
+Consult with the documentation about how many tokens can be put into each model, and how many dimensions you will get back.  Each model has differing costs and dimensions but OpenAI recommends C<text-embedding-ada-002> for a baseline.
+Their davinci model may be useful still though for larger inputs as it supports 12k tokens for input.
+
+=head2 encoding_format
+
+This is the format that you're expecting the embedding to come back in, either C<float> or C<base64>.  I'm not sure how the base64 encoding works and it may cause errors in this code right now, you probably want C<float> anyway.
+Defaults to C<float>
+
+=head2 user
+
+Parameter used for tracking users when you make the api request.  Give it whatever your user id is so that billing and other things can be tracked appropriately.
+
+=head1 SEE ALSO
+
+L<OpenAIAsync::Types::Response::Embedding>, L<OpenAIAsync::Client>
+
+=head1 AUTHOR
+
+Ryan Voots ...
+
+=cut
