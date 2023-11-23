@@ -64,9 +64,11 @@ it will properly suspend the execution of your program and do something else con
 
 Create a new OpenAIAsync::Client.  You'll need to register the client with C<< $loop->add($client) >> after creation.
 
+=back
+
 =head2 PARAMETERS
 
-=over 4
+=over 8
 
 =item * api_base (optional)
 
@@ -133,6 +135,8 @@ A hash ref that gets passed as additional parameters to L<Net::Async::HTTP>'s co
 
 =back
 
+=over 4
+
 =item * completion (deprecated)
 
 Create a request for completion, this takes a prompt and returns a response.  See L<OpenAIAsync::Types::Request::Completion> for exact details.
@@ -149,8 +153,6 @@ to set the context for the assistant, followed by the C<"user"> agent type for t
 
 To continue the chat, you'd then take the new message and insert it into the list of messages as part of the chat and make a new request with the user's response.  I'll be creating
 a new module that uses this API and helps manage the chat in an easier manner with a few helper functions.
-
-=back
 
 =item * embedding
 
