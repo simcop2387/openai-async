@@ -13,6 +13,187 @@ our $VERSION="v0.1.0";
 
 # ABSTRACT: Async client for OpenAI style REST API for various AI systems (LLMs, Images, Video, etc.)
 
+=pod
+
+=head1 NAME
+
+OpenAIAsync::Client - IO::Async based client for OpenAI compatible APIs
+
+=head1 SYNOPSIS
+
+  use IO::Async::Loop;
+  use OpenAIAsync::Client;
+
+  my $loop = IO::Async::Loop->new();
+
+  my $client = OpenAIAsync::Client->new();
+
+  $loop->add($client);
+
+  my $output = await $client->chat({
+      model => "gpt-3.5-turbo",
+      messages => [
+        {
+          role => "system",
+          content => "You are a helpful assistant that tells fanciful stories"
+        },
+        {
+          role => "user",
+          content => "Tell me a story of two princesses, Judy and Emmy.  Judy is 8 and Emmy is 2."
+        }
+      ],
+
+
+
+    max_tokens => 1024, 
+  })->get();
+
+  # $output is now an OpenAIAsync::Type::Response::ChatCompletion
+
+=head1 THEORY OF OPERATION
+
+This module implements the L<IO::Async::Notifier> interface, this means that you create a new client and then call C<< $loop->add($client) >>
+this casues all L<Future>s that are created to be part of the L<IO::Async::Loop> of your program.  This way when you call C<await> on any method
+it will properly suspend the execution of your program and do something else concurrently (probably waiting on requests).
+
+=head1 Methods
+
+=over 4
+
+=item * new()
+
+Create a new OpenAIAsync::Client.  You'll need to register the client with C<< $loop->add($client) >> after creation.
+
+=head2 PARAMETERS
+
+=over 4
+
+=item * api_base (optional)
+
+Base url of the service to connect to.  Defaults to C<https://api.openai.com/v1>.  This should be a value pointing to something that
+implements the v1 OpenAI API, which for OobaBooga's text-generation-webui might be something like C<http://localhost:5000/v1>.
+
+It will also be pulled from the environment variable C<OPENAI_API_BASE> in the same fashion that the OpenAI libraries in other languages will do.
+
+=item * api_key (required)
+
+Api key that will be passed to the service you call.  This gets passed as a header C<Authorization: Api-Key ....> to the service in all of the REST
+calls.  This should be kept secret as it can be used to make all kinds of calls to paid services.
+
+It will also be pulled from the environment variable C<OPENAI_API_KEY> in the same fashion that the OpenAI libraries in other languages will do.
+
+=item * api_org_name (optional)
+
+A name for the organization that's making the call.  This can be used by OpenAI to help identify which part of your company is
+making any specific request, and I believe to help itemize billing and other tasks. 
+
+=item * http_user_agent (optional)
+
+Set the useragent that's used to contact the API service.  Defaults to 
+
+C<< __PACKAGE__." Perl/$VERSION (Net::Async::HTTP/".$Net::Async::HTTP::VERSION." IO::Async/".$IO::Async::VERSION." Perl/$])" >>
+
+The default is to make it easier to debug if we ever see weird issues with the requests being generated but it does reveal some information
+about the code environment.
+
+=item * http_max_in_flight (optional)
+
+How many requests should we allow to happen at once.  Increasing this will increase the allowed parallel requests, but that can also
+allow you to make too many requests and cost more in API calls.
+
+Defaults to 2
+
+=item * http_max_connections_per_host (optional)
+
+TODO, I'm thinking this one will get dropped.  Effectively since we're only ever connecting to one server this ends up functioning the same as the above parameter.
+
+Defaults to 2
+
+=item * http_max_redirects (optional)
+
+How many redirects to allow.  The official OpenAI API never sends redirects (for now) but for self hosted or other custom setups this might happen and should be handled correctly
+
+Defaults to 3
+
+=item * http_timeout (optional)
+
+How long to wait on any given request to start.  
+
+Defaults to 120 seconds.
+
+=item * http_stall_timeout (optional)
+
+How long to wait on any given request to decide if it's been stalled.  If a request starts responding and then stops part way through, this is how we'll treat it as stalled and time it out
+
+Defaults to 600s (10 minutes).  This is unlikely to happen except for a malfunctioning inference service since once generation starts to return it'll almost certainly finish.
+
+=item * http_other (optional)
+
+A hash ref that gets passed as additional parameters to L<Net::Async::HTTP>'s constructor.  All values will be overriden by the ones above, so if a parameter is supported use those first.
+
+=back
+
+=item * completion (deprecated)
+
+Create a request for completion, this takes a prompt and returns a response.  See L<OpenAIAsync::Types::Request::Completion> for exact details.
+
+This particular API has been deprecated by OpenAI in favor of doing everything through the chat completion api below.  However it is still supported
+by OpenAI and compatible servers as it's a very simple interface to use
+
+=item * chat
+
+Create a request for the chat completion api.  This takes a series of messages and returns a new chat response.  See L<OpenAIAsync::Types::Request::ChatCompletion> for exact details.
+
+This API takes a series of messages from different agent sources and then responds as the assistant agent.  A typical interaction is to start with a C<"system"> agent message 
+to set the context for the assistant, followed by the C<"user"> agent type for the user's request.  You'll then get the response from the assistant agent to give to the user.
+
+To continue the chat, you'd then take the new message and insert it into the list of messages as part of the chat and make a new request with the user's response.  I'll be creating
+a new module that uses this API and helps manage the chat in an easier manner with a few helper functions.
+
+=back
+
+=item * embedding
+
+Create a request for calculating the embedding of an input.  This takes a bit of text and returns a gigantic list of numbers, see L<OpenAIAsync::Types::Request::Embedding> for exact details.
+
+These values are a bit difficult to explain how they work, but essentially you get a mathematical object, a vector, that describes the contents of the input as 
+a point in an N-dimensional space (typically 768 or 1536 dimensions).  The dimensions themselves really don't have any inherit mathematical meaning but are instead relative to one-another
+from the training data of the embedding model.
+
+You'll want to take the vector and store it in a database that supports vector operations, like PostgreSQL with the L<pgvector|https://github.com/pgvector/pgvector> extension.
+
+=item * image_generate
+
+Unimplemented, but once present will be used to generate images with Dall-E (or for self hosted, stable diffusion).
+
+=item * text_to_speech
+
+Unimplemented, but can be used to turn text to speech using whatever algorithms/models are supported.
+
+=item * speech_to_text
+
+Unimplemented. The opposite of the above.
+
+=item * vision
+
+Unimplemented, I've not investigated this one much yet but I believe it's to get a description of an image and it's contents.
+
+=back
+
+=head1 See Also
+
+L<IO::Async>, L<Future::AsyncAwait>, L<Net::Async::HTTP>
+
+=head1 License
+
+Artistic 2.0
+
+=head1 Author
+
+Ryan Voots, ... etc.
+
+=cut
+
 class OpenAIAsync::Client :repr(HASH) :isa(IO::Async::Notifier) :strict(params) {
   use JSON::MaybeXS qw//;
   use Net::Async::HTTP;
@@ -29,7 +210,7 @@ class OpenAIAsync::Client :repr(HASH) :isa(IO::Async::Notifier) :strict(params) 
   field $_http_timeout :param(http_timeout) = 120; # My personal server is kinda slow, use a generous default
   field $_http_stall_timeout :param(http_stall_timeout) = 600; # generous for my slow personal server
   field $_http_other :param(http_other_options) = {};
-  field $_http_user_agent = __PACKAGE__." Perl/$VERSION (Net::Async::HTTP/".$Net::Async::HTTP::VERSION." IO::Async/".$IO::Async::VERSION." Perl/$])";
+  field $_http_user_agent :param(http_user_agent) = __PACKAGE__." Perl/$VERSION (Net::Async::HTTP/".$Net::Async::HTTP::VERSION." IO::Async/".$IO::Async::VERSION." Perl/$])";
 
   field $api_base :param(api_base) = $ENV{OPENAI_API_BASE} // "https://api.openai.com/v1";
   field $api_key :param(api_key) = $ENV{OPENAI_API_KEY};
@@ -135,7 +316,6 @@ class OpenAIAsync::Client :repr(HASH) :isa(IO::Async::Notifier) :strict(params) 
     my $type_result = OpenAIAsync::Types::Results::ChatCompletion->new($data->%*);
 
     return $type_result;
-
   }
 
   async method embedding($input) {

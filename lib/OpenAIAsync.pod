@@ -1,7 +1,19 @@
 =pod
 
-=head1 TODO
+=head1 PURPOSE
 
-Document things
+There's two big submodules that you'll want to look at:
+
+L<OpenAIAsync::Client> and L<OpenAIAsync::Client::OobaBooga>
+
+There will eventually be a compatible server that uses Net::Async::HTTP::Server that can be used to build a proxy that lets you manipulate or reroute requests, etc.
+
+=head1 LICENSE
+
+Artistic 2.0 - L<Software::License::Artistic_2_0>
+
+=head1 AUTHOR
+
+Ryan Voots TODO add more here
 
 =cut
