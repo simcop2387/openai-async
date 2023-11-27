@@ -8,6 +8,44 @@ L<OpenAIAsync::Client> and L<OpenAIAsync::Client::OobaBooga>
 
 There will eventually be a compatible server that uses Net::Async::HTTP::Server that can be used to build a proxy that lets you manipulate or reroute requests, etc.
 
+=head1 WARNING
+
+This whole module is in a very early state, and while it has been working for my tests and simple projects it's far from complete and robustly tested yet.
+
+=head1 PLANS
+
+=over 4
+
+=item * Create a subclass of ::Client that properly handles the additional fields for a few local ai inference servers.
+
+Particularly OobaBooga's text-generation-webui since it's what I use.  It has a number of additional features like negative prompts and other sampler parameters that can help get better quality responses from Llama models
+
+=item * Streaming response support
+
+This is going to take a few things to work properly.  Particularly it's going to need a new module that is similar to L<Net::Async::Websocket> because OpenAI implemented this via C<server-sent-events>, which does not have any support in Net::Async::HTTP (or Mojo::UserAgent) to be handled properly.
+
+Once I get to working on that new module I'll start implementing the streaming support in here, which will likely look similar to IO::Async::Stream or Net::Async::Websocket, where you'll give a coderef for each new event to be processed.
+
+=item * Image Gen, Vision, STT, and TTS support
+
+I've left these off since they're more expensive on OpenAI's service and I haven't set them up on my own local system yet.  But this will come somewhat soon.  I'm not going to require any specific image library to be used, but I'll try to provide some simple functions to create the requests in an agnostic manner.
+
+=back
+
+=head1 NON-PLANS
+
+=over 4
+
+=item * Direct simple chatbot interface
+
+The ChatCompletion API and it's features are actually a little verbose and complicated to use properly, but I'm intending this series of modules to be direct and complete API clients only.  To that end though I'll be making an OpenAIAsync::ChatBot module that provides a better interface for making actual chatbots, particularly chat session handling and stable serialization of chats so that they can be persisted somewhere and then reloaded to continue in the future.
+
+=back
+
+=head1 KNOWN ISSUES
+
+I'm pretty sure there's a bug or two in the ChatCompletion code in the client, and I'm working on making some tests to uncover and fix those.  So use those with caution
+
 =head1 LICENSE
 
 Artistic 2.0 - L<Software::License::Artistic_2_0>
