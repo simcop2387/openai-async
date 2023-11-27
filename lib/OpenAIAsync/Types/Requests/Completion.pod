@@ -6,7 +6,7 @@ OpenAIAsync::Types::Request::Completion
 
 =head1 DESCRIPTION
 
-A completion request, once put through the client you'll get a L<OpenAIAsync::Types::Response::Completion> with the result of the model.
+A completion request, once put through the client you'll get a L<OpenAIAsync::Types::Results::Completion> with the result of the model.
 
 This type of request is officially deprecated by OpenAI and got it's final update in June 2023.  That said it's a very simple API and will
 likely exist for some time, but it can be more difficult to control and get continuous responses since you have to do all the prompt formatting
@@ -155,7 +155,7 @@ lead to less variation in the responses at the same time.
 
 =head1 SEE ALSO
 
-L<OpenAIAsync::Types::Response::Completion>, L<OpenAIAsync::Client>
+L<OpenAIAsync::Types::Results::Completion>, L<OpenAIAsync::Client>
 
 =head1 AUTHOR
 

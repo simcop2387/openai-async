@@ -6,7 +6,7 @@ OpenAIAsync::Types::Results::CompletionChoices
 
 =head1 DESCRIPTION
 
-A choice from a completion request, L<OpenAIAsync::Types::Request::Completion> as part of L<OpenAIAsync::Types::Result::Completion>
+A choice from a completion request, L<OpenAIAsync::Types::Request::Completion> as part of L<OpenAIAsync::Types::Results::Completion>
 
 =head1 SYNOPSIS
 
@@ -44,7 +44,7 @@ What made the model stop generating.  Could be from hitting a stop token, or run
 
 =head1 SEE ALSO
 
-L<OpenAIAsync::Types::Request::Completion>, L<OpenAIAsync::Types::Result::Completion>, L<OpenAIAsync::Client>
+L<OpenAIAsync::Types::Request::Completion>, L<OpenAIAsync::Types::Results::Completion>, L<OpenAIAsync::Client>
 
 =head1 AUTHOR
 

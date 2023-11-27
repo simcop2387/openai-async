@@ -6,7 +6,7 @@ OpenAIAsync::Types::Request::ChatCompletion
 
 =head1 DESCRIPTION
 
-A chat completion request, once put through the client you'll get a L<OpenAIAsync::Types::Response::ChatCompletion> with the result of the model.
+A chat completion request, once put through the client you'll get a L<OpenAIAsync::Types::Results::ChatCompletion> with the result of the model.
 
 =head1 SYNOPSIS
 
@@ -199,7 +199,7 @@ That will generate a new response based on the results of the function calls wit
 
 =head1 SEE ALSO
 
-L<OpenAIAsync::Types::Response::ChatCompletion>, L<OpenAIAsync::Client>
+L<OpenAIAsync::Types::Results::ChatCompletion>, L<OpenAIAsync::Client>
 
 =head1 AUTHOR
 

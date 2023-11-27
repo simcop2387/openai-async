@@ -1,0 +1,75 @@
+=pod
+
+=head1 NAME
+
+OpenAIAsync::Types::Results::ChatCompletion
+
+=head1 DESCRIPTION
+
+An object representing a Chat Completion response, see L<OpenAIAsync::Types::Request::ChatCompletion>
+
+=head1 SYNOPSIS
+
+  use OpenAIAsync::Client;
+  use IO::Async::Loop;
+
+  my $loop = IO::Async::Loop->new();
+
+  my $client = OpenAIAsync::Client->new();
+  $loop->add($client);
+
+  my $output_future = $client->chat({
+      model => "gpt-3.5-turbo",
+      messages => [
+        {
+          role => "system",
+          content => "You are a helpful assistant that tells fanciful stories"
+        },
+        {
+          role => "user",
+          content => "Tell me a story of two princesses, Judy and Emmy.  Judy is 8 and Emmy is 2."
+        }
+      ],
+
+    max_tokens => 1024, 
+  });
+
+=head1 Fields
+
+=head2 id
+
+id of the response, used for debugging and tracking
+
+=head2 choices
+
+The chat responses, L<OpenAIAsync::Types::Results::ChatCompletionChoices> for details.  The text of the responses will be here
+
+=head2 created
+
+Date and time of when the response was generated
+
+=head2 model
+
+Name of the model that actually generated the response, may not be the same as the requested model depending on the service
+
+=head2 system_fingerprint
+
+Given by the service to identify which server actually generated the response, used to detect changes and issues with servers
+
+=head2 usage
+
+Token counts for the generated responses, in a L<OpenAIAsync::Types::Results::Usage> object.  Has C<total_tokens>, C<prompt_tokens>, and C<completion_tokens> fields.
+
+=head2 object
+
+Static field that will likely only ever contain, C<chat.completion>
+
+=head1 SEE ALSO
+
+L<OpenAIAsync::Types::Request::Completion>, L<OpenAIAsync::Types::Result::Completion>, L<OpenAIAsync::Client>
+
+=head1 AUTHOR
+
+Ryan Voots ...
+
+=cut

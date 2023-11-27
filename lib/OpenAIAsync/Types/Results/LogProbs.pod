@@ -24,6 +24,8 @@ Which position in the resulting text this log probability represents
 
 =head2 top_logprobss
 
+Not available on my local ai server, will update in next set of changes from how OpenAI implements them
+
 =head1 SEE ALSO
 
 L<OpenAIAsync::Types::Request::Completion>, L<OpenAIAsync::Types::Result::Completion>, L<OpenAIAsync::Client>
@@ -32,4 +34,4 @@ L<OpenAIAsync::Types::Request::Completion>, L<OpenAIAsync::Types::Result::Comple
 
 Ryan Voots ...
 
-=cu
+=cut

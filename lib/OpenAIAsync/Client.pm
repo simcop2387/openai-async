@@ -48,7 +48,7 @@ OpenAIAsync::Client - IO::Async based client for OpenAI compatible APIs
     max_tokens => 1024, 
   })->get();
 
-  # $output is now an OpenAIAsync::Type::Response::ChatCompletion
+  # $output is now an OpenAIAsync::Type::Results::ChatCompletion
 
 =head1 THEORY OF OPERATION
 

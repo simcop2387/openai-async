@@ -6,7 +6,7 @@ OpenAIAsync::Types::Request::Embedding
 
 =head1 DESCRIPTION
 
-An embedding request, once put through the client you'll get a L<OpenAIAsync::Types::Response::Embedding> with the result of the model.
+An embedding request, once put through the client you'll get a L<OpenAIAsync::Types::Results::Embedding> with the result of the model.
 
 =head1 SYNOPSIS
 
@@ -47,7 +47,7 @@ Parameter used for tracking users when you make the api request.  Give it whatev
 
 =head1 SEE ALSO
 
-L<OpenAIAsync::Types::Response::Embedding>, L<OpenAIAsync::Client>
+L<OpenAIAsync::Types::Results::Embedding>, L<OpenAIAsync::Client>
 
 =head1 AUTHOR
 

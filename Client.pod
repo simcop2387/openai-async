@@ -9,7 +9,7 @@ use IO::Async;
 use OpenAIAsync::Types::Results;
 use OpenAIAsync::Types::Requests;
 
-our $VERSION="v0.1.0";
+our $VERSION = '0.02';
 
 # ABSTRACT: Async client for OpenAI style REST API for various AI systems (LLMs, Images, Video, etc.)
 
@@ -48,7 +48,7 @@ OpenAIAsync::Client - IO::Async based client for OpenAI compatible APIs
     max_tokens => 1024, 
   })->get();
 
-  # $output is now an OpenAIAsync::Type::Response::ChatCompletion
+  # $output is now an OpenAIAsync::Type::Results::ChatCompletion
 
 =head1 THEORY OF OPERATION
 
@@ -173,6 +173,10 @@ Unimplemented. The opposite of the above.
 =head2 vision
 
 Unimplemented, I've not investigated this one much yet but I believe it's to get a description of an image and it's contents.
+
+=head2 Missing apis
+
+At least some for getting the list of models and some other meta information, those will be added next after I get some more documentation written
 
 =head1 See Also
 
