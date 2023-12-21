@@ -72,8 +72,13 @@ it will properly suspend the execution of your program and do something else con
 All the methods that you provide must be async, this is so that multiple requests can be easily handled internally with ease.
 
 You subclass the ::Server class and implement your own methods for handling the limited number of requests, and provide some
-configuration information for the servers to start in the init() method
+configuration information for the servers to start in the configure() method.  The reason to put this into a method is so that
+The server object can handle reloading itself without being recreated.  This way any sockets that are already listening don't have
+to be closed and reopened to be reconfigured (assuming that the new configuration keeps them open).
 
+Streaming from ::Server is still being designed, I'll publish this system WITHOUT streaming support the first time around
+since I need to write at least a new http client module that supports it in order to test things properly, and the make OpenAIAsync::Client
+work with streaming events anyway.
 
 =head1 Methods
 
@@ -91,7 +96,44 @@ TODO FILL IN
 
 =back
 
-=head2 auth_check($key, $http_req)
+=head2 init($loop)
+
+The intialization phase, this happens before the configure() method is called, so that you can setup any local data stores and validate
+the environment.  This will only be called once, but configure() may be called multiple times, such as from a signal handler (SIGHUP or SIGUSR1?)
+to reload any configuration for the HTTP endpoints.
+
+Not completely sure if I should have these separated but I kept not liking doing it all in one method for some reason.  Maybe fold this into BUILD {} instead?
+
+=back
+
+=head2 configure($loop)
+
+The configuration phase, returns a list of the arguments to be given to Net::Async::HTTP::Server
+
+TODO bring in some docuemtation, this is derived from C<IO::Async::Loop> 's listen method, and we also need to refer to the connect method for more details
+basically, just C<< listen => [addr => '::1', port => 8080, socktype => 'stream'] >> as a basic example.
+
+We handle multiple of these so we can have this proxy listen on multiple ports, and then handle any other behavior for it
+
+The context key will be passed to all of the methods doing the handling here, so you can use it for static data based on which
+connection actually was used.  This should help handle multiple networks/vlans or auth patterns a bit easier from a single daemon.
+
+I think this should also let you pass in a listening handle from another module like IO::Socket::SSL or something to do native SSL
+But I'm not going to be testing that for some time myself, and would recommend using something else like nginx, haproxy, etc. as a
+terminator for TLS connections
+
+    [
+      {
+        listen => {addrs => ['::1', ...], ...},
+        context => {...}
+        on_something => code    
+      },
+      ...
+    ]
+
+=back
+
+=head2 auth_check($key, $ctx, $http_req)
 
 This method requres async keyword.
 
@@ -101,43 +143,45 @@ if $key is undef then you can use the $http_req object to get a look at the full
 
 By default all OpenAI compatible APIs are expecting ONLY an API-Key type Authorization header so doing anytyhing else isn't strictly compatible but there's no reason that this server shouldn't be able to do more if you're customizing things
 
-=head2 completion (deprecated)
+=head2 async completion($ctx, $completion)
+
+=head3 DEPRECATED
 
 This method requres async keyword.
 
-Handle a completion request, takes in a request object, must return a response object
+Handle a completion request, takes in a request object, must return a response object.
 
-=head2 chat
+=head2 async chat($ctx, $chat_completion)
 
 This method requres async keyword.
 
 Handle a chat completion request
 
-=head2 embedding
+=head2 async embedding($ctx, $embedding)
 
 This method requres async keyword.
 
 Handle an embedding request
 
-=head2 image_generate
+=head2 async image_generate
 
 This method requres async keyword.
 
 Unimplemented, but once present will be used to generate images with Dall-E (or for self hosted, stable diffusion).
 
-=head2 text_to_speech
+=head2 async text_to_speech
 
 This method requres async keyword.
 
 Unimplemented, but can be used to turn text to speech using whatever algorithms/models are supported.
 
-=head2 speech_to_text
+=head2 async speech_to_text
 
 This method requres async keyword.
 
 Unimplemented. The opposite of the above.
 
-=head2 vision
+=head2 async vision
 
 This method requres async keyword.
 
@@ -161,7 +205,7 @@ Ryan Voots, ... etc.
 
 =cut
 
-class OpenAIAsync::Client :repr(HASH) :isa(IO::Async::Notifier) :strict(params) {
+class OpenAIAsync::Server :repr(HASH) :isa(IO::Async::Notifier) :strict(params) {
   use JSON::MaybeXS qw//;
   use Net::Async::HTTP;
   use Feature::Compat::Try;

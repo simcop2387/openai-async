@@ -9895,6 +9895,7 @@ OpenAIAsync::Client	.build/t7Cb8f47yj/blib/lib/OpenAIAsync/Client.pm	1;"	p
 OpenAIAsync::Client	.build/t7Cb8f47yj/lib/OpenAIAsync/Client.pm	1;"	p
 OpenAIAsync::Client	OpenAIAsync-0.01/lib/OpenAIAsync/Client.pm	1;"	p
 OpenAIAsync::Client	lib/OpenAIAsync/Client.pm	1;"	p
+OpenAIAsync::Server	lib/OpenAIAsync/Server.pm	1;"	p
 OpenAIAsync::Types	.build/0T4wbFlmwf/blib/lib/OpenAIAsync/Types.pm	1;"	p
 OpenAIAsync::Types	.build/0T4wbFlmwf/lib/OpenAIAsync/Types.pm	1;"	p
 OpenAIAsync::Types	.build/2oNz8Mp68u/blib/lib/OpenAIAsync/Types.pm	1;"	p
