@@ -207,4 +207,48 @@ package
   }
 };
 
+class OpenAIAsync::Types::Requests::FileUpload :does(OpenAIAsync::Types::Requests::Base) :Struct {
+  method _endpoint() {"/files"}
+
+  field $file :MarshalTo(OpenAIAsync::Types::Requests::FileObject);
+  field $purpose :JSONStr; # fine-tune and assistants for the types, TODO check format/type of file
+}
+
+# TODO this is shared request and result?
+# TODO Add a method here that given a file name will create a new object with things filled out
+class OpenAIAsync::Types::Requests::FileObject :does(OpenAIAsync::Types::Requests::Base) :Struct {
+  field $id :JSONStr = undef; # Only optional for uploads, but always comes back from the service.  TODO make a check
+  field $bytes :JSONNum;
+  field $created_at :JSONNum;
+  field $filename :JSONStr;
+  field $object :JSONStr = "file"; # Always a file, maybe enforce this in the future
+  field $purpose :JSONStr; # fine-tune, fine-tune-results, assistants, or assistants_output
+  field $status :JSONStr = undef; # DEPRECATED, current status of the file: uploaded, processed, or error
+  field $status_detailts :JSONStr = undef; # DEPRECATED originally used for details of fine-tuning
+}
+
+class OpenAIAsync::Types::Requests::FileList :does(OpenAIAsync::Types::Requests::Base) :Struct {
+  method _endpoint() {"/files"}
+
+  field $purpose :JSONStr = undef; # fine-tune and assistants for the types, optional, used for filtering
+}
+
+class OpenAIAsync::Types::Requests::FileInfo :does(OpenAIAsync::Types::Requests::Base) :Struct {
+  method _endpoint() {"/files/".$self->file_id} # TODO this needs help inside the server!
+
+  field $file_id :JSONStr; # id of the file to retrieve
+}
+
+class OpenAIAsync::Types::Requests::FileDelete :does(OpenAIAsync::Types::Requests::Base) :Struct {
+  method _endpoint() {"/files/".$self->file_id} # TODO this needs help inside the server!
+
+  field $file_id :JSONStr; # id of the file to retrieve
+}
+
+class OpenAIAsync::Types::Requests::FileContent :does(OpenAIAsync::Types::Requests::Base) :Struct {
+  method _endpoint() {"/files/".$self->file_id.'/content'} # TODO this needs help inside the server!
+
+  field $file_id :JSONStr; # id of the file to retrieve
+}
+
 1;  
