@@ -9897,6 +9897,7 @@ OpenAIAsync::Client	OpenAIAsync-0.01/lib/OpenAIAsync/Client.pm	1;"	p
 OpenAIAsync::Client	lib/OpenAIAsync/Client.pm	1;"	p
 OpenAIAsync::Server	lib/OpenAIAsync/Server.pm	1;"	p
 OpenAIAsync::Server::API::v1::File	lib/OpenAIAsync/Server/API/v1/Chat.pm	1;"	p
+OpenAIAsync::Server::API::v1::File	lib/OpenAIAsync/Server/API/v1/Completion.pm	1;"	p
 OpenAIAsync::Server::API::v1::File	lib/OpenAIAsync/Server/API/v1/File.pm	1;"	p
 OpenAIAsync::Types	.build/0T4wbFlmwf/blib/lib/OpenAIAsync/Types.pm	1;"	p
 OpenAIAsync::Types	.build/0T4wbFlmwf/lib/OpenAIAsync/Types.pm	1;"	p

@@ -216,6 +216,7 @@ class OpenAIAsync::Server :repr(HASH) :isa(IO::Async::Notifier) :strict(params) 
   use Net::Async::HTTP::Server;
   use Feature::Compat::Try;
   use URI;
+  use WWW:Form::UrlEncoded;
 
   field $_json = JSON::MaybeXS->new(utf8 => 1, convert_blessed => 1);
   field $http_servers;
@@ -264,24 +265,11 @@ class OpenAIAsync::Server :repr(HASH) :isa(IO::Async::Notifier) :strict(params) 
     $req->respond($response);
   }
 
-  # Pulled out into another method to let subclasses override things if they REALLY want to
-  method _get_routes($httpserver, $req, $ctx) {
-    my $routers = {
-      '/' => {
-        GET => async sub {$self->_resp_custom($req, 200, "I'm an AI teapot")},
-      },
-      '/v1/'.OpenAIAsync::Types::Requests::ChatCompletion->_endpoint() => {
-        POST => async sub {$self->_handle_req($httpserver, $req, $ctx, "ChatCompletion")}
-      },
-      '/v1/'.OpenAIAsync::Types::Requests::Completion->_endpoint() => {
-        POST => async sub {$self->_handle_req($httpserver, $req, $ctx, "Completion")}
-      },
-      '/v1/'.OpenAIAsync::Types::Requests::Embedding->_endpoint() => {
-        POST => async sub {$self->_handle_req($httpserver, $req, $ctx, "Embedding")}
-      },
-    };
+  field $routes = [];
 
-    return $routers;
+  method register_url(%opts) {
+    # TODO check params
+    push $routes->@*, \%opts;
   }
 
   async method _route_request($httpserver, $req, $ctx) {
@@ -292,105 +280,70 @@ class OpenAIAsync::Server :repr(HASH) :isa(IO::Async::Notifier) :strict(params) 
     my $path   = $uri->path;
 
     try {
-      if (my $route = $routers->{$path}) {
-        if (my $method_route = $route->{$method}) {
-          my $f = Future->wrap($method_route->());
-          $self->adopt_future($f);
-          return $f;
-        } else {
-          $self->_resp_custom($req, 405, "Not allowed");
+      my $found_route = false;
+      my $f;
+      for my $route ($self->routes->@*) {
+        if ($uri =~ $route->{url} && $route->{method} eq $method) {
+          my $params = +{%+, _ => [@+]}; # make a copy of named parameters, and digited ones to pass into the handler
+          $found_route = true;
+
+          my $obj;
+          if ($route->{decoder} eq "www-form-urlencoded") {
+            my %data = WWW:Form::UrlEncoded::parse_urlencoded($req->decoded_content);
+            $obj = $route->{request_class}->new(%data);
+          } elsif ($route->{decoder} eq "json") {
+            my $data = $_json->decode($req->decoded_content);
+            $obj = $route->{request_class}->new(%$data);
+          } elsif ($route->{decoder} eq "null") {
+            $obj = $route->{request_class}->new();
+          } else { # Try to detect based on content-type, then fail
+            my $content_type = $req->header("Content-Type");
+            if ($content_type eq 'application/json') {
+              my $data = $_json->decode($req->decoded_content);
+              $obj = $route->{request_class}->new(%$data);
+            } elsif ($content_type eq 'application/x-www-form-urlencoded') {
+              my %data = WWW:Form::UrlEncoded::parse_urlencoded($req->decoded_content);
+              $obj = $route->{request_class}->new(%data);
+            } else {
+              die "Unsupported content-type for URI: $content_type";
+            }
+          }
+
+          try {
+            my ($result, @extra) = (await $route->{handle}->($req, $ctx, $obj, $params))->get();
+            
+            if ($route->{result_class}) {
+              my $out_obj = $result;
+              unless ($out_obj isa $route->{result_object}) {
+                $out_obj = $route->{result_class}->new(%$result);
+              }
+
+              if (@extra) {
+                $self->_resp_custom($req, $extra[0], $out_obj); # TODO better design?
+              } else {
+                $self->_resp_custom($req, 200, $out_obj);
+              }
+            } else {
+              if (@extra) {
+                $self->_resp_custom($req, @extra); # TODO better design?
+              } else {
+                # Nothing to output directly
+                $self->_resp_custom($req, 200, "");
+              }
+
+              return;
+            }
+          } catch {
+            my $err = $@;
+            $self->_resp_custom($req, 500, "Server error: ".$err);
+            return;
+          }
         }
-      } else {
-        my $f = await $self->route_request($httpserver, $req, $ctx);
-        $self->adopt_future($f);
-        return $f;
       }
     } catch {
       my $err = $@;
 
-      my $f = Future->wrap($self->_resp_custom($req, 400, "Error: ".$err));
-      $self->adopt_future($f);
-      return $f;
+      $self->_resp_custom($req, 400, "Error: ".$err);
     }
-  }
-
-  async method route_request($httpserver, $req, $ctx) {
-    # Base implementation, override in your subclass to do more advanced things
-    $self->_resp_custom($req, 404, "Not found");
-  }
-
-  # TODO decide if I need this for this setup? I think I don't.
-#   method _add_to_loop($loop) {
-#    $loop->add($http);
-#  }
-#
-#  method _remove_from_loop($loop) {
-#    $loop->remove($http);
-#    $http = $self->__make_http; # overkill? want to make sure we have a clean one
-#  }
-
-  method _decode_req($req, $kind) {
-    my $content_type = $req->header("Content-Type");
-
-    die "Wrong Content Type '$content_type'" unless $content_type eq 'application/json';
-
-    my $raw_content = $req->decoded_content();
-    my $json = $_json->decode($raw_content);
-
-    if ($kind eq 'ChatCompletion') {
-      return OpenAIAsync::Types::Requests::ChatCompletion->new($json);
-    } elsif ($kind eq 'Completion') {
-      return OpenAIAsync::Types::Requests::Completion->new($json);
-    } elsif ($kind eq 'Embedding') {
-      return OpenAIAsync::Types::Requests::Embedding->new($json);
-    } else {
-      die "Failed to handle kind $kind";
-    }
-  }
-
-  method _check_response($req, $kind, $content) {
-
-    return $kind eq 'ChatCompletion' ? $content isa OpenAIAsync::Types::Results::ChatCompletion :
-           $kind eq 'Completion'     ? $content isa OpenAIAsync::Types::Results::Completion :
-           $kind eq 'Embedding'      ? $content isa OpenAIAsync::Types::Results::Embedding :
-                                       false;
-  }
-
-  async method _handle_req($httpserver, $req, $ctx, $kind) {
-    my $authed_f = await $self->auth_check($api_key, $ctx, $req);
-
-    if (not $authed_f->get()) {
-      # Not authorized, give a 403
-      $self->_resp_custom($req, 403, "Forbidden");
-      my $dummy_f = $self->loop->new_future();
-      $dummy_f->done();
-      return $dummy_f;
-    }
-
-    my $obj = $self->_decode_req($req, $kind);
-
-    if ($obj->can('stream')) {
-      die "Streaming is unsupported" if $obj->stream;
-    }
-
-    my $f;
-
-    if ($kind eq 'ChatCompletion') {
-      $f = await $self->chat($ctx, $obj);
-    } elsif ($kind eq 'Completion') {
-      $f = await $self->completion($ctx, $obj);
-    } elsif ($kind eq 'ChatCompletion') {
-      $f = await $self->embeddding($ctx, $obj);
-    } else {
-      die "Unhandled kind $kind";
-    }
-
-    $self->adopt_future($f);
-    my $resp = $f->get();
-    die "Bad response $obj" unless $self->_check_response($req, $kind, $resp);
-
-    my $json_resp = $_json->encode($resp);
-    $self->_custom_resp($req, 200, $json_resp, 1);
-    return $f;    
   }
 }
