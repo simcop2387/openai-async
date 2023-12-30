@@ -108,3 +108,15 @@ class OpenAIAsync::Types::Results::EmbeddingData :does(OpenAIAsync::Types::Base)
   field $embedding :JSONList(JSONNum);
   field $object :JSONStr;
 }
+
+class OpenAIAsync::Types::Results::ModelList :does(OpenAIAsync::Types::Base) :Struct {
+  field $object :JSONStr = 'list';
+  field $data :MarshalTo(OpenAIAsync::Types::Results::ModelInfo);
+}
+
+class OpenAIAsync::Types::Results::ModelInfo :does(OpenAIAsync::Types::Base) :Struct {
+  field $created :JSONNum;
+  field $id :JSONStr;
+  field $object :JSONStr = "model";
+  field $owned_by :JSONStr;
+}

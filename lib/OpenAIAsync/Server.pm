@@ -233,6 +233,7 @@ class OpenAIAsync::Server :repr(HASH) :isa(IO::Async::Notifier) :strict(params) 
 
   method __make_http_server($port, $listen, $ctx, %args) {
     # TODO args?
+    # TODO make this work during a reload
     my $server_id = sprintf("%d\0%d", $listen, $port);
     $ctx->{server_id} = $server_id;
 
@@ -272,9 +273,7 @@ class OpenAIAsync::Server :repr(HASH) :isa(IO::Async::Notifier) :strict(params) 
     push $routes->@*, \%opts;
   }
 
-  async method _route_request($httpserver, $req, $ctx) {
-    my $routers = $self->_get_routers($httpserver, $req, $ctx);
-
+  async method _route_request($req, $ctx) {
     my $method = $req->method();
     my $uri    = URI->new($req->uri);
     my $path   = $uri->path;

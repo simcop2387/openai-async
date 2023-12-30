@@ -1,4 +1,4 @@
-package OpenAIAsync::Server::API::v1::File;
+package OpenAIAsync::Server::API::v1::Completions;
 
 use v5.36.0;
 use Object::Pad;
@@ -17,7 +17,7 @@ our $VERSION = '0.02';
 
 =head1 NAME
 
-OpenAIAsync::Server::API::Completion - Basic completion api role, consumed to implement the OpenAI chat completion api.  Does not provide an implementation, you are expected to override them in your class
+OpenAIAsync::Server::API::Completions - Basic completion api role, consumed to implement the OpenAI chat completion api.  Does not provide an implementation, you are expected to override them in your class
 
 =head1 SYNOPSIS
 
@@ -25,7 +25,7 @@ OpenAIAsync::Server::API::Completion - Basic completion api role, consumed to im
 
 =cut
 
-role OpenAIAsync::Server::API::v1::Completion :strict(params) {
+role OpenAIAsync::Server::API::v1::Completions :strict(params) {
   ADJUST {
     $self->register_url(
         method => 'POST',
@@ -36,6 +36,6 @@ role OpenAIAsync::Server::API::v1::Completion :strict(params) {
         decoder => 'www-form-urlencoded', # default is json, we need this for this api
     );
   }
-
+ 
   async method completion($obj, $http_req, $ctx) {...}
 }
