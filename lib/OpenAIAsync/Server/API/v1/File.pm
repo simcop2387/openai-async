@@ -30,32 +30,39 @@ role OpenAIAsync::Server::API::v1::File :strict(params) {
     $self->register_url(
         method => 'POST',
         url => qr{^/v1/files$}, 
-        handle => async sub($req, $ctx, $params) {await $self->file_upload($req, $ctx)},
+        handle => async sub($req, $ctx, $obj, $params) {await $self->file_upload($obj, $req, $ctx)},
+        request_class => "OpenAIAsync::Type::Request::FileUpload",
         result_class => "OpenAIAsync::Type::Shared::File",
+        decoder => 'www-form-urlencoded', # default is json, we need this for this api
     );
     $self->register_url(
         method => 'GET',
         url => qr{^/v1/files/(?<file_id>[^/]+)/content$}, 
-        handle => async sub($req, $ctx, $params) {await $self->file_download($req, $ctx, $params)},
+        handle => async sub($req, $ctx, $obj, $params) {await $self->file_download($obj, $req, $ctx, $params)},
+        request_class => "", # No req type here
         result_class => "", # TODO this should be special, it's raw content, make it undef? leave it off?
     );
     $self->register_url(
         method => 'GET',
         url => qr{^/v1/files/(?<file_id>[^/]+)$}, 
-        handle => async sub($req, $ctx, $params) {await $self->file_info($req, $ctx, $params)},
+        handle => async sub($req, $ctx, $obj, $params) {await $self->file_info($obj, $req, $ctx, $params)},
+        request_class => "", # No req type here
         result_class => "OpenAIAsync::Type::Shared::File",
     );
     $self->register_url(
         method => 'DELETE',
         url => qr{^/v1/files/(?<file_id>[^/]+)$}, 
-        handle => async sub($req, $ctx, $params) {await $self->file_delete($req, $ctx, $params)},
+        handle => async sub($req, $ctx, $obj, $params) {await $self->file_delete($obj, $req, $ctx, $params)},
+        request_class => "", # No req type here        
         result_class => "OpenAIAsync::Type::Results::FileDeletion",
     );
     $self->register_url(
         method => 'GET',
         url => qr{^/v1/files$}, 
-        handle => async sub($req, $ctx, $params) {await $self->file_list($req, $ctx)},
+        handle => async sub($req, $ctx, $obj, $params) {await $self->file_list($obj, $req, $ctx)},
+        request_class => "OpenAIAsync::Type::Request::FileList",
         result_class => "OpenAIAsync::Type::Results::FileList",
+        decoder => 'optional_json', # this API input is OPTIONAL, if it's not present then we create a blank object to use.
     );
   }
 
