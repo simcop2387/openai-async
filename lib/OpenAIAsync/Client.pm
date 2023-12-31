@@ -252,7 +252,7 @@ class OpenAIAsync::Client :repr(HASH) :isa(IO::Async::Notifier) :strict(params) 
   }
 
   async method _make_request($endpoint, $data) {
-    my $json = $_json->encode($data);
+    my $json = $data->_encode();
 
     my $url = URI->new($api_base . $endpoint );
 
