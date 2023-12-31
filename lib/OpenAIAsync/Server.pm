@@ -216,7 +216,9 @@ class OpenAIAsync::Server :repr(HASH) :isa(IO::Async::Notifier) :strict(params) 
   use Net::Async::HTTP::Server;
   use Feature::Compat::Try;
   use URI;
-  use WWW:Form::UrlEncoded;
+  use WWW::Form::UrlEncoded;
+  no warnings 'experimental';
+  use builtin qw/true false/;
 
   field $_json = JSON::MaybeXS->new(utf8 => 1, convert_blessed => 1);
   field $http_servers;
@@ -288,7 +290,7 @@ class OpenAIAsync::Server :repr(HASH) :isa(IO::Async::Notifier) :strict(params) 
 
           my $obj;
           if ($route->{decoder} eq "www-form-urlencoded") {
-            my %data = WWW:Form::UrlEncoded::parse_urlencoded($req->decoded_content);
+            my %data = WWW::Form::UrlEncoded::parse_urlencoded($req->decoded_content);
             $obj = $route->{request_class}->new(%data);
           } elsif ($route->{decoder} eq "json") {
             my $data = $_json->decode($req->decoded_content);
@@ -301,7 +303,7 @@ class OpenAIAsync::Server :repr(HASH) :isa(IO::Async::Notifier) :strict(params) 
               my $data = $_json->decode($req->decoded_content);
               $obj = $route->{request_class}->new(%$data);
             } elsif ($content_type eq 'application/x-www-form-urlencoded') {
-              my %data = WWW:Form::UrlEncoded::parse_urlencoded($req->decoded_content);
+              my %data = WWW::Form::UrlEncoded::parse_urlencoded($req->decoded_content);
               $obj = $route->{request_class}->new(%data);
             } else {
               die "Unsupported content-type for URI: $content_type";
@@ -332,16 +334,13 @@ class OpenAIAsync::Server :repr(HASH) :isa(IO::Async::Notifier) :strict(params) 
 
               return;
             }
-          } catch {
-            my $err = $@;
+          } catch($err) {
             $self->_resp_custom($req, 500, "Server error: ".$err);
             return;
           }
         }
       }
-    } catch {
-      my $err = $@;
-
+    } catch($err) {
       $self->_resp_custom($req, 400, "Error: ".$err);
     }
   }
