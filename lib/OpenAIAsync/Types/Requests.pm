@@ -12,6 +12,10 @@ role OpenAIAsync::Types::Requests::Base :does(OpenAIAsync::Types::Base) :Struct 
   method _endpoint(); # How the client finds where to send the request
 }
 
+role OpenAIAsync::Types::Requests::BaseFormEncoding :does(OpenAIAsync::Types::BaseFormEncoding) :Struct {
+  method _endpoint(); # How the client finds where to send the request
+}
+
 #### Base Request Types
 
 class OpenAIAsync::Types::Requests::ChatCompletion :does(OpenAIAsync::Types::Requests::Base) :Struct {
@@ -250,12 +254,8 @@ class OpenAIAsync::Types::Requests::CreateSpeech :does(OpenAIAsync::Types::Reque
   field $speed :JSONNum = undef; # default 1.0, range 0.25 to 4.0
 }
 
-class OpenAIAsync::Types::Requests::CreateTranscript :does(OpenAIAsync::Types::Requests::Base) :Struct {
+class OpenAIAsync::Types::Requests::CreateTranscript :does(OpenAIAsync::Types::Requests::BaseFormEncoding) :Struct {
   method _endpoint() {"/audio/transcript"}
-
-  method _encode() {
-    ...
-  }
 
   field $file;
   field $model;
@@ -267,12 +267,8 @@ class OpenAIAsync::Types::Requests::CreateTranscript :does(OpenAIAsync::Types::R
 
 # ED: Why do they only support translating audio to english? seems really limited and I feel like this API will get
 # updated or replaced fairly soon
-class OpenAIAsync::Types::Requests::CreateTranslations :does(OpenAIAsync::Types::Requests::Base) :Struct {
+class OpenAIAsync::Types::Requests::CreateTranslations :does(OpenAIAsync::Types::Requests::BaseFormEncoding) :Struct {
   method _endpoint() {"/audio/translations"}
-
-  method _encode() {
-    ...
-  }
 
   field $file;
   field $model;
