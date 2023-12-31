@@ -104,8 +104,6 @@ to reload any configuration for the HTTP endpoints.
 
 Not completely sure if I should have these separated but I kept not liking doing it all in one method for some reason.  Maybe fold this into BUILD {} instead?
 
-=back
-
 =head2 configure($loop)
 
 The configuration phase, returns a list of the arguments to be given to Net::Async::HTTP::Server
@@ -130,9 +128,7 @@ terminator for TLS connections
       },
       ...
     ]
-
-=back
-
+    
 =head2 async auth_check($key, $ctx, $http_req)
 
 This method requres async keyword.
