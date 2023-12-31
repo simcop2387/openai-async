@@ -1,4 +1,4 @@
-package OpenAIAsync::Server::API::v1::File;
+package OpenAIAsync::Server::API::v1::ChatCompletion;
 
 use v5.36.0;
 use Object::Pad;
