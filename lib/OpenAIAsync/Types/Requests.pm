@@ -223,21 +223,62 @@ class OpenAIAsync::Types::Requests::FileList :does(OpenAIAsync::Types::Requests:
 }
 
 class OpenAIAsync::Types::Requests::FileInfo :does(OpenAIAsync::Types::Requests::Base) :Struct {
-  method _endpoint() {"/files/".$self->file_id} # TODO this needs help inside the server!
+  method _endpoint() {"/files/".$self->file_id}
 
   field $file_id :JSONStr; # id of the file to retrieve
 }
 
 class OpenAIAsync::Types::Requests::FileDelete :does(OpenAIAsync::Types::Requests::Base) :Struct {
-  method _endpoint() {"/files/".$self->file_id} # TODO this needs help inside the server!
+  method _endpoint() {"/files/".$self->file_id}
 
   field $file_id :JSONStr; # id of the file to retrieve
 }
 
 class OpenAIAsync::Types::Requests::FileContent :does(OpenAIAsync::Types::Requests::Base) :Struct {
-  method _endpoint() {"/files/".$self->file_id.'/content'} # TODO this needs help inside the server!
+  method _endpoint() {"/files/".$self->file_id.'/content'}
 
   field $file_id :JSONStr; # id of the file to retrieve
+}
+
+class OpenAIAsync::Types::Requests::CreateSpeech :does(OpenAIAsync::Types::Requests::Base) :Struct {
+  method _endpoint() {"/audio/speech"}
+
+  field $model :JSONStr = 'tts-1'; # default to cheapest model for simpler requests
+  field $input :JSONStr; # TODO max 4k chars?
+  field $voice :JSONStr; # TODO default to alloy?
+  field $response_format :JSONStr = undef; # mp3, opus, aac, or flac
+  field $speed :JSONNum = undef; # default 1.0, range 0.25 to 4.0
+}
+
+class OpenAIAsync::Types::Requests::CreateTranscript :does(OpenAIAsync::Types::Requests::Base) :Struct {
+  method _endpoint() {"/audio/transcript"}
+
+  method _encode() {
+    ...
+  }
+
+  field $file;
+  field $model;
+  field $language = undef; # What language to use, ISO-639-1 format
+  field $prompt = undef; # Text to guide the model's style or continue a previous audio segment
+  field $response_format = undef; # json, text, srt, verbose_json or vtt
+  field $temperature = undef; # number, between 0 and 1.  higher values with make the ouput more random but lower values will make it more deterministic.
+}
+
+# ED: Why do they only support translating audio to english? seems really limited and I feel like this API will get
+# updated or replaced fairly soon
+class OpenAIAsync::Types::Requests::CreateTranslations :does(OpenAIAsync::Types::Requests::Base) :Struct {
+  method _endpoint() {"/audio/translations"}
+
+  method _encode() {
+    ...
+  }
+
+  field $file;
+  field $model;
+  field $prompt = undef; # Text to guide the model's style or continue a previous audio segment
+  field $response_format = undef; # json, text, srt, verbose_json or vtt
+  field $temperature = undef; # number, between 0 and 1.  higher values with make the ouput more random but lower values will make it more deterministic.
 }
 
 1;  
