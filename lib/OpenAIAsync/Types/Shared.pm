@@ -9,7 +9,7 @@ use OpenAIAsync::Types;
 
 # TODO this is shared request and result?
 # TODO Add a method here that given a file name will create a new object with things filled out
-class OpenAIAsync::Types::Shared::FileObject :does(OpenAIAsync::Types::Requests::Base) :Struct {
+class OpenAIAsync::Types::Shared::FileObject :does(OpenAIAsync::Types::Base) :Struct {
   field $id :JSONStr = undef; # Only optional for uploads, but always comes back from the service.  TODO make a check
   field $bytes :JSONNum;
   field $created_at :JSONNum;

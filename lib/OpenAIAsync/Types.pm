@@ -19,7 +19,7 @@ role OpenAIAsync::Types::Base :does(Object::PadX::Role::AutoJSON) :does(Object::
 
 # Keep the JSON role stuff here, I might use it to annotate encodings of some non-json fields? not sure
 role OpenAIAsync::Types::BaseFormEncoding :does(Object::PadX::Role::AutoJSON) :does(Object::PadX::Role::AutoMarshal) :Struct {
-  use WWW:Form::UrlEncoded;
+  use WWW::Form::UrlEncoded;
 
   use Object::Pad::MOP::FieldAttr;
   use Object::Pad::MOP::Field;
@@ -85,9 +85,9 @@ role OpenAIAsync::Types::BaseFormEncoding :does(Object::PadX::Role::AutoJSON) :d
  
       $json_out{$key} = $value;
     }
-  }
- 
     return \%json_out;
+  }
+
 
   method _encode() {
     my $hash = $self->_as_hash();
