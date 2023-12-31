@@ -277,4 +277,11 @@ class OpenAIAsync::Types::Requests::CreateTranslations :does(OpenAIAsync::Types:
   field $temperature = undef; # number, between 0 and 1.  higher values with make the ouput more random but lower values will make it more deterministic.
 }
 
+class OpenAIAsync::Types::Requests::Moderations :does(OpenAIAsync::Types::Requests::Base) :Struct {
+  method _endpoint() {"/moderations"}
+
+  field $input :JSONStr;
+  field $model :JSONStr = undef;
+}
+
 1;  
