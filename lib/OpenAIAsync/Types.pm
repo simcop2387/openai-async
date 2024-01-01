@@ -7,7 +7,10 @@ use Object::PadX::Role::AutoJSON;
 use Object::Pad::ClassAttr::Struct;
 
 # Base role for all the types to simplify things later
-role OpenAIAsync::Types::Base :does(Object::PadX::Role::AutoJSON) :does(Object::PadX::Role::AutoMarshal) :Struct {
+role OpenAIAsync::Types::Base :Struct {
+  apply Object::PadX::Role::AutoJSON;
+  apply Object::PadX::Role::AutoMarshal;
+
   use JSON::MaybeXS qw//;
 
   our $_json = JSON::MaybeXS->new(utf8 => 1, convert_blessed => 1);
@@ -18,7 +21,10 @@ role OpenAIAsync::Types::Base :does(Object::PadX::Role::AutoJSON) :does(Object::
 }
 
 # Keep the JSON role stuff here, I might use it to annotate encodings of some non-json fields? not sure
-role OpenAIAsync::Types::BaseFormEncoding :does(Object::PadX::Role::AutoJSON) :does(Object::PadX::Role::AutoMarshal) :Struct {
+role OpenAIAsync::Types::BaseFormEncoding :Struct {
+  apply Object::PadX::Role::AutoJSON;
+  apply Object::PadX::Role::AutoMarshal;
+
   use WWW::Form::UrlEncoded;
 
   use Object::Pad::MOP::FieldAttr;

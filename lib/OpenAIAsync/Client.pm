@@ -192,7 +192,8 @@ Ryan Voots, ... etc.
 
 =cut
 
-class OpenAIAsync::Client :repr(HASH) :isa(IO::Async::Notifier) :strict(params) {
+class OpenAIAsync::Client :repr(HASH) :strict(params) {
+  inherit IO::Async::Notifier;
   use JSON::MaybeXS qw//;
   use Net::Async::HTTP;
   use Feature::Compat::Try;

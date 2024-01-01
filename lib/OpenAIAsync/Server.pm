@@ -128,7 +128,7 @@ terminator for TLS connections
       },
       ...
     ]
-    
+
 =head2 async auth_check($key, $ctx, $http_req)
 
 This method requres async keyword.
@@ -207,7 +207,9 @@ Ryan Voots, ... etc.
 
 =cut
 
-class OpenAIAsync::Server :repr(HASH) :isa(IO::Async::Notifier) :strict(params) {
+class OpenAIAsync::Server :repr(HASH) :strict(params) {
+  inherit IO::Async::Notifier;
+
   use JSON::MaybeXS qw//;
   use Net::Async::HTTP::Server;
   use Feature::Compat::Try;

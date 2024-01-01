@@ -7,7 +7,7 @@ use Object::PadX::Role::AutoMarshal;
 use Object::PadX::Role::AutoJSON;
 use Object::Pad::ClassAttr::Struct;
 
-class OpenAIAsync::Types::Results::ToolCall :does(OpenAIAsync::Types::Base) :Struct {
+class OpenAIAsync::Types::Results::ToolCall :Struct {
   apply OpenAIAsync::Types::Base;
 
   field $id :JSONStr = undef;
@@ -15,14 +15,14 @@ class OpenAIAsync::Types::Results::ToolCall :does(OpenAIAsync::Types::Base) :Str
   field $function :MarshalTo(OpenAIAsync::Types::Results::FunctionCall) = undef;
 }
 
-class OpenAIAsync::Types::Results::FunctionCall :does(OpenAIAsync::Types::Base) :Struct {
+class OpenAIAsync::Types::Results::FunctionCall :Struct {
   apply OpenAIAsync::Types::Base;
 
   field $arguments :JSONStr = undef; # TODO decode the json from this directly?
   field $name :JSONStr = undef;
 }
 
-class OpenAIAsync::Types::Results::ChatMessage :does(OpenAIAsync::Types::Base) :Struct {
+class OpenAIAsync::Types::Results::ChatMessage :Struct {
   apply OpenAIAsync::Types::Base;
 
   field $content :JSONStr;
@@ -31,7 +31,7 @@ class OpenAIAsync::Types::Results::ChatMessage :does(OpenAIAsync::Types::Base) :
   field $function_call :MarshalTo(OpenAIAsync::Types::Results::FunctionCall) = undef; # Depcrecated, might still happen
 }
 
-class OpenAIAsync::Types::Results::ChatCompletionChoices :does(OpenAIAsync::Types::Base) :Struct {
+class OpenAIAsync::Types::Results::ChatCompletionChoices :Struct {
   apply OpenAIAsync::Types::Base;
 
   field $finish_reason :JSONStr;
@@ -39,7 +39,7 @@ class OpenAIAsync::Types::Results::ChatCompletionChoices :does(OpenAIAsync::Type
   field $message :MarshalTo(OpenAIAsync::Types::Results::ChatMessage);
 }
 
-class OpenAIAsync::Types::Results::ChatCompletion :does(OpenAIAsync::Types::Base) :Struct {
+class OpenAIAsync::Types::Results::ChatCompletion :Struct {
   apply OpenAIAsync::Types::Base;
 
   field $id :JSONStr;
@@ -51,7 +51,7 @@ class OpenAIAsync::Types::Results::ChatCompletion :does(OpenAIAsync::Types::Base
   field $object :JSONStr;
 }
 
-class OpenAIAsync::Types::Results::ChunkDelta :does(OpenAIAsync::Types::Base) :Struct {
+class OpenAIAsync::Types::Results::ChunkDelta :Struct {
   apply OpenAIAsync::Types::Base;
 
   field $content :JSONStr;
@@ -60,7 +60,7 @@ class OpenAIAsync::Types::Results::ChunkDelta :does(OpenAIAsync::Types::Base) :S
   field $role :JSONStr;
 }
 
-class OpenAIAsync::Types::Results::ChatCompletionChunkChoices :does(OpenAIAsync::Types::Base) :Struct {
+class OpenAIAsync::Types::Results::ChatCompletionChunkChoices :Struct {
   apply OpenAIAsync::Types::Base;
 
   field $delta :MarshalTo(OpenAIAsync::Types::Results::ChunkDelta);
@@ -69,7 +69,7 @@ class OpenAIAsync::Types::Results::ChatCompletionChunkChoices :does(OpenAIAsync:
 }
 
 # This is part of the streaming API
-class OpenAIAsync::Types::Results::ChatCompletionChunk :does(OpenAIAsync::Types::Base) :Struct {
+class OpenAIAsync::Types::Results::ChatCompletionChunk :Struct {
   apply OpenAIAsync::Types::Base;
 
   field $id :JSONStr;
@@ -80,7 +80,7 @@ class OpenAIAsync::Types::Results::ChatCompletionChunk :does(OpenAIAsync::Types:
   field $object :JSONStr;
 }
 
-class OpenAIAsync::Types::Results::Usage :does(OpenAIAsync::Types::Base) :Struct {
+class OpenAIAsync::Types::Results::Usage :Struct {
   apply OpenAIAsync::Types::Base;
 
   field $total_tokens :JSONNum;
@@ -88,7 +88,7 @@ class OpenAIAsync::Types::Results::Usage :does(OpenAIAsync::Types::Base) :Struct
   field $completion_tokens :JSONNum = undef; # look at chat completions, is this the same
 }
 
-class OpenAIAsync::Types::Results::LogProbs :does(OpenAIAsync::Types::Base) :Struct {
+class OpenAIAsync::Types::Results::LogProbs :Struct {
   apply OpenAIAsync::Types::Base;
 
   # TODO what's the representation here?
@@ -98,7 +98,7 @@ class OpenAIAsync::Types::Results::LogProbs :does(OpenAIAsync::Types::Base) :Str
   field $top_logprobs = undef;
 }
 
-class OpenAIAsync::Types::Results::CompletionChoices :does(OpenAIAsync::Types::Base) :Struct {
+class OpenAIAsync::Types::Results::CompletionChoices :Struct {
   apply OpenAIAsync::Types::Base;
 
   field $text :JSONStr; 
@@ -107,7 +107,7 @@ class OpenAIAsync::Types::Results::CompletionChoices :does(OpenAIAsync::Types::B
   field $finish_reason :JSONStr = undef; # TODO enum? helper funcs for this class? ->is_finished?
 }
 
-class OpenAIAsync::Types::Results::Completion :does(OpenAIAsync::Types::Base) :Struct {
+class OpenAIAsync::Types::Results::Completion :Struct {
   apply OpenAIAsync::Types::Base;
 
   field $id :JSONStr;
