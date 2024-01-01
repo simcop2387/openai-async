@@ -1,4 +1,4 @@
-cpackage OpenAIAsync::Server::API::v1::Audio;
+package OpenAIAsync::Server::API::v1::Audio;
 
 use v5.36.0;
 use Object::Pad;
@@ -27,11 +27,6 @@ TODO document the subroles here, split up because TTS is much simpler to impleme
 
 =cut
 
-role OpenAIAsync::Server::API::v1::Audio :strict(params) {
-  apply OpenAIAsync::Server::API::v1::AudioTTS;
-  apply OpenAIAsync::Server::API::v1::AudioSTT;
-  apply OpenAIAsync::Server::API::v1::AudioTranslate;
-}
 
 role OpenAIAsync::Server::API::v1::AudioTTS :strict(params) {
   ADJUST {
@@ -74,3 +69,11 @@ role OpenAIAsync::Server::API::v1::AudioTranslate :strict(params) {
  
   async method audio_create_translation($obj, $http_req, $ctx) {...}
 }
+
+role OpenAIAsync::Server::API::v1::Audio :strict(params) {
+  apply OpenAIAsync::Server::API::v1::AudioTTS;
+  apply OpenAIAsync::Server::API::v1::AudioSTT;
+  apply OpenAIAsync::Server::API::v1::AudioTranslate;
+}
+
+1;
