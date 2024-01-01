@@ -8,18 +8,22 @@ use Object::Pad::ClassAttr::Struct;
 use OpenAIAsync::Types;
 use OpenAIAsync::Types::Shared;
 
-role OpenAIAsync::Types::Requests::Base :does(OpenAIAsync::Types::Base) :Struct {
+role OpenAIAsync::Types::Requests::Base :Struct {
+  apply OpenAIAsync::Types::Base;
   method _endpoint(); # How the client finds where to send the request
 }
 
-role OpenAIAsync::Types::Requests::BaseFormEncoding :does(OpenAIAsync::Types::BaseFormEncoding) :Struct {
+role OpenAIAsync::Types::Requests::BaseFormEncoding :Struct {
+  apply OpenAIAsync::Types::BaseFormEncoding;
   method _endpoint(); # How the client finds where to send the request
 }
 
 #### Base Request Types
 
-class OpenAIAsync::Types::Requests::ChatCompletion :does(OpenAIAsync::Types::Requests::Base) :Struct {
+class OpenAIAsync::Types::Requests::ChatCompletion :Struct {
+  apply OpenAIAsync::Types::Requests::Base;
   method _endpoint() {"/chat/completions"}
+  
   field $messages :MarshalTo([OpenAIAsync::Types::Requests::ChatCompletion::Messages::Union]);
   field $model :JSONStr = "gpt-3.5-turbo";
   field $frequency_penalty :JSONNum = undef;
@@ -40,7 +44,9 @@ class OpenAIAsync::Types::Requests::ChatCompletion :does(OpenAIAsync::Types::Req
   field $functions :JSONExclude = undef;
 }
 
-class OpenAIAsync::Types::Requests::Completion :does(OpenAIAsync::Types::Requests::Base) :Struct {
+class OpenAIAsync::Types::Requests::Completion :Struct {
+  apply OpenAIAsync::Types::Requests::Base;
+
   method _endpoint() {"/completions"}
   
   field $model :JSONStr = "gpt-3.5-turbo"; # This is how 99% of everyone else seems to default this
@@ -72,7 +78,8 @@ class OpenAIAsync::Types::Requests::Completion :does(OpenAIAsync::Types::Request
   }
 }
 
-class OpenAIAsync::Types::Requests::Embedding :does(OpenAIAsync::Types::Requests::Base) :Struct {
+class OpenAIAsync::Types::Requests::Embedding :Struct {
+  apply OpenAIAsync::Types::Requests::Base;
   method _endpoint() {"/embeddings"}
   field $input :JSONStr;
   field $model :JSONStr;
@@ -82,29 +89,34 @@ class OpenAIAsync::Types::Requests::Embedding :does(OpenAIAsync::Types::Requests
 
 ### Request Subtypes
 
-class OpenAIAsync::Types::Requests::ChatCompletion::Messages::Assistant::ToolCall :does(OpenAIAsync::Types::Base) :Struct {
+class OpenAIAsync::Types::Requests::ChatCompletion::Messages::Assistant::ToolCall :Struct {
+  apply OpenAIAsync::Types::Base;
   field $id :JSONStr;
   field $arguments :JSONStr;
   field $type :JSONStr;
   field $function :MarshalTo(OpenAIAsync::Types::Requests::ChatCompletion::Messages::Assistant::FunctionCall);
 }
 
-class OpenAIAsync::Types::Requests::ChatCompletion::Messages::Assistant::FunctionCall :does(OpenAIAsync::Types::Base) {
+class OpenAIAsync::Types::Requests::ChatCompletion::Messages::Assistant::FunctionCall :Struct {
+  apply OpenAIAsync::Types::Base;
   field $arguments :JSONStr;
   field $name :JSONStr;
 }
 
-class OpenAIAsync::Types::Requests::ChatCompletion::Messages::User::Text :does(OpenAIAsync::Types::Base) :Struct {
+class OpenAIAsync::Types::Requests::ChatCompletion::Messages::User::Text :Struct {
+  apply OpenAIAsync::Types::Base;
   field $type :JSONStr;
   field $text :JSONStr;
 }
 
-class OpenAIAsync::Types::Requests::ChatCompletion::Messages::User::ImageUrl :does(OpenAIAsync::Types::Base) :Struct {
+class OpenAIAsync::Types::Requests::ChatCompletion::Messages::User::ImageUrl :Struct {
+  apply OpenAIAsync::Types::Base;
   field $url :JSONStr;
   field $detail :JSONStr = undef;
 }
 
-class OpenAIAsync::Types::Requests::ChatCompletion::Messages::User::Image :does(OpenAIAsync::Types::Base) :Struct {
+class OpenAIAsync::Types::Requests::ChatCompletion::Messages::User::Image :Struct {
+  apply OpenAIAsync::Types::Base;
   field $type :JSONStr;
   field $image_url :MarshalTo(OpenAIAsync::Types::Requests::ChatCompletion::Messages::User::ImageUrl);
 }
@@ -131,7 +143,8 @@ package
   }
 };
 
-class OpenAIAsync::Types::Requests::ChatCompletion::Messages::User :does(OpenAIAsync::Types::Base) :Struct {
+class OpenAIAsync::Types::Requests::ChatCompletion::Messages::User :Struct {
+  apply OpenAIAsync::Types::Base;
   # This particular type is more complicated than AutoMarshal can handle, so we need to
   # do this in a custom manner.
   field $role;
@@ -161,7 +174,8 @@ class OpenAIAsync::Types::Requests::ChatCompletion::Messages::User :does(OpenAIA
   }
 }
 
-class OpenAIAsync::Types::Requests::ChatCompletion::Messages::Assistant :does(OpenAIAsync::Types::Base) :Struct {
+class OpenAIAsync::Types::Requests::ChatCompletion::Messages::Assistant :Struct {
+  apply OpenAIAsync::Types::Base;
   field $role :JSONStr;
   field $content :JSONStr;
   field $name = undef;
@@ -169,19 +183,22 @@ class OpenAIAsync::Types::Requests::ChatCompletion::Messages::Assistant :does(Op
   field $function_call :MarshalTo(OpenAIAsync::Types::Requests::ChatCompletion::Messages::Assistant::FunctionCall) = undef;
 }
 
-class OpenAIAsync::Types::Requests::ChatCompletion::Messages::Function :does(OpenAIAsync::Types::Base) :Struct {
+class OpenAIAsync::Types::Requests::ChatCompletion::Messages::Function :Struct {
+  apply OpenAIAsync::Types::Base;
   field $role :JSONStr;
   field $content :JSONStr;
   field $name :JSONStr;
 }
 
-class OpenAIAsync::Types::Requests::ChatCompletion::Messages::Tool :does(OpenAIAsync::Types::Base) :Struct {
+class OpenAIAsync::Types::Requests::ChatCompletion::Messages::Tool :Struct {
+  apply OpenAIAsync::Types::Base;
   field $role :JSONStr;
   field $content :JSONStr;
   field $tool_call_id :JSONStr;
 }
 
-class OpenAIAsync::Types::Requests::ChatCompletion::Messages::System :does(OpenAIAsync::Types::Base) :Struct {
+class OpenAIAsync::Types::Requests::ChatCompletion::Messages::System :Struct {
+  apply OpenAIAsync::Types::Base;
   field $role :JSONStr;
   field $name :JSONStr = undef;
   field $content :JSONStr;
@@ -212,7 +229,8 @@ package
   }
 };
 
-class OpenAIAsync::Types::Requests::FileUpload :does(OpenAIAsync::Types::Requests::Base) :Struct {
+class OpenAIAsync::Types::Requests::FileUpload :Struct {
+  apply OpenAIAsync::Types::Requests::Base;
   method _endpoint() {"/files"}
 
   field $file :MarshalTo(OpenAIAsync::Types::Shared::FileObject);
@@ -220,31 +238,36 @@ class OpenAIAsync::Types::Requests::FileUpload :does(OpenAIAsync::Types::Request
 }
 
 
-class OpenAIAsync::Types::Requests::FileList :does(OpenAIAsync::Types::Requests::Base) :Struct {
+class OpenAIAsync::Types::Requests::FileList :Struct {
+  apply OpenAIAsync::Types::Requests::Base;
   method _endpoint() {"/files"}
 
   field $purpose :JSONStr = undef; # fine-tune and assistants for the types, optional, used for filtering
 }
 
-class OpenAIAsync::Types::Requests::FileInfo :does(OpenAIAsync::Types::Requests::Base) :Struct {
+class OpenAIAsync::Types::Requests::FileInfo :Struct {
+  apply OpenAIAsync::Types::Requests::Base;
   method _endpoint() {"/files/".$self->file_id}
 
   field $file_id :JSONStr; # id of the file to retrieve
 }
 
-class OpenAIAsync::Types::Requests::FileDelete :does(OpenAIAsync::Types::Requests::Base) :Struct {
+class OpenAIAsync::Types::Requests::FileDelete :Struct {
+  apply OpenAIAsync::Types::Requests::Base;
   method _endpoint() {"/files/".$self->file_id}
 
   field $file_id :JSONStr; # id of the file to retrieve
 }
 
-class OpenAIAsync::Types::Requests::FileContent :does(OpenAIAsync::Types::Requests::Base) :Struct {
+class OpenAIAsync::Types::Requests::FileContent :Struct {
+  apply OpenAIAsync::Types::Requests::Base;
   method _endpoint() {"/files/".$self->file_id.'/content'}
 
   field $file_id :JSONStr; # id of the file to retrieve
 }
 
-class OpenAIAsync::Types::Requests::CreateSpeech :does(OpenAIAsync::Types::Requests::Base) :Struct {
+class OpenAIAsync::Types::Requests::CreateSpeech :Struct {
+  apply OpenAIAsync::Types::Requests::Base;
   method _endpoint() {"/audio/speech"}
 
   field $model :JSONStr = 'tts-1'; # default to cheapest model for simpler requests
@@ -254,7 +277,8 @@ class OpenAIAsync::Types::Requests::CreateSpeech :does(OpenAIAsync::Types::Reque
   field $speed :JSONNum = undef; # default 1.0, range 0.25 to 4.0
 }
 
-class OpenAIAsync::Types::Requests::CreateTranscript :does(OpenAIAsync::Types::Requests::BaseFormEncoding) :Struct {
+class OpenAIAsync::Types::Requests::CreateTranscript :Struct {
+  apply OpenAIAsync::Types::Requests::BaseFormEncoding;
   method _endpoint() {"/audio/transcript"}
 
   field $file;
@@ -267,7 +291,9 @@ class OpenAIAsync::Types::Requests::CreateTranscript :does(OpenAIAsync::Types::R
 
 # ED: Why do they only support translating audio to english? seems really limited and I feel like this API will get
 # updated or replaced fairly soon
-class OpenAIAsync::Types::Requests::CreateTranslations :does(OpenAIAsync::Types::Requests::BaseFormEncoding) :Struct {
+class OpenAIAsync::Types::Requests::CreateTranslations :Struct {
+  apply OpenAIAsync::Types::Requests::BaseFormEncoding;
+
   method _endpoint() {"/audio/translations"}
 
   field $file;
@@ -277,14 +303,16 @@ class OpenAIAsync::Types::Requests::CreateTranslations :does(OpenAIAsync::Types:
   field $temperature = undef; # number, between 0 and 1.  higher values with make the ouput more random but lower values will make it more deterministic.
 }
 
-class OpenAIAsync::Types::Requests::Moderations :does(OpenAIAsync::Types::Requests::Base) :Struct {
+class OpenAIAsync::Types::Requests::Moderations :Struct {
+  apply OpenAIAsync::Types::Requests::Base;
   method _endpoint() {"/moderations"}
 
   field $input :JSONStr;
   field $model :JSONStr = undef;
 }
 
-class OpenAIAsync::Types::Requests::GenerateImage :does(OpenAIAsync::Types::Requests::Base) :Struct {
+class OpenAIAsync::Types::Requests::GenerateImage :Struct {
+  apply OpenAIAsync::Types::Requests::Base;
   method _endpoint() {"/images/generations"}
 
   field $prompt :JSONStr;
@@ -297,7 +325,8 @@ class OpenAIAsync::Types::Requests::GenerateImage :does(OpenAIAsync::Types::Requ
   field $user :JSONStr = undef;
 }
 
-class OpenAIAsync::Types::Requests::CreateImageEdit :does(OpenAIAsync::Types::Requests::BaseFormEncoding) :Struct {
+class OpenAIAsync::Types::Requests::CreateImageEdit :Struct {
+  apply OpenAIAsync::Types::Requests::BaseFormEncoding;
   method _endpoint() {"/images/edits"}
 
   field $image; # Image file data, TODO document?
@@ -310,7 +339,8 @@ class OpenAIAsync::Types::Requests::CreateImageEdit :does(OpenAIAsync::Types::Re
   field $user :JSONStr = undef;
 }
 
-class OpenAIAsync::Types::Requests::CreateImageVariation :does(OpenAIAsync::Types::Requests::BaseFormEncoding) :Struct {
+class OpenAIAsync::Types::Requests::CreateImageVariation :Struct {
+  apply OpenAIAsync::Types::Requests::BaseFormEncoding;
   method _endpoint() {"/images/variations"}
 
   field $image; # Image file data, TODO document?
