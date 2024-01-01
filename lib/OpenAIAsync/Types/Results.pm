@@ -160,3 +160,13 @@ class OpenAIAsync::Types::Results::ModerationResultsCategoryScores :does(OpenAIA
   field $violence :JSONNum;
   field $violence_graphic :JSONNum :JSONKey(violence/graphic);
 }
+
+class OpenAIAsync::Types::Results::Image :does(OpenAIAsync::Types::Base) :Struct {
+  field $b64_json :JSONStr = undef;
+  field $url :JSONStr = undef;
+  field $revised_prompt :JSONStr = undef;
+
+  ADJUST {
+    die "Missing required value one of b64_json or url" unless ($b64_json or $url);
+  }
+}

@@ -9862,7 +9862,6 @@ OpenAIAsync::Server	.build/S3aTKnbkmA/lib/OpenAIAsync/Server.pm	1;"	p
 OpenAIAsync::Server	.build/kBWSNkpY90/blib/lib/OpenAIAsync/Server.pm	1;"	p
 OpenAIAsync::Server	.build/kBWSNkpY90/lib/OpenAIAsync/Server.pm	1;"	p
 OpenAIAsync::Server	lib/OpenAIAsync/Server.pm	1;"	p
-OpenAIAsync::Server::API::v1::Audio	lib/OpenAIAsync/Server/API/v1/Audio.pm	1;"	p
 OpenAIAsync::Server::API::v1::ChatCompletion	.build/S3aTKnbkmA/blib/lib/OpenAIAsync/Server/API/v1/ChatCompletion.pm	1;"	p
 OpenAIAsync::Server::API::v1::ChatCompletion	.build/S3aTKnbkmA/lib/OpenAIAsync/Server/API/v1/ChatCompletion.pm	1;"	p
 OpenAIAsync::Server::API::v1::ChatCompletion	.build/kBWSNkpY90/blib/lib/OpenAIAsync/Server/API/v1/ChatCompletion.pm	1;"	p
@@ -9883,6 +9882,7 @@ OpenAIAsync::Server::API::v1::File	.build/S3aTKnbkmA/lib/OpenAIAsync/Server/API/
 OpenAIAsync::Server::API::v1::File	.build/kBWSNkpY90/blib/lib/OpenAIAsync/Server/API/v1/File.pm	1;"	p
 OpenAIAsync::Server::API::v1::File	.build/kBWSNkpY90/lib/OpenAIAsync/Server/API/v1/File.pm	1;"	p
 OpenAIAsync::Server::API::v1::File	lib/OpenAIAsync/Server/API/v1/File.pm	1;"	p
+OpenAIAsync::Server::API::v1::Image	lib/OpenAIAsync/Server/API/v1/Image.pm	1;"	p
 OpenAIAsync::Server::API::v1::ModelList	.build/S3aTKnbkmA/blib/lib/OpenAIAsync/Server/API/v1/ModelList.pm	1;"	p
 OpenAIAsync::Server::API::v1::ModelList	.build/S3aTKnbkmA/lib/OpenAIAsync/Server/API/v1/ModelList.pm	1;"	p
 OpenAIAsync::Server::API::v1::ModelList	.build/kBWSNkpY90/blib/lib/OpenAIAsync/Server/API/v1/ModelList.pm	1;"	p

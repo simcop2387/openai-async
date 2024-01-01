@@ -284,4 +284,41 @@ class OpenAIAsync::Types::Requests::Moderations :does(OpenAIAsync::Types::Reques
   field $model :JSONStr = undef;
 }
 
-1;  
+class OpenAIAsync::Types::Requests::GenerateImage :does(OpenAIAsync::Types::Requests::Base) :Struct {
+  method _endpoint() {"/images/generations"}
+
+  field $prompt :JSONStr;
+  field $model :JSONStr = undef;
+  field $n :JSONNum = undef; # how many to generate
+  field $quality :JSONStr = undef; # defaults to "standard", can also be "hd"
+  field $response_format :JSONStr = undef; # url, or b64_json
+  field $size :JSONStr = undef; # defaults to 1024x1024
+  field $style :JSONStr = undef; # vivid or natural, defaults to vivid
+  field $user :JSONStr = undef;
+}
+
+class OpenAIAsync::Types::Requests::CreateImageEdit :does(OpenAIAsync::Types::Requests::BaseFormEncoding) :Struct {
+  method _endpoint() {"/images/edits"}
+
+  field $image; # Image file data, TODO document?
+  field $mask = undef; # Image file data for mask, TODO document
+  field $prompt :JSONStr;
+  field $model :JSONStr = undef;
+  field $n :JSONNum = undef; # how many to generate
+  field $response_format :JSONStr = undef; # url, or b64_json
+  field $size :JSONStr = undef; # defaults to 1024x1024
+  field $user :JSONStr = undef;
+}
+
+class OpenAIAsync::Types::Requests::CreateImageVariation :does(OpenAIAsync::Types::Requests::BaseFormEncoding) :Struct {
+  method _endpoint() {"/images/variations"}
+
+  field $image; # Image file data, TODO document?
+  field $model :JSONStr = undef;
+  field $n :JSONNum = undef; # how many to generate
+  field $response_format :JSONStr = undef; # url, or b64_json
+  field $size :JSONStr = undef; # defaults to 1024x1024
+  field $user :JSONStr = undef;
+}
+
+1;

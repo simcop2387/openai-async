@@ -1,4 +1,4 @@
-package OpenAIAsync::Server::API::v1::Audio;
+cpackage OpenAIAsync::Server::API::v1::Audio;
 
 use v5.36.0;
 use Object::Pad;
