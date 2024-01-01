@@ -30,7 +30,7 @@ role OpenAIAsync::Server::API::v1::ModelList :strict(params) {
     $self->register_url(
         method => 'POST',
         url => qr{^/v1/models$}, 
-        handle => async sub($req, $ctx, $obj, $params) {await $self->embeddings($obj, $req, $ctx)},
+        handle => async sub($req, $ctx, $obj, $params) {await $self->model_list($obj, $req, $ctx)},
         request_class => "",
         result_class => "OpenAIAsync::Type::Result::ModelList",
     );
