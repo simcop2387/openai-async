@@ -218,6 +218,8 @@ class OpenAIAsync::Server :repr(HASH) :strict(params) {
   no warnings 'experimental';
   use builtin qw/true false/;
   use Hash::Merge;
+  use HTTP::Response;
+  use HTTP::Request;
 
   field $_json = JSON::MaybeXS->new(utf8 => 1, convert_blessed => 1);
   field $http_server;
@@ -246,13 +248,8 @@ class OpenAIAsync::Server :repr(HASH) :strict(params) {
     $http_server = Net::Async::HTTP::Server->new(
       $httpserver_args->%*,
       on_request => sub($httpself, $req) {
-        my $f = $self->loop->new_future();
-
-        my $async_f = $self->_route_request($httpself, $req, $ctx);
-        $f->on_done($async_f);
+        my $async_f = $self->_route_request($req, $ctx);
         $self->adopt_future($async_f);
-
-        $f->done();
       }
     );
 
@@ -282,21 +279,25 @@ class OpenAIAsync::Server :repr(HASH) :strict(params) {
 
   method register_url(%opts) {
     # TODO check params
+    use Data::Dumper;
+    say Dumper("Got url registered", \%opts);
     push $routes->@*, \%opts;
   }
 
   async method _route_request($req, $ctx) {
     my $method = $req->method();
-    my $uri    = URI->new($req->uri);
-    my $path   = $uri->path;
+    my $path   = $req->path;
+
+    say "Got request ", $method, " => ", $path;
 
     try {
       my $found_route = false;
       my $f;
-      for my $route ($self->routes->@*) {
-        if ($uri =~ $route->{url} && $route->{method} eq $method) {
+      for my $route ($routes->@*) {
+        if ($path =~ $route->{url} && $route->{method} eq $method) {
           my $params = +{%+, _ => [@+]}; # make a copy of named parameters, and digited ones to pass into the handler
           $found_route = true;
+          say "Found path $route->{url}";
 
           my $obj;
           if ($route->{decoder} eq "www-form-urlencoded") {
@@ -349,6 +350,10 @@ class OpenAIAsync::Server :repr(HASH) :strict(params) {
             return;
           }
         }
+      }
+
+      unless ($found_route) {
+        $self->_resp_custom($req, 404, "Not found");
       }
     } catch($err) {
       $self->_resp_custom($req, 400, "Error: ".$err);
