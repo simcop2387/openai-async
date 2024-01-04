@@ -31,9 +31,8 @@ role OpenAIAsync::Server::API::v1::Image :strict(params) {
         method => 'GET',
         url => qr{^/v1/files$}, 
         handle => async sub($req, $ctx, $obj, $params) {await $self->create_image($obj, $req, $ctx)},
-        request_class => "OpenAIAsync::Type::Requests::",
-        result_class => "OpenAIAsync::Type::Results::FileList",
-        decoder => 'optional_json', # this API input is OPTIONAL, if it's not present then we create a blank object to use.
+        request_class => "OpenAIAsync::Type::Requests::GenerateImage",
+        result_class => "",
     );
   }
 

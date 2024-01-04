@@ -219,7 +219,12 @@ class OpenAIAsync::Server :repr(HASH) :strict(params) {
   use builtin qw/true false/;
 
   field $_json = JSON::MaybeXS->new(utf8 => 1, convert_blessed => 1);
-  field $http_servers;
+  field $http_server;
+
+  field $port :param = "8080";
+  field $listen :param = "127.0.0.1";
+  field $ctx :param = {};
+  field $httpserver_args :param = {}; # by default nothing
 
   # TODO document these directly, other options gets mixed in BEFORE all of these
   field $io_async_notifier_params :param = undef;
@@ -231,13 +236,14 @@ class OpenAIAsync::Server :repr(HASH) :strict(params) {
     IO::Async::Notifier::configure($self, %io_async_params);
   }
 
-  method __make_http_server($port, $listen, $ctx, %args) {
+  method __make_http_server() {
     # TODO args?
     # TODO make this work during a reload
     my $server_id = sprintf("%d\0%d", $listen, $port);
     $ctx->{server_id} = $server_id;
 
-    my $httpserver = Net::Async::HTTP::Server->new(
+    $http_server = Net::Async::HTTP::Server->new(
+      $httpserver_args->%*,
       on_request => sub($httpself, $req) {
         my $f = $self->loop->new_future();
 
@@ -249,12 +255,11 @@ class OpenAIAsync::Server :repr(HASH) :strict(params) {
       }
     );
 
-    $http_servers->{$server_id} = {server => $httpserver, ctx => $ctx};
-
-    $self->loop->add($httpserver);
+    $self->loop->add($http_server);
   }
 
   ADJUST {
+    $self->__make_http_server();
   }
 
   method _resp_custom($req, $code, $str, $json = 0) {

@@ -11,11 +11,13 @@ use OpenAIAsync::Types::Shared;
 role OpenAIAsync::Types::Requests::Base :Struct {
   apply OpenAIAsync::Types::Base;
   method _endpoint(); # How the client finds where to send the request
+  method decoder() {"json"};
 }
 
 role OpenAIAsync::Types::Requests::BaseFormEncoding :Struct {
   apply OpenAIAsync::Types::BaseFormEncoding;
   method _endpoint(); # How the client finds where to send the request
+  method decoder() {"www-form-urlencoded"}
 }
 
 #### Base Request Types
