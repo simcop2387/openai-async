@@ -217,6 +217,7 @@ class OpenAIAsync::Server :repr(HASH) :strict(params) {
   use WWW::Form::UrlEncoded;
   no warnings 'experimental';
   use builtin qw/true false/;
+  use Hash::Merge;
 
   field $_json = JSON::MaybeXS->new(utf8 => 1, convert_blessed => 1);
   field $http_server;
@@ -256,9 +257,15 @@ class OpenAIAsync::Server :repr(HASH) :strict(params) {
     );
 
     $self->loop->add($http_server);
+
+    my $merger = Hash::Merge->new('LEFT_PRECEDENT');
+
+    my $http_args = $merger->merge($httpserver_args, {addr => {socktype => "stream", port => $port, ip => $listen, family => "inet"}});
+
+    $http_server->listen($http_args->%*)->get();
   }
 
-  ADJUST {
+  method _add_to_loop {
     $self->__make_http_server();
   }
 
