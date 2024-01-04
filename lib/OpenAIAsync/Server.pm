@@ -239,7 +239,7 @@ class OpenAIAsync::Server :repr(HASH) :strict(params) {
   method __make_http_server() {
     # TODO args?
     # TODO make this work during a reload
-    my $server_id = sprintf("%d\0%d", $listen, $port);
+    my $server_id = sprintf("%s\0%d", $listen, $port);
     $ctx->{server_id} = $server_id;
 
     $http_server = Net::Async::HTTP::Server->new(

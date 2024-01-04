@@ -9934,6 +9934,7 @@ OpenAIAsync::Server	.build/previous/lib/OpenAIAsync/Server.pm	1;"	p
 OpenAIAsync::Server	.build/s8al1KxdoG/blib/lib/OpenAIAsync/Server.pm	1;"	p
 OpenAIAsync::Server	.build/s8al1KxdoG/lib/OpenAIAsync/Server.pm	1;"	p
 OpenAIAsync::Server	lib/OpenAIAsync/Server.pm	1;"	p
+OpenAIAsync::Server::API::Test::ChatCompletion	t/lib/OpenAIAsync/Server/API/Test/ChatCompletion.pm	1;"	p
 OpenAIAsync::Server::API::v1::Audio	.build/6o4PVL1DX3/blib/lib/OpenAIAsync/Server/API/v1/Audio.pm	1;"	p
 OpenAIAsync::Server::API::v1::Audio	.build/6o4PVL1DX3/lib/OpenAIAsync/Server/API/v1/Audio.pm	1;"	p
 OpenAIAsync::Server::API::v1::Audio	.build/8vRKKpniYC/blib/lib/OpenAIAsync/Server/API/v1/Audio.pm	1;"	p

@@ -26,6 +26,8 @@ OpenAIAsync::Server::API::ChatCompletion - Basic chat api role, consumed to impl
 =cut
 
 role OpenAIAsync::Server::API::v1::ChatCompletion :strict(params) {
+  use Future::AsyncAwait;
+
   ADJUST {
     $self->register_url(
         method => 'POST',
@@ -37,5 +39,5 @@ role OpenAIAsync::Server::API::v1::ChatCompletion :strict(params) {
     );
   }
 
-  async method chat($obj, $http_req, $ctx) {...}
+  method chat($obj, $http_req, $ctx);
 }
