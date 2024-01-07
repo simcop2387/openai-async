@@ -268,7 +268,7 @@ class OpenAIAsync::Server :repr(HASH) :strict(params) {
 
   method _resp_custom($req, $code, $str, $json = 0) {
     my $response = HTTP::Response->new( $code );
-    $response->content_type('text/plain') unless $json;
+    $response->content_type('text/plain') unless $json; # TODO this needs to be more flexible due to audio outputs
     $response->content_type('application/json') if $json;
     $response->add_content($str);
     $response->content_length(length $str);
