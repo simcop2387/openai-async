@@ -36,5 +36,5 @@ role OpenAIAsync::Server::API::v1::Moderations :strict(params) {
     );
   }
  
-  async method moderations($obj, $http_req, $ctx);
+  method moderations($obj, $http_req, $ctx);
 }

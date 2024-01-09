@@ -1,4 +1,4 @@
-package OpenAIAsync::Server::API::v1::Completions;
+package OpenAIAsync::Server::API::Test::Completions;
 
 use v5.36.0;
 use Object::Pad;
@@ -25,17 +25,8 @@ OpenAIAsync::Server::API::Completions - Basic completion api role, consumed to i
 
 =cut
 
-role OpenAIAsync::Server::API::v1::Completions :strict(params) {
-  ADJUST {
-    $self->register_url(
-        method => 'POST',
-        url => qr{^/v1/completions$}, 
-        handle => async sub($req, $ctx, $obj, $params) {await $self->completion($obj, $req, $ctx)},
-        request_class => "OpenAIAsync::Type::Request::Completion",
-        result_class => "OpenAIAsync::Type::Result::Completion",
-        decoder => 'www-form-urlencoded', # default is json, we need this for this api
-    );
-  }
+role OpenAIAsync::Server::API::Test::Completions :strict(params) {
+  apply OpenAIAsync::Server::API::v1::Completions;
  
-  async method completion($obj, $http_req, $ctx);
+  async method completion($obj, $http_req, $ctx) { ... }
 }

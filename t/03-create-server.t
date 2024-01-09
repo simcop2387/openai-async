@@ -17,6 +17,13 @@ BEGIN {
 class TestServer {
   inherit OpenAIAsync::Server;
   apply OpenAIAsync::Server::API::Test::ChatCompletion;
+  apply OpenAIAsync::Server::API::Test::Audio;
+  apply OpenAIAsync::Server::API::Test::Completions;
+  apply OpenAIAsync::Server::API::Test::Embeddings;
+  apply OpenAIAsync::Server::API::Test::File;
+  apply OpenAIAsync::Server::API::Test::Image;
+  apply OpenAIAsync::Server::API::Test::ModelList;
+  apply OpenAIAsync::Server::API::Test::Moderations;
 }
 
 my $server = TestServer->new(listen => '127.0.0.1', port => 12345);

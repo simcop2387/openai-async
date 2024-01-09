@@ -36,5 +36,5 @@ role OpenAIAsync::Server::API::v1::Image :strict(params) {
     );
   }
 
-  async method create_image($http_req, $ctx);
+  method create_image($http_req, $ctx);
 }

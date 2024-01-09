@@ -39,7 +39,7 @@ role OpenAIAsync::Server::API::v1::AudioTTS :strict(params) {
     );
   }
  
-  async method audio_create_speech($obj, $http_req, $ctx) {...}
+  async method audio_create_speech($obj, $http_req, $ctx);
 }
 
 role OpenAIAsync::Server::API::v1::AudioSTT :strict(params) {
@@ -53,7 +53,7 @@ role OpenAIAsync::Server::API::v1::AudioSTT :strict(params) {
     );
   }
  
-  async method audio_create_transcript($obj, $http_req, $ctx) {...}
+  async method audio_create_transcript($obj, $http_req, $ctx);
 }
 
 role OpenAIAsync::Server::API::v1::AudioTranslate :strict(params) {
@@ -67,7 +67,7 @@ role OpenAIAsync::Server::API::v1::AudioTranslate :strict(params) {
     );
   }
  
-  async method audio_create_translation($obj, $http_req, $ctx) {...}
+  async method audio_create_translation($obj, $http_req, $ctx);
 }
 
 role OpenAIAsync::Server::API::v1::Audio :strict(params) {

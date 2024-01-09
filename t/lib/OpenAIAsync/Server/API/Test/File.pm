@@ -66,9 +66,9 @@ role OpenAIAsync::Server::API::v1::File :strict(params) {
     );
   }
 
-  async method file_list($http_req, $ctx);
-  async method file_info($http_req, $ctx, $params);
-  async method file_delete($http_req, $ctx, $params);
-  async method file_upload($http_req, $ctx, $params);
-  async method file_download($http_req, $ctx, $params);
+  method file_list($http_req, $ctx);
+  method file_info($http_req, $ctx, $params);
+  method file_delete($http_req, $ctx, $params);
+  method file_upload($http_req, $ctx, $params);
+  method file_download($http_req, $ctx, $params);
 }

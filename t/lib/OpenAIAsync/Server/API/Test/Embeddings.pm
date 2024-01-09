@@ -1,4 +1,4 @@
-package OpenAIAsync::Server::API::v1::Embeddings;
+package OpenAIAsync::Server::API::Test::Embeddings;
 
 use v5.36.0;
 use Object::Pad;
@@ -25,17 +25,8 @@ OpenAIAsync::Server::API::Embeddings - Basic embeddings api role, consumed to im
 
 =cut
 
-role OpenAIAsync::Server::API::v1::Embeddings :strict(params) {
-  ADJUST {
-    $self->register_url(
-        method => 'POST',
-        url => qr{^/v1/embeddings$}, 
-        handle => async sub($req, $ctx, $obj, $params) {await $self->embeddings($obj, $req, $ctx)},
-        request_class => "OpenAIAsync::Type::Request::Embeddings",
-        result_class => "OpenAIAsync::Type::Result::Embeddings",
-        decoder => 'www-form-urlencoded', # default is json, we need this for this api
-    );
-  }
+role OpenAIAsync::Server::API::Test::Embeddings {
+  apply OpenAIAsync::Server::API::v1::Embeddings;
  
-  async method embeddings($obj, $http_req, $ctx);
+  async method embeddings($obj, $http_req, $ctx) { ... }
 }
