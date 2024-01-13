@@ -7,6 +7,8 @@ use OpenAIAsync::Server;
 use Object::Pad;
 use IO::Async::Loop;
 
+use lib::relative './lib';
+
 my $loop = IO::Async::Loop->new();
 
 BEGIN {

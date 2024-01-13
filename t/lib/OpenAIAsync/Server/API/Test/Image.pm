@@ -1,4 +1,4 @@
-package OpenAIAsync::Server::API::v1::Image;
+package OpenAIAsync::Server::API::Test::Image;
 
 use v5.36.0;
 use Object::Pad;
@@ -25,16 +25,8 @@ OpenAIAsync::Server::API::Image - Basic image role, consumed to implement the Op
 
 =cut
 
-role OpenAIAsync::Server::API::v1::Image :strict(params) {
-  ADJUST {
-    $self->register_url(
-        method => 'GET',
-        url => qr{^/v1/files$}, 
-        handle => async sub($req, $ctx, $obj, $params) {await $self->create_image($obj, $req, $ctx)},
-        request_class => "OpenAIAsync::Type::Requests::GenerateImage",
-        result_class => "",
-    );
-  }
+role OpenAIAsync::Server::API::Test::Image :strict(params) {
+  apply OpenAIAsync::Server::API::v1::Image;
 
-  method create_image($http_req, $ctx);
+  async method create_image($http_req, $ctx) {...}
 }

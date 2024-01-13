@@ -8,6 +8,7 @@ use IO::Async;
 
 use OpenAIAsync::Types::Results;
 use OpenAIAsync::Types::Requests;
+use Future::Queue;
 
 our $VERSION = '0.02';
 

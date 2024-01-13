@@ -1,4 +1,4 @@
-package OpenAIAsync::Server::API::v1::Moderations;
+package OpenAIAsync::Server::API::Test::Moderations;
 
 use v5.36.0;
 use Object::Pad;
@@ -25,16 +25,8 @@ OpenAIAsync::Server::API::Moderations - Basic moderation api role, consumed to i
 
 =cut
 
-role OpenAIAsync::Server::API::v1::Moderations :strict(params) {
-  ADJUST {
-    $self->register_url(
-        method => 'POST',
-        url => qr{^/v1/moderations$}, 
-        handle => async sub($req, $ctx, $obj, $params) {await $self->moderations($obj, $req, $ctx)},
-        request_class => "OpenAIAsync::Type::Requests::CreateModeration",
-        result_class => "OpenAIAsync::Type::Results::Moderations",
-    );
-  }
- 
-  method moderations($obj, $http_req, $ctx);
+role OpenAIAsync::Server::API::Test::Moderations :strict(params) {
+  apply OpenAIAsync::Server::API::v1::Moderations;
+  
+  async method moderations($obj, $http_req, $ctx) {...}
 }

@@ -1,4 +1,4 @@
-package OpenAIAsync::Server::API::v1::ModelList;
+package OpenAIAsync::Server::API::Test::ModelList;
 
 use v5.36.0;
 use Object::Pad;
@@ -25,16 +25,8 @@ OpenAIAsync::Server::API::ModelList - Basic model list api role, consumed to imp
 
 =cut
 
-role OpenAIAsync::Server::API::v1::ModelList :strict(params) {
-  ADJUST {
-    $self->register_url(
-        method => 'POST',
-        url => qr{^/v1/models$}, 
-        handle => async sub($req, $ctx, $obj, $params) {await $self->model_list($obj, $req, $ctx)},
-        request_class => "",
-        result_class => "OpenAIAsync::Type::Result::ModelList",
-    );
-  }
- 
-  method model_list($obj, $http_req, $ctx);
+role OpenAIAsync::Server::API::Test::ModelList :strict(params) {
+  apply OpenAIAsync::Server::API::v1::ModelList;
+
+  async method model_list($obj, $http_req, $ctx) {...}
 }

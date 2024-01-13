@@ -8,6 +8,8 @@ use IO::Async;
 
 use OpenAIAsync::Types::Results;
 use OpenAIAsync::Types::Requests;
+use OpenAIAsync::Server::API::v1::Audio;
+
 
 our $VERSION = '0.02';
 
