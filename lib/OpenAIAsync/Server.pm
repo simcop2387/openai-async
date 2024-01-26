@@ -281,7 +281,7 @@ class OpenAIAsync::Server :repr(HASH) :strict(params) {
   method register_url(%opts) {
     # TODO check params
     use Data::Dumper;
-    say Dumper("Got url registered", \%opts);
+    #say Dumper("Got url registered", \%opts);
     push $routes->@*, \%opts;
   }
 
@@ -295,6 +295,7 @@ class OpenAIAsync::Server :repr(HASH) :strict(params) {
       my $found_route = false;
       my $f;
       for my $route ($routes->@*) {
+        printf "  Checking %s %s\n", $route->{url}, $route->{method};
         if ($path =~ $route->{url} && $route->{method} eq $method) {
           my $params = +{%+, _ => [@+]}; # make a copy of named parameters, and digited ones to pass into the handler
           $found_route = true;

@@ -31,7 +31,7 @@ role OpenAIAsync::Server::API::v1::ChatCompletion :strict(params) {
   ADJUST {
     $self->register_url(
         method => 'POST',
-        url => qr{^/v1/chat/completion$}, 
+        url => qr{^/v1/chat/completions$}, 
         handle => async sub($req, $ctx, $obj, $params) {await $self->chat($obj, $req, $ctx)},
         request_class => "OpenAIAsync::Type::Request::ChatCompletion",
         result_class => "OpenAIAsync::Type::Result::ChatCompletion",
