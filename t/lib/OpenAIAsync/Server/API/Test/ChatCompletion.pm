@@ -37,9 +37,9 @@ role OpenAIAsync::Server::API::Test::ChatCompletion :strict(params) {
       model => "GumbyBrain-llm",
       system_fingerprint => "SHODAN node 12 of 16 tertiary adjunct of unimatrix 42",
       usage => {
-        42,
-        6,
-        9,
+        total_tokens => 42,
+        prompt_tokens => 6,
+        completion_tokens => 9,
       },
       object => "text_completion",
       created => 0,

@@ -49,7 +49,7 @@ my $chat_completion_input = {
 
 sub mk_req($uri, $content) {
   my $content_json = encode_json($content);
-  return $http_client->POST("http://127.0.0.1:$port/v1".$uri, $content_json, headers => {"Content-Type" => "application/json"});
+  return $http_client->POST("http://127.0.0.1:$port/v1".$uri, $content_json, content_type => 'application/json');
 }
 
 my $res = await mk_req("/chat/completions", $chat_completion_input);

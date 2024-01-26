@@ -222,6 +222,9 @@ class OpenAIAsync::Server :repr(HASH) :strict(params) {
   use HTTP::Response;
   use HTTP::Request;
 
+  use OpenAIAsync::Types::Requests;
+  use OpenAIAsync::Types::Results;
+
   field $_json = JSON::MaybeXS->new(utf8 => 1, convert_blessed => 1);
   field $http_server;
 
@@ -280,7 +283,7 @@ class OpenAIAsync::Server :repr(HASH) :strict(params) {
 
   method register_url(%opts) {
     # TODO check params
-    use Data::Dumper;
+    #use Data::Dumper;
     #say Dumper("Got url registered", \%opts);
     push $routes->@*, \%opts;
   }
@@ -288,7 +291,6 @@ class OpenAIAsync::Server :repr(HASH) :strict(params) {
   async method _route_request($req, $ctx) {
     my $method = $req->method();
     my $path   = $req->path;
-
     say "Got request ", $method, " => ", $path;
 
     try {
@@ -303,20 +305,20 @@ class OpenAIAsync::Server :repr(HASH) :strict(params) {
 
           my $obj;
           if ($route->{decoder} eq "www-form-urlencoded") {
-            my %data = WWW::Form::UrlEncoded::parse_urlencoded($req->decoded_content);
+            my %data = WWW::Form::UrlEncoded::parse_urlencoded($req->body);
             $obj = $route->{request_class}->new(%data);
           } elsif ($route->{decoder} eq "json") {
-            my $data = $_json->decode($req->decoded_content);
+            my $data = $_json->decode($req->body);
             $obj = $route->{request_class}->new(%$data);
           } elsif ($route->{decoder} eq "null") {
             $obj = $route->{request_class}->new();
           } else { # Try to detect based on content-type, then fail
             my $content_type = $req->header("Content-Type");
             if ($content_type eq 'application/json') {
-              my $data = $_json->decode($req->decoded_content);
+              my $data = $_json->decode($req->body);
               $obj = $route->{request_class}->new(%$data);
             } elsif ($content_type eq 'application/x-www-form-urlencoded') {
-              my %data = WWW::Form::UrlEncoded::parse_urlencoded($req->decoded_content);
+              my %data = WWW::Form::UrlEncoded::parse_urlencoded($req->body);
               $obj = $route->{request_class}->new(%data);
             } else {
               die "Unsupported content-type for URI: $content_type";
@@ -324,11 +326,12 @@ class OpenAIAsync::Server :repr(HASH) :strict(params) {
           }
 
           try {
-            my ($result, @extra) = (await $route->{handle}->($req, $ctx, $obj, $params))->get();
+            my ($result, @extra) = (await $route->{handle}->($req, $ctx, $obj, $params));
             
             if ($route->{result_class}) {
               my $out_obj = $result;
-              unless ($out_obj isa $route->{result_object}) {
+
+              unless ($out_obj isa $route->{result_class}) {
                 $out_obj = $route->{result_class}->new(%$result);
               }
 
