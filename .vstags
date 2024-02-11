@@ -10617,7 +10617,7 @@ OpenAIAsync::Types::Requests::ChatCompletion::Messages::Union	.build/so1aP3GqCj/
 OpenAIAsync::Types::Requests::ChatCompletion::Messages::Union	.build/so1aP3GqCj/lib/OpenAIAsync/Types/Requests.pm	211;"	p
 OpenAIAsync::Types::Requests::ChatCompletion::Messages::Union	.build/uNYKA_hGAv/blib/lib/OpenAIAsync/Types/Requests.pm	211;"	p
 OpenAIAsync::Types::Requests::ChatCompletion::Messages::Union	.build/uNYKA_hGAv/lib/OpenAIAsync/Types/Requests.pm	211;"	p
-OpenAIAsync::Types::Requests::ChatCompletion::Messages::Union	lib/OpenAIAsync/Types/Requests.pm	211;"	p
+OpenAIAsync::Types::Requests::ChatCompletion::Messages::Union	lib/OpenAIAsync/Types/Requests.pm	213;"	p
 OpenAIAsync::Types::Requests::ChatCompletion::Messages::User::ContentUnion	.build/3IqZsCXCBI/blib/lib/OpenAIAsync/Types/Requests.pm	129;"	p
 OpenAIAsync::Types::Requests::ChatCompletion::Messages::User::ContentUnion	.build/3IqZsCXCBI/lib/OpenAIAsync/Types/Requests.pm	129;"	p
 OpenAIAsync::Types::Requests::ChatCompletion::Messages::User::ContentUnion	.build/3XJnl1bWS2/blib/lib/OpenAIAsync/Types/Requests.pm	129;"	p
@@ -10666,7 +10666,7 @@ OpenAIAsync::Types::Requests::ChatCompletion::Messages::User::ContentUnion	.buil
 OpenAIAsync::Types::Requests::ChatCompletion::Messages::User::ContentUnion	.build/so1aP3GqCj/lib/OpenAIAsync/Types/Requests.pm	129;"	p
 OpenAIAsync::Types::Requests::ChatCompletion::Messages::User::ContentUnion	.build/uNYKA_hGAv/blib/lib/OpenAIAsync/Types/Requests.pm	129;"	p
 OpenAIAsync::Types::Requests::ChatCompletion::Messages::User::ContentUnion	.build/uNYKA_hGAv/lib/OpenAIAsync/Types/Requests.pm	129;"	p
-OpenAIAsync::Types::Requests::ChatCompletion::Messages::User::ContentUnion	lib/OpenAIAsync/Types/Requests.pm	129;"	p
+OpenAIAsync::Types::Requests::ChatCompletion::Messages::User::ContentUnion	lib/OpenAIAsync/Types/Requests.pm	131;"	p
 OpenAIAsync::Types::Results	.build/3IqZsCXCBI/blib/lib/OpenAIAsync/Types/Results.pm	1;"	p
 OpenAIAsync::Types::Results	.build/3IqZsCXCBI/lib/OpenAIAsync/Types/Results.pm	1;"	p
 OpenAIAsync::Types::Results	.build/3XJnl1bWS2/blib/lib/OpenAIAsync/Types/Results.pm	1;"	p
@@ -28901,8 +28901,8 @@ new	.build/uNYKA_hGAv/blib/lib/OpenAIAsync/Types/Requests.pm	132;"	s
 new	.build/uNYKA_hGAv/blib/lib/OpenAIAsync/Types/Requests.pm	214;"	s
 new	.build/uNYKA_hGAv/lib/OpenAIAsync/Types/Requests.pm	132;"	s
 new	.build/uNYKA_hGAv/lib/OpenAIAsync/Types/Requests.pm	214;"	s
-new	lib/OpenAIAsync/Types/Requests.pm	132;"	s
-new	lib/OpenAIAsync/Types/Requests.pm	214;"	s
+new	lib/OpenAIAsync/Types/Requests.pm	134;"	s
+new	lib/OpenAIAsync/Types/Requests.pm	216;"	s
 new	local/bin/lwp-request	231;"	s
 new	local/lib/perl5/Algorithm/Diff.pm	580;"	s
 new	local/lib/perl5/App/Cmd.pm	163;"	s
@@ -29739,7 +29739,7 @@ ontent::new	.build/so1aP3GqCj/blib/lib/OpenAIAsync/Types/Requests.pm	214;"	s
 ontent::new	.build/so1aP3GqCj/lib/OpenAIAsync/Types/Requests.pm	214;"	s
 ontent::new	.build/uNYKA_hGAv/blib/lib/OpenAIAsync/Types/Requests.pm	214;"	s
 ontent::new	.build/uNYKA_hGAv/lib/OpenAIAsync/Types/Requests.pm	214;"	s
-ontent::new	lib/OpenAIAsync/Types/Requests.pm	214;"	s
+ontent::new	lib/OpenAIAsync/Types/Requests.pm	216;"	s
 oo	local/lib/perl5/oo.pm	1;"	p
 oo::import	local/lib/perl5/oo.pm	22;"	s
 oo::moo	local/lib/perl5/oo.pm	7;"	s
@@ -32425,7 +32425,7 @@ y::new	.build/so1aP3GqCj/blib/lib/OpenAIAsync/Types/Requests.pm	132;"	s
 y::new	.build/so1aP3GqCj/lib/OpenAIAsync/Types/Requests.pm	132;"	s
 y::new	.build/uNYKA_hGAv/blib/lib/OpenAIAsync/Types/Requests.pm	132;"	s
 y::new	.build/uNYKA_hGAv/lib/OpenAIAsync/Types/Requests.pm	132;"	s
-y::new	lib/OpenAIAsync/Types/Requests.pm	132;"	s
+y::new	lib/OpenAIAsync/Types/Requests.pm	134;"	s
 y_n	local/lib/perl5/Module/Build/Base.pm	602;"	s
 year	local/lib/perl5/Software/License.pm	57;"	s
 year	local/lib/perl5/x86_64-linux/DateTime.pm	767;"	s

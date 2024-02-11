@@ -54,8 +54,10 @@ sub mk_req($uri, $content) {
 
 my $res = await mk_req("/chat/completions", $chat_completion_input);
 
-use Data::Dumper;
-print Dumper($res);
+my $content = $res->content;
+is($content, '{"choices":[],"created":"0","id":"24601","model":"GumbyBrain-llm","object":"text_completion","system_fingerprint":"SHODAN node 12 of 16 tertiary adjunct of unimatrix 42","usage":{"completion_tokens":9,"prompt_tokens":6,"total_tokens":42}}', "check marshalling of data directly");
 #$loop->delay_future(after => 120)->get();
+
+
 
 done_testing();

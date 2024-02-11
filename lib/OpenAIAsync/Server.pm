@@ -221,6 +221,7 @@ class OpenAIAsync::Server :repr(HASH) :strict(params) {
   use Hash::Merge;
   use HTTP::Response;
   use HTTP::Request;
+  use Scalar::Util qw/blessed/;
 
   use OpenAIAsync::Types::Requests;
   use OpenAIAsync::Types::Results;
@@ -272,10 +273,23 @@ class OpenAIAsync::Server :repr(HASH) :strict(params) {
 
   method _resp_custom($req, $code, $str, $json = 0) {
     my $response = HTTP::Response->new( $code );
-    $response->content_type('text/plain') unless $json; # TODO this needs to be more flexible due to audio outputs
-    $response->content_type('application/json') if $json;
-    $response->add_content($str);
-    $response->content_length(length $str);
+
+    if (blessed($str)) {
+      my $new_str = $str->_serialize();
+      my $ct = $str->_content_type();
+
+      $response->content_type($ct);
+
+      $response->add_content($new_str);
+      $response->content_length(length $new_str);
+    } else {
+      $response->content_type('text/plain') unless $json; # TODO this needs to be more flexible due to audio outputs
+      $response->content_type('application/json') if $json;
+
+      $response->add_content($str);
+      $response->content_length(length $str);
+    }
+
     $req->respond($response);
   }
 
@@ -297,7 +311,7 @@ class OpenAIAsync::Server :repr(HASH) :strict(params) {
       my $found_route = false;
       my $f;
       for my $route ($routes->@*) {
-        printf "  Checking %s %s\n", $route->{url}, $route->{method};
+#        printf "  Checking %s %s\n", $route->{url}, $route->{method};
         if ($path =~ $route->{url} && $route->{method} eq $method) {
           my $params = +{%+, _ => [@+]}; # make a copy of named parameters, and digited ones to pass into the handler
           $found_route = true;

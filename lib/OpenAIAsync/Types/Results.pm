@@ -7,6 +7,47 @@ use Object::PadX::Role::AutoMarshal;
 use Object::PadX::Role::AutoJSON;
 use Object::Pad::ClassAttr::Struct;
 
+role OpenAIAsync::Types::Results::Encoder::JSON {
+  apply OpenAIAsync::Types::Base;
+  apply Object::PadX::Role::AutoJSON;
+  apply Object::PadX::Role::AutoMarshal;
+
+  use JSON::MaybeXS;
+  my $_json = JSON::MaybeXS->new(utf8 => 1, convert_blessed => 1, canonical => 1);
+
+  method _serialize() {
+    my $json = $_json->encode($self);
+
+    return $json;
+  }
+
+  method _content_type() {"application/json"}
+}
+
+role OpenAIAsync::Types::Results::Encoder::Raw {
+  apply OpenAIAsync::Types::Base;
+  apply Object::PadX::Role::AutoJSON;
+  apply Object::PadX::Role::AutoMarshal;
+
+  use JSON::MaybeXS;
+
+  method serialize() {
+    ... # TODO this needs to give out bytes, how to decide that? meta programming?
+  }
+}
+
+role OpenAIAsync::Types::Results::Encoder::WWWForm {
+  apply OpenAIAsync::Types::Base;
+  apply Object::PadX::Role::AutoJSON;
+  apply Object::PadX::Role::AutoMarshal;
+
+  use JSON::MaybeXS;
+
+  method serialize() {
+    ...
+  }
+}
+
 class OpenAIAsync::Types::Results::ToolCall :Struct {
   apply OpenAIAsync::Types::Base;
 
@@ -40,7 +81,7 @@ class OpenAIAsync::Types::Results::ChatCompletionChoices :Struct {
 }
 
 class OpenAIAsync::Types::Results::ChatCompletion :Struct {
-  apply OpenAIAsync::Types::Base;
+  apply OpenAIAsync::Types::Results::Encoder::JSON
 
   field $id :JSONStr;
   field $choices :MarshalTo([OpenAIAsync::Types::Results::ChatCompletionChoices]);
