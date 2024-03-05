@@ -30,12 +30,12 @@ role OpenAIAsync::Server::API::v1::Embeddings :strict(params) {
     $self->register_url(
         method => 'POST',
         url => qr{^/v1/embeddings$}, 
-        handle => async sub($req, $ctx, $obj, $params) {await $self->embeddings($obj, $req, $ctx)},
+        handle => "embeddings",
         request_class => "OpenAIAsync::Type::Request::Embeddings",
         result_class => "OpenAIAsync::Type::Result::Embeddings",
         decoder => 'www-form-urlencoded', # default is json, we need this for this api
     );
   }
  
-  async method embeddings($obj, $http_req, $ctx);
+  async method embeddings($req, $future_status, $queue, $ctx, $obj, $params);
 }

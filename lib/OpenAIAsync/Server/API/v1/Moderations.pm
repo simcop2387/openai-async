@@ -30,11 +30,11 @@ role OpenAIAsync::Server::API::v1::Moderations :strict(params) {
     $self->register_url(
         method => 'POST',
         url => qr{^/v1/moderations$}, 
-        handle => async sub($req, $ctx, $obj, $params) {await $self->moderations($obj, $req, $ctx)},
+        handle => "moderations",
         request_class => "OpenAIAsync::Type::Requests::CreateModeration",
         result_class => "OpenAIAsync::Type::Results::Moderations",
     );
   }
  
-  async method moderations($obj, $http_req, $ctx);
+  async method moderations($req, $future_status, $queue, $ctx, $obj, $params);
 }

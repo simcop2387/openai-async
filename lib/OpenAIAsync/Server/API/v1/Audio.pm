@@ -33,13 +33,13 @@ role OpenAIAsync::Server::API::v1::AudioTTS :strict(params) {
     $self->register_url(
         method => 'POST',
         url => qr{^/v1/audio/speech$}, 
-        handle => async sub($req, $ctx, $obj, $params) {await $self->audio_create_speech($obj, $req, $ctx)},
+        handle => "audio_create_speech",
         request_class => "OpenAIAsync::Type::Requests::CreateSpeech",
         result_class => "", # This gives back a file of audio data
     );
   }
  
-  async method audio_create_speech($obj, $http_req, $ctx);
+  async method audio_create_speech($req, $future_status, $queue, $ctx, $obj, $params);
 }
 
 role OpenAIAsync::Server::API::v1::AudioSTT :strict(params) {
@@ -47,13 +47,13 @@ role OpenAIAsync::Server::API::v1::AudioSTT :strict(params) {
     $self->register_url(
         method => 'POST',
         url => qr{^/v1/audio/transcription$}, 
-        handle => async sub($req, $ctx, $obj, $params) {await $self->audio_create_transcript($obj, $req, $ctx)},
+        handle => "audio_create_transcript",
         request_class => "OpenAIAsync::Type::Requests::CreateTranscription",
-        result_class => "", # This gives back a file, in the requested format
+        result_class => "OpenAIAsync::Type::Response::AudioFile",
     );
   }
  
-  async method audio_create_transcript($obj, $http_req, $ctx);
+  async method audio_create_transcript($req, $future_status, $queue, $ctx, $obj, $params);
 }
 
 role OpenAIAsync::Server::API::v1::AudioTranslate :strict(params) {
@@ -61,13 +61,13 @@ role OpenAIAsync::Server::API::v1::AudioTranslate :strict(params) {
     $self->register_url(
         method => 'POST',
         url => qr{^/v1/$}, 
-        handle => async sub($req, $ctx, $obj, $params) {await $self->audio_create_translation($obj, $req, $ctx)},
+        handle => "audio_create_translation",
         request_class => "OpenAIAsync::Type::Requests::CreateTranslation",
-        result_class => "", # This gives back a file, in the requested format
+        result_class => "OpenAIAsync::Type::Response::AudioFile",
     );
   }
  
-  async method audio_create_translation($obj, $http_req, $ctx);
+  async method audio_create_translation($req, $future_status, $queue, $ctx, $obj, $params);
 }
 
 role OpenAIAsync::Server::API::v1::Audio :strict(params) {

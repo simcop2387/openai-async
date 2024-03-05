@@ -30,12 +30,12 @@ role OpenAIAsync::Server::API::v1::Completions :strict(params) {
     $self->register_url(
         method => 'POST',
         url => qr{^/v1/completions$}, 
-        handle => async sub($req, $ctx, $obj, $params) {await $self->completion($obj, $req, $ctx)},
+        handle => "completion",
         request_class => "OpenAIAsync::Type::Request::Completion",
         result_class => "OpenAIAsync::Type::Result::Completion",
         decoder => 'www-form-urlencoded', # default is json, we need this for this api
     );
   }
  
-  async method completion($obj, $http_req, $ctx);
+  async method completion($req, $future_status, $queue, $ctx, $obj, $params);
 }

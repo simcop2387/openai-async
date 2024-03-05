@@ -30,11 +30,11 @@ role OpenAIAsync::Server::API::v1::Image :strict(params) {
     $self->register_url(
         method => 'GET',
         url => qr{^/v1/files$}, 
-        handle => async sub($req, $ctx, $obj, $params) {await $self->create_image($obj, $req, $ctx)},
+        handle => "create_image",
         request_class => "OpenAIAsync::Type::Requests::GenerateImage",
-        result_class => "",
+        result_class => "OpenAIAsync::Type::Results::RawFile", # TOOD image class?
     );
   }
 
-  async method create_image($http_req, $ctx);
+  async method create_image($req, $future_status, $queue, $ctx, $obj, $params);
 }

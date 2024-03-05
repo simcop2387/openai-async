@@ -360,7 +360,8 @@ class OpenAIAsync::Server :repr(HASH) :strict(params) {
 
             # TODO can I redo this to eliminate the $future_status? I want it for internal chaining inside the handler
             # that is needed for it to persist some code that's running in the future that populates the queue
-            await $route->{handle}->($req, $future_status, $queue, $ctx, $obj, $params);
+            my $route_method = $route->{handle};
+            await $self->$route_method($req, $future_status, $queue, $ctx, $obj, $params);
             
             my $status = await $future_status;
             my $is_streaming_event = $status->{is_streaming};

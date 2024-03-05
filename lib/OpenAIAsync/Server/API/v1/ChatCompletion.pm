@@ -32,12 +32,12 @@ role OpenAIAsync::Server::API::v1::ChatCompletion :strict(params) {
     $self->register_url(
         method => 'POST',
         url => qr{^/v1/chat/completions$}, 
-        handle => async sub($req, $ctx, $obj, $params) {await $self->chat($obj, $req, $ctx)},
+        handle => "chat_completion",
         request_class => "OpenAIAsync::Types::Requests::ChatCompletion",
         result_class => "OpenAIAsync::Types::Results::ChatCompletion",
         decoder => 'json', # default is json, we need this for this api
     );
   }
 
-  async method chat($obj, $http_req, $ctx);
+  async method chat_completion($req, $future_status, $queue, $ctx, $obj, $params);
 }
