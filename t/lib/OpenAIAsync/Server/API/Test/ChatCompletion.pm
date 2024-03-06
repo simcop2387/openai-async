@@ -29,8 +29,9 @@ role OpenAIAsync::Server::API::Test::ChatCompletion :strict(params) {
   apply OpenAIAsync::Server::API::v1::ChatCompletion;
   use OpenAIAsync::Types::Results;
   use Future::AsyncAwait;
+  use builtin qw/false/;
   
-  async method chat ($future_status, $queue, $ctx, $obj, $params) {
+  async method chat_completion ($future_status, $queue, $ctx, $obj, $params) {
     my $chained_future = $future_status->then(sub {
       return OpenAIAsync::Types::Results::ChatCompletion->new(
           id => "24601",
@@ -57,4 +58,5 @@ role OpenAIAsync::Server::API::Test::ChatCompletion :strict(params) {
     });
 
     return $chained_future; # TODO this might actually be wrong thanks to the async above?
+  }
 }

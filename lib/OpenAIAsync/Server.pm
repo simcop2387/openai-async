@@ -252,7 +252,7 @@ class OpenAIAsync::Server :repr(HASH) :strict(params) {
 
   method _make_queue() {
     my $queue = Future::Queue->new(
-      prototype => sub {$self->_make_future()}
+      prototype => sub {$self->_make_future()},
       max_items => 1, # set a max item count, this is so that await ->push() will cause things to yield
     );
     return $queue;
@@ -364,19 +364,19 @@ class OpenAIAsync::Server :repr(HASH) :strict(params) {
             await $self->$route_method($future_status, $queue, $ctx, $obj, $params);
             
             my $status = await $future_status;
-            my $is_streaming_event = $status->{is_streaming};
+            my $is_streaming = $status->{is_streaming};
 
             my $headers = {
               "Content-Type" => $is_streaming ? "text/event-stream" : $status->{content_type},
-              $is_streaming ? ()"Cache-Control" => "no-store") : (),
+              $is_streaming ? ("Cache-Control" => "no-store") : (),
               # TODO others?
-            }
+            };
             my $response = HTTP::Response->new($status->{status_code}, $status->{status_message}, $status->{headers});
             
             $req->write($response->as_string("\r\n"));
             $req->write("\r\n"); # extra to end headers
 
-            $req->write(sub {
+            $req->write(async sub {
               my $body_obj = await $queue->pull();
 
               if (defined $body_obj) {
@@ -385,7 +385,7 @@ class OpenAIAsync::Server :repr(HASH) :strict(params) {
 
                 if ($is_streaming) {
                   return sprintf "event: %s\ndata: %s\n\n", $event_name, $body;
-                } eles {
+                } else {
                   return $body;
                 }
               } else {
