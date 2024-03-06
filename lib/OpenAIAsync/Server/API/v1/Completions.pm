@@ -37,5 +37,5 @@ role OpenAIAsync::Server::API::v1::Completions :strict(params) {
     );
   }
  
-  async method completion($req, $future_status, $queue, $ctx, $obj, $params);
+  async method completion($future_status, $queue, $ctx, $obj, $params);
 }

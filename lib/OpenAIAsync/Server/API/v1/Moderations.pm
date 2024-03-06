@@ -36,5 +36,5 @@ role OpenAIAsync::Server::API::v1::Moderations :strict(params) {
     );
   }
  
-  async method moderations($req, $future_status, $queue, $ctx, $obj, $params);
+  async method moderations($future_status, $queue, $ctx, $obj, $params);
 }

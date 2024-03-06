@@ -28,5 +28,5 @@ OpenAIAsync::Server::API::Image - Basic image role, consumed to implement the Op
 role OpenAIAsync::Server::API::Test::Image :strict(params) {
   apply OpenAIAsync::Server::API::v1::Image;
 
-  async method create_image($http_req, $ctx) {...}
+  async method create_image($future_status, $queue, $ctx, $obj, $params) {...}
 }

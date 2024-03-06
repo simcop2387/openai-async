@@ -37,5 +37,5 @@ role OpenAIAsync::Server::API::v1::Embeddings :strict(params) {
     );
   }
  
-  async method embeddings($req, $future_status, $queue, $ctx, $obj, $params);
+  async method embeddings($future_status, $queue, $ctx, $obj, $params);
 }

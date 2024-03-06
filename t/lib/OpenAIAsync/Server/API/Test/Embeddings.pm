@@ -28,5 +28,5 @@ OpenAIAsync::Server::API::Embeddings - Basic embeddings api role, consumed to im
 role OpenAIAsync::Server::API::Test::Embeddings {
   apply OpenAIAsync::Server::API::v1::Embeddings;
  
-  async method embeddings($obj, $http_req, $ctx) { ... }
+  async method embeddings($future_status, $queue, $ctx, $obj, $params) { ... }
 }

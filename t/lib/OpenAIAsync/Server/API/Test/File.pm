@@ -28,9 +28,9 @@ OpenAIAsync::Server::API::File - Basic file api role, consumed to implement the 
 role OpenAIAsync::Server::API::Test::File :strict(params) {
   apply OpenAIAsync::Server::API::v1::File;
 
-  async method file_list($http_req, $ctx) {...}
-  async method file_info($http_req, $ctx, $params) {...}
-  async method file_delete($http_req, $ctx, $params) {...}
-  async method file_upload($http_req, $ctx, $params) {...}
-  async method file_download($http_req, $ctx, $params) {...}
+  async method file_list($future_status, $queue, $ctx, $obj, $params) {...}
+  async method file_info($future_status, $queue, $ctx, $obj, $params) {...}
+  async method file_delete($future_status, $queue, $ctx, $obj, $params) {...}
+  async method file_upload($future_status, $queue, $ctx, $obj, $params) {...}
+  async method file_download($future_status, $queue, $ctx, $obj, $params) {...}
 }

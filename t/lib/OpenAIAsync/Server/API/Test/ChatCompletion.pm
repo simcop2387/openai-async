@@ -30,19 +30,31 @@ role OpenAIAsync::Server::API::Test::ChatCompletion :strict(params) {
   use OpenAIAsync::Types::Results;
   use Future::AsyncAwait;
   
-  async method chat ($obj, $http_req, $ctx) {
-    return OpenAIAsync::Types::Results::ChatCompletion->new(
-      id => "24601",
-      choices => [],
-      model => "GumbyBrain-llm",
-      system_fingerprint => "SHODAN node 12 of 16 tertiary adjunct of unimatrix 42",
-      usage => {
-        total_tokens => 42,
-        prompt_tokens => 6,
-        completion_tokens => 9,
-      },
-      object => "text_completion",
-      created => 0,
-    )
-  }
+  async method chat ($future_status, $queue, $ctx, $obj, $params) {
+    my $chained_future = $future_status->then(sub {
+      return OpenAIAsync::Types::Results::ChatCompletion->new(
+          id => "24601",
+          choices => [],
+          model => "GumbyBrain-llm",
+          system_fingerprint => "SHODAN node 12 of 16 tertiary adjunct of unimatrix 42",
+          usage => {
+            total_tokens => 42,
+            prompt_tokens => 6,
+            completion_tokens => 9,
+          },
+          object => "text_completion",
+          created => 0,
+        )
+      }
+    );
+
+    $future_status->done({
+      headers => {}, # TODO a way I can make this not leak and not expose the HTTP nature?
+      is_streaming => false,
+      content_type => "application/json", # TODO this should come from the object return type!
+      status_code => 200,
+      status_message => "OK",
+    });
+
+    return $chained_future; # TODO this might actually be wrong thanks to the async above?
 }

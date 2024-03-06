@@ -28,5 +28,5 @@ OpenAIAsync::Server::API::Completions - Basic completion api role, consumed to i
 role OpenAIAsync::Server::API::Test::Completions :strict(params) {
   apply OpenAIAsync::Server::API::v1::Completions;
  
-  async method completion($obj, $http_req, $ctx) { ... }
+  async method completion($future_status, $queue, $ctx, $obj, $params) { ... }
 }

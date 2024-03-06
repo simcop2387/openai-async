@@ -28,5 +28,5 @@ OpenAIAsync::Server::API::Moderations - Basic moderation api role, consumed to i
 role OpenAIAsync::Server::API::Test::Moderations :strict(params) {
   apply OpenAIAsync::Server::API::v1::Moderations;
   
-  async method moderations($obj, $http_req, $ctx) {...}
+  async method moderations($future_status, $queue, $ctx, $obj, $params) {...}
 }

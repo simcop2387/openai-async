@@ -32,17 +32,17 @@ TODO document the subroles here, split up because TTS is much simpler to impleme
 
 role OpenAIAsync::Server::API::Test::AudioTTS :strict(params) {
   apply OpenAIAsync::Server::API::v1::AudioTTS;
-  async method audio_create_speech($obj, $http_req, $ctx) {...}
+  async method audio_create_speech($future_status, $queue, $ctx, $obj, $params) {...}
 }
 
 role OpenAIAsync::Server::API::Test::AudioSTT :strict(params) {
   apply OpenAIAsync::Server::API::v1::AudioSTT;
-  async method audio_create_transcript($obj, $http_req, $ctx) {...}
+  async method audio_create_transcript($future_status, $queue, $ctx, $obj, $params) {...}
 }
 
 role OpenAIAsync::Server::API::Test::AudioTranslate :strict(params) {
   apply OpenAIAsync::Server::API::v1::AudioTranslate;
-  async method audio_create_translation($obj, $http_req, $ctx) {...}
+  async method audio_create_translation($future_status, $queue, $ctx, $obj, $params) {...}
 }
 
 role OpenAIAsync::Server::API::Test::Audio :strict(params) {

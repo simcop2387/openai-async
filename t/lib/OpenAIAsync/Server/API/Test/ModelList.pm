@@ -28,5 +28,5 @@ OpenAIAsync::Server::API::ModelList - Basic model list api role, consumed to imp
 role OpenAIAsync::Server::API::Test::ModelList :strict(params) {
   apply OpenAIAsync::Server::API::v1::ModelList;
 
-  async method model_list($obj, $http_req, $ctx) {...}
+  async method model_list($future_status, $queue, $ctx, $obj, $params) {...}
 }

@@ -39,5 +39,5 @@ role OpenAIAsync::Server::API::v1::ChatCompletion :strict(params) {
     );
   }
 
-  async method chat_completion($req, $future_status, $queue, $ctx, $obj, $params);
+  async method chat_completion($future_status, $queue, $ctx, $obj, $params);
 }

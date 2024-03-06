@@ -36,5 +36,5 @@ role OpenAIAsync::Server::API::v1::Image :strict(params) {
     );
   }
 
-  async method create_image($req, $future_status, $queue, $ctx, $obj, $params);
+  async method create_image($future_status, $queue, $ctx, $obj, $params);
 }

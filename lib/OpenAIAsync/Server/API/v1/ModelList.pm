@@ -36,5 +36,5 @@ role OpenAIAsync::Server::API::v1::ModelList :strict(params) {
     );
   }
  
-  async method model_list($req, $future_status, $queue, $ctx, $obj, $params);
+  async method model_list($future_status, $queue, $ctx, $obj, $params);
 }
