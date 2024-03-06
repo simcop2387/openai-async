@@ -366,12 +366,12 @@ class OpenAIAsync::Server :repr(HASH) :strict(params) {
             my $status = await $future_status;
             my $is_streaming = $status->{is_streaming};
 
-            my $headers = {
+            my $headers = HTTP::Headers->new(
               "Content-Type" => $is_streaming ? "text/event-stream" : $status->{content_type},
               $is_streaming ? ("Cache-Control" => "no-store") : (),
               # TODO others?
-            };
-            my $response = HTTP::Response->new($status->{status_code}, $status->{status_message}, $status->{headers});
+            );
+            my $response = HTTP::Response->new($status->{status_code}, $status->{status_message}, $headers);
             
             $req->write($response->as_string("\r\n"));
             $req->write("\r\n"); # extra to end headers
