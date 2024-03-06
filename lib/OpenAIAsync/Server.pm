@@ -375,23 +375,16 @@ class OpenAIAsync::Server :repr(HASH) :strict(params) {
             $response->protocol("HTTP/1.1");
 
             my $resp_string = $response->as_string("\r\n");
-            print STDERR "resp_string: $resp_string\n";
 
             $req->write($resp_string);
 #            $req->write("\r\n"); # extra to end headers
 
             $req->write(sub {
-              print STDERR "About to shift\n";
               my $body_obj = $queue->shift()->get();
-
-              use Data::Dumper;
-              print STDERR Dumper($body_obj);
 
               if (defined $body_obj) {
                 my $body = $body_obj->_serialize();
                 my $event_name = $body_obj->_event_name();
-
-                print STDERR Dumper($body);
 
                 if ($is_streaming) {
                   return sprintf "event: %s\ndata: %s\n\n", $event_name, $body;
@@ -400,8 +393,9 @@ class OpenAIAsync::Server :repr(HASH) :strict(params) {
                 }
               } else {
                 # Finished
-                print STDERR "Finished!\n";
+
                 $req->done();
+                $req->{conn}->close(); #TODO why is this needed?
                 return undef;
               }
               });

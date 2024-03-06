@@ -29,11 +29,12 @@ role OpenAIAsync::Server::API::Test::ChatCompletion :strict(params) {
   apply OpenAIAsync::Server::API::v1::ChatCompletion;
   use OpenAIAsync::Types::Results;
   use Future::AsyncAwait;
+  no warnings 'experimental::builtin';
   use builtin qw/false/;
   
   async method chat_completion ($future_status, $queue, $ctx, $obj, $params) {
-    my $chained_future = $future_status->then(async sub {
-      await $queue->push(OpenAIAsync::Types::Results::ChatCompletion->new(
+    my $chained_future = $future_status->then(sub {
+      $queue->push(OpenAIAsync::Types::Results::ChatCompletion->new(
           id => "24601",
           choices => [],
           model => "GumbyBrain-llm",
@@ -45,7 +46,7 @@ role OpenAIAsync::Server::API::Test::ChatCompletion :strict(params) {
           },
           object => "text_completion",
           created => 0,
-        ));
+        ))->get();
 
         $queue->finish();
       }
