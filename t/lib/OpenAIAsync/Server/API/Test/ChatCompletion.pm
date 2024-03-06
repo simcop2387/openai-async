@@ -32,8 +32,8 @@ role OpenAIAsync::Server::API::Test::ChatCompletion :strict(params) {
   use builtin qw/false/;
   
   async method chat_completion ($future_status, $queue, $ctx, $obj, $params) {
-    my $chained_future = $future_status->then(sub {
-      return OpenAIAsync::Types::Results::ChatCompletion->new(
+    my $chained_future = $future_status->then(async sub {
+      await $queue->push(OpenAIAsync::Types::Results::ChatCompletion->new(
           id => "24601",
           choices => [],
           model => "GumbyBrain-llm",
@@ -45,7 +45,9 @@ role OpenAIAsync::Server::API::Test::ChatCompletion :strict(params) {
           },
           object => "text_completion",
           created => 0,
-        )
+        ));
+
+        $queue->finish();
       }
     );
 

@@ -22,6 +22,7 @@ role OpenAIAsync::Types::Results::Encoder::JSON {
   }
 
   method _content_type() {"application/json"}
+  method _event_name() {"event"}
 }
 
 role OpenAIAsync::Types::Results::Encoder::Raw {

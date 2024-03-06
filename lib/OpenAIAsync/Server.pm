@@ -361,7 +361,7 @@ class OpenAIAsync::Server :repr(HASH) :strict(params) {
             # TODO can I redo this to eliminate the $future_status? I want it for internal chaining inside the handler
             # that is needed for it to persist some code that's running in the future that populates the queue
             my $route_method = $route->{handle};
-            await $self->$route_method($future_status, $queue, $ctx, $obj, $params);
+            $self->$route_method($future_status, $queue, $ctx, $obj, $params);
             
             my $status = await $future_status;
             my $is_streaming = $status->{is_streaming};
@@ -372,16 +372,26 @@ class OpenAIAsync::Server :repr(HASH) :strict(params) {
               # TODO others?
             );
             my $response = HTTP::Response->new($status->{status_code}, $status->{status_message}, $headers);
-            
-            $req->write($response->as_string("\r\n"));
-            $req->write("\r\n"); # extra to end headers
+            $response->protocol("HTTP/1.1");
 
-            $req->write(async sub {
-              my $body_obj = await $queue->pull();
+            my $resp_string = $response->as_string("\r\n");
+            print STDERR "resp_string: $resp_string\n";
+
+            $req->write($resp_string);
+#            $req->write("\r\n"); # extra to end headers
+
+            $req->write(sub {
+              print STDERR "About to shift\n";
+              my $body_obj = $queue->shift()->get();
+
+              use Data::Dumper;
+              print STDERR Dumper($body_obj);
 
               if (defined $body_obj) {
-                my $body = $body_obj->serialize();
-                my $event_name = $body_obj->event_name();
+                my $body = $body_obj->_serialize();
+                my $event_name = $body_obj->_event_name();
+
+                print STDERR Dumper($body);
 
                 if ($is_streaming) {
                   return sprintf "event: %s\ndata: %s\n\n", $event_name, $body;
@@ -390,6 +400,7 @@ class OpenAIAsync::Server :repr(HASH) :strict(params) {
                 }
               } else {
                 # Finished
+                print STDERR "Finished!\n";
                 $req->done();
                 return undef;
               }
